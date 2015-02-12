@@ -67,7 +67,7 @@ Demo.Configs = {
 	/**
 	 * 底部 HTML 模板。
 	 */
-	footer: '<footer class="demo"><hr class="demo"><nav class="demo-toolbar"><a href="http://www.jplusui.com/">jPlusUI.com</a> | <a href="https://www.github.com/jplusui/jplusui">Github</a> | <a href="#">返回顶部</a></nav><span>Copyright &copy; 2011-2013 jPlusUI.com</span></footer>',
+	footer: '<footer class="demo"><hr class="demo"><nav class="demo-toolbar"><a href="http://www.jplusui.com/">jPlusUI.com</a> | <a href="https://www.github.com/jplusui/jplusui">Github</a> | <a href="#">返回顶部</a></nav><span>Copyright &copy; 2011-2015 jPlusUI.com</span></footer>',
 
 	/**
 	 * 合法的状态值。
@@ -84,7 +84,7 @@ Demo.Configs = {
 	/**
 	 * 合法的浏览器。
 	 */
-	support: 'IE6|IE7|IE7|IE8|IE10|FireFox|Chrome|Opera|Safari|Mobile'.split('|'),
+	support: 'IE6|IE7|IE7|IE8|IE10|FireFox|Chrome|Opera|Safari|Mobile|Chrome Mobile|Safari Moblie'.split('|'),
 
 	/**
 	 * 整个项目标配使用的编码。
