@@ -35,7 +35,7 @@ Demo.Configs = {
 	/**
 	 * 存放数据字段的 meta 节点。
 	 */
-	metaModuleInfo: 'module-info',
+	metaModuleInfo: 'component-info',
 
 	/**
 	 * dpl 访问历史最大值。
@@ -276,7 +276,7 @@ if (typeof module !== 'object') {
 			node = (!Demo.Dom.isIE || typeof document.constructor === 'object') ? node.src : node.getAttribute('src', 5);
 			node = node.substr(0, node.length - configs.apps.length - "/demo/demo.js".length);
 			Demo.baseUrl = node;
-
+			
 			// 获取当前的目录信息。
 			var pathname = location.href.substr(Demo.baseUrl.length);
 			var slashIndex = pathname.indexOf('/');
