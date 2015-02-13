@@ -1,0 +1,138 @@
+/**
+ * JPlusUI 2.0
+ * @copyright 2011-2015 The JPlusUI Team
+ * @license The BSD License
+ */
+
+@import "../core/mixins.less";
+
+//--------------------------------
+// 全局
+//--------------------------------
+
+body {
+    margin: 0;
+    font-family: @sansFontFamily;
+    font-size: @baseFontSize;
+    line-height: @baseLineHeight;
+    color: #414243;
+}
+
+p, pre, hr, table, img, ul, ol, dl {
+    margin: 10px auto;
+}
+
+a img {
+    margin: 0;
+    border: 0;
+    display: inline-block;
+    max-width: 100%;
+}
+
+//--------------------------------
+// 链接
+//--------------------------------
+
+a {
+    color: #095f8b;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+//--------------------------------
+// 段落
+//--------------------------------
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 10px 0;
+    font-weight: 500;
+    color: #333;
+    line-height: 150%;
+}
+
+h1 {
+    font-size: @baseFontSize + 14px;
+}
+
+h2 {
+    font-size: @baseFontSize + 8px;
+}
+
+h3 {
+    font-size: @baseFontSize + 4px;
+}
+
+h4 {
+    font-size: @baseFontSize + 2px;
+}
+
+h5 {
+    font-size: @baseFontSize;
+}
+
+h6 {
+    font-size: @baseFontSize - 2px;
+}
+
+//--------------------------------
+// 其它
+//--------------------------------
+
+// 水平线
+hr {
+    border-color: @borderColor;
+    border-width: 1px 0 0 0;
+}
+
+// 小字
+small {
+    font-weight: normal;
+    color: @grayLight;
+}
+
+dt {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+//--------------------------------
+// 表格
+//--------------------------------
+
+// 表格
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+}
+
+th {
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid @borderColor;
+}
+
+//--------------------------------
+// 代码
+//--------------------------------
+
+code {
+    padding: 2px 4px;
+    color: #990000;
+    background-color: #f8f8f8;
+    font-family: @monoFontFamily;
+}
+
+pre code {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    color: inherit;
+    font-family: inherit;
+}

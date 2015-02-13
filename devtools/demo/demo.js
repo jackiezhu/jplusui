@@ -25,12 +25,12 @@ Demo.Configs = {
 	/**
 	 * 存放文档文件的文件夹。
 	 */
-	examples: "examples",
+	examples: "src",
 
 	/**
 	 * 存放开发系统文件的文件夹。
 	 */
-	apps: "apps",
+	apps: "devtools",
 
 	/**
 	 * 存放数据字段的 meta 节点。
