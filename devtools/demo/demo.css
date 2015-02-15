@@ -1,0 +1,467 @@
+﻿/**
+ * 开发系统的基础样式表 
+ */
+
+/**********************************************
+ * 全局统一样式
+ **********************************************/
+
+header.demo, section.demo, footer.demo, nav.demo, div.demo, span.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, blockquote.demo, dl.demo, table.demo {
+    font-size: 14px;
+    line-height: 150%;
+    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
+}
+
+body.demo {
+    margin: 0;
+    overflow-y: scroll;
+    padding: 0 20px;
+}
+
+article.demo {
+    margin-bottom: 42px;
+}
+
+footer.demo {
+    margin-bottom: 36px;
+    font-size: 12px;
+}
+
+h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, hr.demo, table.demo, ol.demo, ul.demo, dl.demo, blockquote.demo, section.demo {
+    margin: 14px 0;
+}
+
+h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo {
+    font-weight: 600;
+}
+
+h1.demo {
+    color: #3F529C;
+    font-size: 30px;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+h2.demo {
+    color: #4B8B20;
+    font-size: 26px;
+    border-bottom: 1px solid #eee;
+}
+
+h3.demo {
+    color: #0E454A;
+    font-size: 20px;
+}
+
+h4.demo {
+    font-size: 16px;
+}
+
+h5.demo {
+    font-size: 14px;
+}
+
+h6.demo {
+    font-size: 12px;
+}
+
+hr.demo {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #E5E5E5;
+    border-color: #e5e5e5 -moz-use-text-color -moz-use-text-color;
+    border-right: 0 none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+    clear: both;
+    display: block;
+    float: none;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
+}
+
+table.demo {
+    border: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    width: 100%;
+}
+
+    table.demo th, table.demo td {
+        line-height: 20px;
+        text-align: left;
+        vertical-align: top;
+        border: 1px solid #ddd;
+        padding: 5px;
+    }
+
+    table.demo th, table.demo thead {
+        background-color: #F1F1F1;
+        color: #707070;
+        line-height: 18px;
+        padding: 3px 8px;
+    }
+
+    table.demo tr:hover {
+        background-color: #F7F7F7;
+    }
+
+    table.demo p {
+        margin: 0;
+    }
+
+dl.demo dt {
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+dl.demo dd {
+    margin-left: 20px;
+}
+
+ol.demo, ul.demo {
+    padding: 0;
+    list-style-position: inside;
+}
+
+    ul.demo li {
+        list-style-type: disc;
+    }
+
+    ol.demo li {
+        list-style-type: decimal;
+    }
+
+blockquote.demo {
+    background-color: #F8F8F8;
+    border: 1px solid #E8E8E8;
+    border-left: 3px solid #4B8B20;
+    padding: 10px;
+}
+
+small.demo {
+    font-size: 12px;
+    line-height: 12px;
+    margin-left: 10px;
+    color: #999999;
+    font-weight: normal;
+}
+
+a.demo {
+    color: #0088CC;
+    text-decoration: none;
+}
+
+    a.demo:hover {
+        color: #005580;
+        text-decoration: underline;
+    }
+
+pre.demo, code.demo {
+    font-family: Monaco, Menlo, Consolas, "Courier New", "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", monospace;
+    background-color: #f8f8f8;
+}
+
+pre.demo {
+    border: 1px solid #e1e1e8;
+    white-space: pre-wrap;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    line-height: 18px;
+    font-size: 13px;
+    padding: 6px;
+}
+
+code.demo {
+    padding: 2px 4px;
+    color: #990000;
+}
+
+aside.demo {
+    padding: 10px;
+    border: 1px solid #E5E5E5;
+    position: relative;
+}
+
+aside.demo:before {
+    content: "DEMO";
+    padding: 5px;
+    font-family: Arial;
+    font-size: 12px;
+    color: #bcbcbc;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+aside.demo + pre.demo {
+    margin-top: -1px;
+}
+
+/* 语法 */
+.demo-sh-comment {
+    color: #93a1a1;
+}
+
+.demo-sh-literal {
+    color: #195f91;
+}
+
+.demo-sh-punctuation, .demo-sh-leftbracket, .demo-sh-rightbracket {
+    color: #93a1a1;
+}
+
+.demo-sh-function {
+    color: #dc322f;
+}
+
+.demo-sh-string, .demo-sh-attrvalue {
+    color: #D14;
+}
+
+.demo-sh-keyword, .demo-sh-tag {
+    color: #1e347b;
+}
+
+.demo-sh-type, .demo-sh-attrname, .demo-sh-declaration, .demo-sh-var {
+    color: teal;
+}
+
+.demo-sh-plain {
+    color: #48484c;
+}
+
+/**********************************************
+ * 全局样式
+ **********************************************/
+
+html .demo-warning {
+    color: #b94a48;
+    background-color: #F8E6E6;
+    border: 1px solid #e3b7b7;
+}
+
+html .demo-info {
+    color: #468847;
+    background-color: #dff0d8;
+    border: 1px solid #9bcc9c;
+}
+
+
+
+
+/**********************************************
+ * 页面元素
+ **********************************************/
+
+/**********************************************
+ * 常用展示样式
+ **********************************************/
+
+/*************** 语法高亮 ***************/
+
+/***************** 工具 ****************/
+html .demo-inline {
+    display: inline;
+}
+
+html .demo-block {
+    display: block;
+}
+
+html .demo-inline-block {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+html .demo-hide {
+    display: none;
+}
+
+html .demo-left {
+    float: left;
+}
+
+html .demo-right {
+    float: right;
+}
+
+html .demo-clear,
+html .demo-grid {
+    *zoom: 1;
+}
+
+    html .demo-clear:after,
+    html .demo-grid:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+    }
+
+html .demo-absolute {
+    position: absolute;
+}
+
+html .demo-relative {
+    position: relative;
+}
+
+html .demo-fixed {
+    position: fixed;
+    _position: absolute;
+}
+
+html .demo-row {
+    margin-bottom: 10px;
+}
+
+html .demo-plain {
+    margin: 0;
+    padding: 0;
+}
+
+html .demo-red {
+    background-color: #9d261d;
+    color: #fff;
+}
+
+html .demo-yellow {
+    background-color: #f89406;
+    color: #000;
+}
+
+html .demo-green {
+    background-color: #B4B900;
+    color: #fff;
+}
+
+html .demo-blue {
+    background-color: #90D9E8;
+    color: #000;
+}
+/***************** 测试工具 ****************/
+.demo-test {
+    display: none;
+}
+
+.demo-sample {
+    float: right;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.demo-box,
+.demo-box-small,
+.demo-box-large {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    padding: 10px;
+    text-align: center;
+    line-height: 80px;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    background-color: #E95C41;
+    color: #ffffff;
+    vertical-align: top;
+}
+
+.demo-box-small {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+}
+
+.demo-box-large {
+    height: 200px;
+    width: 200px;
+    line-height: 200px;
+}
+
+.demo-container,
+.demo-area {
+    position: relative;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.demo-container {
+    display: inline-block;
+    padding: 10px;
+}
+
+.demo-area {
+    height: 200px;
+    width: 400px;
+    line-height: 200px;
+    text-align: center;
+}
+/***************** 组件 ****************/
+
+#demo-toolbar {
+    line-height: 26px;
+    height: 10px;
+    position: relative;
+    font-size: 12px !important;
+}
+
+.demo-toolbar {
+    font-size: 12px !important;
+    line-height: 22px !important;
+    float: right;
+    color: #999999;
+}
+
+    .demo-toolbar a {
+        color: #333333;
+        text-decoration: none;
+    }
+
+        .demo-toolbar a:hover {
+            text-decoration: underline;
+        }
+
+.demo-toolbar-dropdown {
+    position: absolute;
+    right: 0;
+    top: 26px;
+    border: 1px solid #9B9B9B;
+    -webkit-box-shadow: 1px 1px 2px #cccccc;
+    -moz-box-shadow: 1px 1px 2px #cccccc;
+    box-shadow: 1px 1px 2px #cccccc;
+    z-index: 99999;
+    background-color: #FFFFFF;
+}
+
+    .demo-toolbar-dropdown a {
+        cursor: pointer;
+        color: #333;
+    }
+
+.demo-toolbar-dropdown-menu a {
+    -moz-user-select: none;
+    display: block;
+    overflow: hidden;
+    padding-left: 6px;
+    padding-right: 6px;
+    text-decoration: none;
+}
+
+    .demo-toolbar-dropdown-menu a:hover {
+        text-decoration: none;
+    }
+
+.demo-toolbar-dropdown-menu-usehover a:hover,
+a.demo-toolbar-dropdown-menu-hover {
+    background-color: #EBEBEB;
+}
