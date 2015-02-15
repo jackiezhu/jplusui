@@ -1,15 +1,19 @@
 ﻿/**
- * 开发系统的基础样式表 
+ * 演示系统样式表 
  */
 
 /**********************************************
  * 全局统一样式
  **********************************************/
 
-header.demo, section.demo, footer.demo, nav.demo, div.demo, span.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, blockquote.demo, dl.demo, table.demo {
+header.demo, footer.demo, div.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, dl.demo, table.demo, blockquote.demo, span.demo, a.demo {
     font-size: 14px;
     line-height: 150%;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
+}
+
+section.demo, article.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, dl.demo, table.demo, hr.demo, blockquote.demo, img.demo, pre.demo {
+    margin: 14px 0;
 }
 
 body.demo {
@@ -20,15 +24,6 @@ body.demo {
 
 article.demo {
     margin-bottom: 42px;
-}
-
-footer.demo {
-    margin-bottom: 36px;
-    font-size: 12px;
-}
-
-h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, hr.demo, table.demo, ol.demo, ul.demo, dl.demo, blockquote.demo, section.demo {
-    margin: 14px 0;
 }
 
 h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo {
@@ -64,24 +59,26 @@ h6.demo {
     font-size: 12px;
 }
 
-hr.demo {
-    -moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #E5E5E5;
-    border-color: #e5e5e5 -moz-use-text-color -moz-use-text-color;
-    border-right: 0 none;
-    border-style: solid none none;
-    border-width: 1px 0 0;
-    clear: both;
-    display: block;
-    float: none;
-    font-size: 0;
-    height: 0;
-    line-height: 0;
+ul.demo, ol.demo {
+    padding: 0;
+    list-style-position: inside;
+}
+
+    ul.demo li {
+        list-style-type: disc;
+    }
+
+    ol.demo li {
+        list-style-type: decimal;
+    }
+    
+dl.demo dt {
+    margin-top: 7px;
+    font-weight: 600;
+}
+
+dl.demo dd {
+    margin-left: 21px;
 }
 
 table.demo {
@@ -89,7 +86,6 @@ table.demo {
     border-collapse: collapse;
     border-spacing: 0;
     empty-cells: show;
-    width: 100%;
 }
 
     table.demo th, table.demo td {
@@ -114,28 +110,26 @@ table.demo {
     table.demo p {
         margin: 0;
     }
-
-dl.demo dt {
-    font-weight: 600;
-    margin-top: 10px;
+    
+hr.demo {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #E5E5E5;
+    border-color: #e5e5e5 -moz-use-text-color -moz-use-text-color;
+    border-right: 0 none;
+    border-style: solid none none;
+    border-width: 1px 0 0;
+    clear: both;
+    display: block;
+    float: none;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
 }
-
-dl.demo dd {
-    margin-left: 20px;
-}
-
-ol.demo, ul.demo {
-    padding: 0;
-    list-style-position: inside;
-}
-
-    ul.demo li {
-        list-style-type: disc;
-    }
-
-    ol.demo li {
-        list-style-type: decimal;
-    }
 
 blockquote.demo {
     background-color: #F8F8F8;
@@ -145,8 +139,6 @@ blockquote.demo {
 }
 
 small.demo {
-    font-size: 12px;
-    line-height: 12px;
     margin-left: 10px;
     color: #999999;
     font-weight: normal;
@@ -165,6 +157,8 @@ a.demo {
 pre.demo, code.demo {
     font-family: Monaco, Menlo, Consolas, "Courier New", "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", monospace;
     background-color: #f8f8f8;
+    padding: 2px 4px;
+    color: #990000;
 }
 
 pre.demo {
@@ -175,12 +169,20 @@ pre.demo {
     line-height: 18px;
     font-size: 13px;
     padding: 6px;
+    color: inherit;
 }
 
-code.demo {
-    padding: 2px 4px;
-    color: #990000;
+pre.demo > code {
+    background-color: inherit;
+    color: inherit;
+    padding: 0;
 }
+
+/**********************************************
+ * 页面元素
+ **********************************************/
+
+/* 示例框 */
 
 aside.demo {
     padding: 10px;
@@ -189,18 +191,43 @@ aside.demo {
 }
 
 aside.demo:before {
-    content: "DEMO";
-    padding: 5px;
-    font-family: Arial;
-    font-size: 12px;
+    content: "示例";
+    font-family: "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
+    padding: 0 6px;
+    font-size: 10px;
+    line-height: 20px;
     color: #bcbcbc;
     position: absolute;
     top: 0;
     right: 0;
+    cursor: default;
 }
 
-aside.demo + pre.demo {
+html .demo-code-pin {
     margin-top: -1px;
+}
+
+/* 复制按钮 */
+
+html .demo-code-toolbar {
+    font-size: 10px;
+    line-height: 20px;
+}
+
+html .demo-code-toolbar a {
+    float: right;
+    padding: 0 6px;
+    display: inline-block;
+    color: #bcbcbc;
+    border: 1px solid #e1e1e8;
+    border-width: 0 0 1px 1px;
+    text-decoration: none;
+}
+
+html .demo-code-toolbar a:hover {
+    background-color: #0e90d2;
+    color: #fff;
+    text-decoration: none;
 }
 
 /* 语法 */
@@ -236,6 +263,23 @@ aside.demo + pre.demo {
     color: #48484c;
 }
 
+/* 工具条 */
+html .demo-toolbar {
+    font-size: 12px;
+    line-height: 22px;
+    float: right;
+    color: #999999;
+}
+
+    html .demo-toolbar a {
+        color: #333333;
+        text-decoration: none;
+    }
+
+        html .demo-toolbar a:hover {
+            text-decoration: underline;
+        }
+        
 /**********************************************
  * 全局样式
  **********************************************/
@@ -252,80 +296,30 @@ html .demo-info {
     border: 1px solid #9bcc9c;
 }
 
-
-
-
-/**********************************************
- * 页面元素
- **********************************************/
-
-/**********************************************
- * 常用展示样式
- **********************************************/
-
-/*************** 语法高亮 ***************/
-
-/***************** 工具 ****************/
-html .demo-inline {
-    display: inline;
-}
-
-html .demo-block {
-    display: block;
-}
-
-html .demo-inline-block {
-    display: inline-block;
-    *display: inline;
-    *zoom: 1;
-}
-
-html .demo-hide {
-    display: none;
-}
-
-html .demo-left {
-    float: left;
-}
-
-html .demo-right {
-    float: right;
-}
-
-html .demo-clear,
-html .demo-grid {
-    *zoom: 1;
-}
-
-    html .demo-clear:after,
-    html .demo-grid:after {
-        content: ".";
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
-    }
-
-html .demo-absolute {
-    position: absolute;
-}
-
-html .demo-relative {
+html .demo-box, html .demo-box-small, html .demo-box-large {
     position: relative;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    padding: 10px;
+    text-align: center;
+    line-height: 80px;
+    display: inline-block;
+    background-color: #E95C41;
+    color: #ffffff;
+    vertical-align: top;
 }
 
-html .demo-fixed {
-    position: fixed;
-    _position: absolute;
+html .demo-box-small {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
 }
 
-html .demo-row {
-    margin-bottom: 10px;
-}
-
-html .demo-plain {
-    margin: 0;
-    padding: 0;
+html .demo-box-large {
+    height: 200px;
+    width: 200px;
+    line-height: 200px;
 }
 
 html .demo-red {
@@ -335,7 +329,7 @@ html .demo-red {
 
 html .demo-yellow {
     background-color: #f89406;
-    color: #000;
+    color: #fff;
 }
 
 html .demo-green {
@@ -346,122 +340,4 @@ html .demo-green {
 html .demo-blue {
     background-color: #90D9E8;
     color: #000;
-}
-/***************** 测试工具 ****************/
-.demo-test {
-    display: none;
-}
-
-.demo-sample {
-    float: right;
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-.demo-box,
-.demo-box-small,
-.demo-box-large {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    margin-right: 10px;
-    padding: 10px;
-    text-align: center;
-    line-height: 80px;
-    display: inline-block;
-    *display: inline;
-    *zoom: 1;
-    background-color: #E95C41;
-    color: #ffffff;
-    vertical-align: top;
-}
-
-.demo-box-small {
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-}
-
-.demo-box-large {
-    height: 200px;
-    width: 200px;
-    line-height: 200px;
-}
-
-.demo-container,
-.demo-area {
-    position: relative;
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-.demo-container {
-    display: inline-block;
-    padding: 10px;
-}
-
-.demo-area {
-    height: 200px;
-    width: 400px;
-    line-height: 200px;
-    text-align: center;
-}
-/***************** 组件 ****************/
-
-#demo-toolbar {
-    line-height: 26px;
-    height: 10px;
-    position: relative;
-    font-size: 12px !important;
-}
-
-.demo-toolbar {
-    font-size: 12px !important;
-    line-height: 22px !important;
-    float: right;
-    color: #999999;
-}
-
-    .demo-toolbar a {
-        color: #333333;
-        text-decoration: none;
-    }
-
-        .demo-toolbar a:hover {
-            text-decoration: underline;
-        }
-
-.demo-toolbar-dropdown {
-    position: absolute;
-    right: 0;
-    top: 26px;
-    border: 1px solid #9B9B9B;
-    -webkit-box-shadow: 1px 1px 2px #cccccc;
-    -moz-box-shadow: 1px 1px 2px #cccccc;
-    box-shadow: 1px 1px 2px #cccccc;
-    z-index: 99999;
-    background-color: #FFFFFF;
-}
-
-    .demo-toolbar-dropdown a {
-        cursor: pointer;
-        color: #333;
-    }
-
-.demo-toolbar-dropdown-menu a {
-    -moz-user-select: none;
-    display: block;
-    overflow: hidden;
-    padding-left: 6px;
-    padding-right: 6px;
-    text-decoration: none;
-}
-
-    .demo-toolbar-dropdown-menu a:hover {
-        text-decoration: none;
-    }
-
-.demo-toolbar-dropdown-menu-usehover a:hover,
-a.demo-toolbar-dropdown-menu-hover {
-    background-color: #EBEBEB;
 }
