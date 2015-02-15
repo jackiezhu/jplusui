@@ -3,7 +3,7 @@
  * @author xuld
  */
 
-//#region 前后台公用的部分
+// #region 前后台公用的部分
 
 var Demo = Demo || {};
 
@@ -35,28 +35,24 @@ Demo.Configs = {
 	/**
 	 * 存放数据字段的 meta 节点。
 	 */
-	metaModuleInfo: 'component-info',
+	metaModuleInfo: 'module-info',
 
 	/**
-	 * dpl 访问历史最大值。
+	 * 组件访问历史最大值。
 	 */
 	maxHistory: 10,
 
 	/**
 	 * 工具的下拉菜单 HTML 模板。
 	 */
-	tool: '<a href="~/apps/node/modulebuilder/index.html" target="_blank">模块打包工具</a>\
-                <a href="~/apps/tools/codehelper/index.html" target="_blank">代码工具</a>\
-                <a href="~/apps/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
-                <a href="~/apps/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
+	tool: '<a href="~/devtools/node/modulebuilder/index.html" target="_blank">模块打包工具</a>\
+                <a href="~/devtools/tools/codehelper/index.html" target="_blank">代码工具</a>\
+                <a href="~/devtools/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
+                <a href="~/devtools/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
                 <!--<a href="~/resources/index.html#tool" target="_blank">更多工具</a>-->\
                 <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Demo.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠代码</a>\
-                <a href="javascript://浏览当前页面的源文件" onclick="Demo.Page.exploreSource();">浏览源文件</a>',
-
-	/**
-	 * 文档的下拉菜单 HTML 模板。
-	 */
-	doc: '<!--<a href="~/resources/cookbooks/jplusui-full-api/index.html" target="_blank">jPlusUI API 文档</a>\
+                <a href="javascript://浏览当前页面的源文件" onclick="Demo.Page.exploreSource();">浏览源文件</a>\
+	            <!--<a href="~/resources/cookbooks/jplusui-full-api/index.html" target="_blank">jPlusUI API 文档</a>\
                 <a href="~/resources/cookbooks/jplusui-core-api/index.html" target="_blank">jPlusUI Core 文档</a>\
                 <a href="~/resources/cookbooks/jquery2jplus.html" target="_blank">jQuery 转 jPlusUI</a>-->\
                 <!--<a href="~/resources/cookbooks/dplsystem.html" target="_blank" style="border-top: 1px solid #EBEBEB;">模块开发教程</a>-->\
@@ -67,24 +63,31 @@ Demo.Configs = {
 	/**
 	 * 底部 HTML 模板。
 	 */
-	footer: '<footer class="demo"><hr class="demo"><nav class="demo-toolbar"><a href="http://www.jplusui.com/">jPlusUI.com</a> | <a href="https://www.github.com/jplusui/jplusui">Github</a> | <a href="#">返回顶部</a></nav><span>Copyright &copy; 2011-2015 jPlusUI.com</span></footer>',
+	footer: '<footer class="demo" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
+        <hr class="demo">\
+        <nav class="demo-toolbar">\
+            <a href="https://www.github.com/jplusui/jplusui">GitHub</a>  |  \
+            <a href="#">返回顶部</a>\
+        </nav>\
+        <span>&copy; 2011-2015 JPlusUI Team</span>\
+    </footer>',
 
 	/**
 	 * 合法的状态值。
 	 */
 	status: {
-		'ok': '已完成',
+	    'stable': '稳定版',
+	    'release': '正式版',
 		'beta': '测试版',
-		'complete': '完美版',
 		'plan': '计划中',
 		'develop': '开发中',
-		'obsolete': '已放弃'
+		'obsolete': '已废弃'
 	},
 
 	/**
 	 * 合法的浏览器。
 	 */
-	support: 'IE6|IE7|IE7|IE8|IE10|FireFox|Chrome|Opera|Safari|Mobile|Chrome Mobile|Safari Moblie'.split('|'),
+	support: 'PC端|移动端|兼容IE6+'.split('|'),
 
 	/**
 	 * 整个项目标配使用的编码。
@@ -258,7 +261,7 @@ if (typeof module !== 'object') {
 		 */
 		init: function () {
 
-			// 令 IE 支持显示 HTML5 新元素。
+			// 令 IE6-8 支持显示 HTML5 新元素。
 			if (Demo.Dom.isIE) {
 				'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
 					document.createElement(tagName);
@@ -268,13 +271,18 @@ if (typeof module !== 'object') {
 			var configs = Demo.Configs;
 
 			// 判断当前开发系统是否在本地运行。
-			Demo.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+			Demo.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
 
 			// 自动获取项目跟目录。
 			var node = document.getElementsByTagName("script");
 			node = node[node.length - 1];
 			node = (!Demo.Dom.isIE || typeof document.constructor === 'object') ? node.src : node.getAttribute('src', 5);
-			node = node.substr(0, node.length - configs.apps.length - "/demo/demo.js".length);
+
+            // 保存 demo.js 路径。
+			Demo.demoJsUrl = node;
+
+		    node = node.replace(configs.apps + "/demo/demo.js", "");
+
 			Demo.baseUrl = node;
 			
 			// 获取当前的目录信息。
@@ -370,7 +378,7 @@ if (typeof module !== 'object') {
 				function insertCode(node, value, language, canHide) {
 
 					var pre = document.createElement('pre');
-					pre.className = 'demo sh sh-' + language + (canHide ? ' demo-sourcecode' : '');
+					pre.className = 'demo demo-code-pin demo-sh demo-sh-' + language + (canHide ? ' demo-sourcecode' : '');
 
 					// 如果存在格式代码插件，判断当前是否需要格式化代码。
 					if (Demo.Beautify && (language in Demo.Beautify) && node.className.indexOf('demo-noformat') < 0) {
@@ -410,15 +418,12 @@ if (typeof module !== 'object') {
 			document.getElementById('demo-toolbar').appendChild(dropDown);
 			switch (id) {
 				case "demo-toolbar-tool":
-					simpleDropDown('tool', '74px');
-					break;
-				case "demo-toolbar-doc":
-					simpleDropDown('doc', '100px');
+					simpleDropDown('tool', '100px');
 					break;
 				case "demo-toolbar-goto":
 					dropDown.className = 'demo-toolbar-dropdown';
 					dropDown.style.width = '300px';
-					dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入模块路径/名称以快速转到"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
+					dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
 					dropDown.defaultButton = dropDown.firstChild;
 					dropDown.defaultButton.onkeydown = function (e) {
 						e = e || window.event;
@@ -732,7 +737,7 @@ if (typeof module !== 'object') {
 	};
 
 	/**
-	 * 向页面写入自动生成的头部信息。
+	 * 生成页眉。
 	 */
 	Demo.writeHeader = function () {
 
@@ -746,7 +751,7 @@ if (typeof module !== 'object') {
 			isInDocs = Demo.urlPrefix === configs.examples,
 			isHomePage = !Demo.urlPostfix || /^index\./.test(Demo.urlPostfix);
 
-		// 生成 moduleInfo 字段。
+	    // 生成 componentInfo 字段。
 
 		for (i = 0; node[i]; i++) {
 			if (node[i].name === configs.metaModuleInfo) {
@@ -763,33 +768,70 @@ if (typeof module !== 'object') {
 		}
 
 		// 默认使用 document.title 作为标题。
-		if (!('name' in moduleInfo)) {
+		if (!moduleInfo.name) {
 			moduleInfo.name = document.title;
 		}
 
 		// 输出 css 和 js
-		document.write('<link type="text/css" rel="stylesheet" href="' + Demo.baseUrl + configs.apps + '/demo/demo.css" />');
-		// document.write('<link type="text/css" rel="stylesheet" href="' + Demo.baseUrl + configs.apps + '_staticpages/assets/demo.css" />');
-
-		// 不支持 console 时，自动载入 firebug-lite 。
-		if (!window.console)
-			document.write('<script type="text/javascript" src="' + Demo.baseUrl + configs.apps + '/demo/firebug-lite/build/firebug-lite.js"></script>');
+		document.write('<link type="text/css" rel="stylesheet" href="' + Demo.demoJsUrl.replace(/\.js$/, ".css") + '" />');
 
 		// 非本地运行时，自动载入统计代码。
 		if (!Demo.local) {
-			document.write('<script type="text/javascript" src="' + Demo.baseUrl + configs.apps + '/demo/social.js"></script>');
+		    document.write('<script type="text/javascript" src="' + Demo.demoJsUrl.replace(/\demo.js$/, "social.js") + '"></script>');
 		}
 
-		// IE 需要强制中止 <head>
+		// IE6 需要强制中止 <head>
 		if (Demo.Dom.isIE) {
-			document.write('<div class="demo-hide" id="demo-ie6-html5hack">&nbsp;</div>');
+			document.write('<div id="demo-ie6-html5hack">&nbsp;</div>');
 			document.body.removeChild(document.getElementById("demo-ie6-html5hack"));
 		}
 
 		// 输出 header
-		html += '<header class="demo">';
-
-		html += '<aside id="demo-toolbar"><nav class="demo-toolbar">';
+		html += '<header class="demo">\
+	        <style>\
+                \
+                html .demo-toolbar-dropdown {\
+                    font-size: 12px;\
+                    line-height: 26px;\
+                    position: absolute;\
+                    right: 0;\
+                    top: 26px;\
+                    border: 1px solid #9B9B9B;\
+                    -webkit-box-shadow: 1px 1px 2px #cccccc;\
+                    -moz-box-shadow: 1px 1px 2px #cccccc;\
+                    box-shadow: 1px 1px 2px #cccccc;\
+                    z-index: 99999;\
+                    background-color: #FFFFFF;\
+                }\
+\
+                    html .demo-toolbar-dropdown a {\
+                        cursor: pointer;\
+                        color: #333;\
+                    }\
+\
+                html .demo-toolbar-dropdown-menu a {\
+                    -moz-user-select: none;\
+                    display: block;\
+                    overflow: hidden;\
+                    padding-left: 6px;\
+                    padding-right: 6px;\
+                    text-decoration: none;\
+                }\
+\
+                    html .demo-toolbar-dropdown-menu a:hover {\
+                        text-decoration: none;\
+                    }\
+\
+                html .demo-toolbar-dropdown-menu-usehover a:hover,\
+                html a.demo-toolbar-dropdown-menu-hover {\
+                    background-color: #EBEBEB;\
+                }\
+                 #demo-toolbar-controlstate input {\
+                        vertical-align: -2px;\
+                    }\
+            </style>\
+	        <div id="demo-toolbar" style="height: 10px; position: relative;">\
+	            <nav class="demo-toolbar">';
 
 		// 如果当前的页面是 docs 下的一个页面。
 		// 则添加模块状态和历史记录。
@@ -807,21 +849,17 @@ if (typeof module !== 'object') {
 			Demo.Page.addModuleHistory(Demo.urlPostfix);
 
 			// 只有本地的时候，才支持修改模块状态。
-			if (Demo.local) {
-				html += '<a href="javascript://更改模块属性" onclick="Demo.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" title="点击修改模块状态" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
-			} else {
-				html += '<a href="javascript:;">' + configs.status[moduleInfo.status] + '</a> | ';
-			}
+			html += '<a href="javascript://查看组件属性" onclick="Demo.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
 		}
 
-		html += '<a href="javascript://常用文档" onclick="Demo.Page.showDropDown(\'demo-toolbar-doc\', 1);return false;" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-doc\')" onmouseout="Demo.Page.hideDropDown()" accesskey="D">文档' + space + '▾</a> | <a href="javascript://常用工具" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他模块" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="F">搜索' + space + '▾</a> | <a href="' + Demo.baseUrl + configs.examples + '/index.html" title="返回模块列表" accesskey="H">返回列表</a></nav></aside>';
+		html += '<a href="javascript://常用工具" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Demo.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a></nav></div>';
 
 		// 生成标题。
 		if (moduleInfo.name) {
 			html += '<h1 class="demo">' + moduleInfo.name;
 
 			if (moduleInfo.subtitle) {
-				html += '<small>' + moduleInfo.subtitle + '</small>';
+			    html += '<small class="demo">' + moduleInfo.subtitle + '</small>';
 			}
 
 			html += '</h1>';
@@ -1332,7 +1370,7 @@ if (typeof module !== 'object') {
 			}
 
 			if (!specificLanuage) {
-				pre.className += ' sh-' + language;
+			    pre.className += ' demo-sh-' + language;
 			}
 
 			// Apply the appropriate language handler
@@ -1500,7 +1538,7 @@ if (typeof module !== 'object') {
 					textNode.nodeValue = styledText;
 					var document = textNode.ownerDocument;
 					var span = document.createElement('SPAN');
-					span.className = 'sh-' + decorations[decorationIndex + 1];
+					span.className = 'demo-sh-' + decorations[decorationIndex + 1];
 					var parentNode = textNode.parentNode;
 					parentNode.replaceChild(span, textNode);
 					span.appendChild(textNode);
@@ -1976,7 +2014,7 @@ if (typeof module !== 'object') {
 					func = null;
 				}
 
-				html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="demo demo-toolbar" style="display: none"><a onclick="Demo.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Demo.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><h4 class="demo" id="demo-example-' + id + '">' + Demo.Utils.encodeHTML(key) + '</h4><pre class="demo demo-sourcecode sh-js sh">' + Demo.Utils.encodeHTML(text) + '</pre></section>';
+				html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="demo demo-toolbar" style="display: none"><a onclick="Demo.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Demo.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><span class="demo" id="demo-example-' + id + '">' + Demo.Utils.encodeHTML(key) + '</span><pre class="demo demo-sourcecode demo-sh-js demo-sh">' + Demo.Utils.encodeHTML(text) + '</pre></section>';
 
 			}
 
@@ -1988,7 +2026,7 @@ if (typeof module !== 'object') {
 
 	Demo.Page.init();
 
-    //#endregion
+    // #endregion
 
 } else {
 
@@ -2003,7 +2041,7 @@ if (typeof module !== 'object') {
 
 }
 
-//#region trace
+// #region trace
 
 /**
  * Print variables to console.
@@ -2251,4 +2289,4 @@ trace.time = function (fn) {
     return trace.info("[TIME] " + past / time);
 };
 
-//#endregion
+// #endregion

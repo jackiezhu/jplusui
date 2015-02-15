@@ -6,7 +6,7 @@
  * 全局统一样式
  **********************************************/
 
-header.demo, footer.demo, div.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, dl.demo, table.demo, blockquote.demo, span.demo, a.demo {
+header.demo, footer.demo, nav.demo, div.demo, h1.demo, h2.demo, h3.demo, h4.demo, h5.demo, h6.demo, p.demo, ul.demo, ol.demo, dl.demo, table.demo, blockquote.demo, span.demo, a.demo {
     font-size: 14px;
     line-height: 150%;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
