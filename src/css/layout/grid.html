@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="component-info" content="status=complete">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimal-ui" />
+    <title>列布局</title>
+
+    <!-- 以下是本组件的全部源码 -->
+    <link rel="stylesheet" type="text/css" href="../core/base.css" />
+    <link rel="stylesheet" type="text/css" href="../layout/grid.css" />
+
+    <!-- 以下代码仅用于演示 -->
+    <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
+    <style>
+        .x-col .demo {
+            background: #EEEEEE;
+            height: 20px;
+            width: 100%;
+            text-align: center;
+            line-height: 20px;
+            color: #555555;
+            display: block;
+            font-weight: 700;
+        }
+    </style>
+
+</head>
+<body class="demo">
+
+    <blockquote class="demo">
+        本组件提供分列布局。
+    </blockquote>
+
+    <blockquote class="demo demo-info">
+        布局组件会根据屏幕自动调整大小。调整浏览器窗口大小以查看效果。
+    </blockquote>
+
+    <h2 class="demo">容器和分列</h2>
+
+    <p class="demo">容器的主要功能是定义一个居中的区域以显示网页内容。这个区域随浏览器宽度变化而变化，但最长不超过 1000 像素，以保证视觉美观。</p>
+
+    <aside class="demo">
+        <div class="x-container">我是居中的容器，不超过 1000px 宽</div>
+    </aside>
+
+    <p class="demo">如果一个容器需要分列，则容器还需要添加 <code class="demo">x-grid</code>。每行分 12 列，然后将 12 列自由组合成实际的列。如：</p>
+
+    <aside class="demo">
+        <div class="x-container x-grid">
+            <div class="x-col x-col-4"><span class="demo">A</span></div>
+            <div class="x-col x-col-8"><span class="demo">B</span></div>
+        </div>
+    </aside>
+
+    <h2 class="demo">响应式布局</h2>
+
+    <p class="demo">通过不同的前缀，可以为不同分辨率指定不同的分列方式：</p>
+
+    <ul class="demo">
+        <li><code class="demo">x-col-*</code>: 手机(默认)</li>
+        <li><code class="demo">x-col-medium-*</code>: PAD</li>
+        <li><code class="demo">x-col-large-*</code>: PC</li>
+    </ul>
+
+    <p class="demo">比如，在 PC 上显示 3 列，PAD 上显示 2 列，手机上显示 1 列：</p>
+
+    <aside class="demo">
+
+        <div class="x-grid">
+            <div class="x-col x-col-0 x-col-medium-6 x-col-large-4">
+                <span class="demo">A</span>
+            </div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4">
+                <span class="demo">B</span>
+            </div>
+            <div class="x-col x-col-0 x-col-medium-0 x-col-large-4">
+                <span class="demo">C</span>
+            </div>
+        </div>
+
+    </aside>
+
+    <h2 class="demo">常见布局</h2>
+
+    <h3 class="demo">左小右大</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-0 x-col-medium-4"><span class="demo">左边栏</span></div>
+            <div class="x-col x-col-12 x-col-medium-8"><span class="demo">主体</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">左大右小</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-12 x-col-medium-9"><span class="demo">主体</span></div>
+            <div class="x-col x-col-0 x-col-medium-3"><span class="demo">右边栏</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">左右平分</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-12 x-col-medium-6"><span class="demo">主体 1</span></div>
+            <div class="x-col x-col-12 x-col-medium-6"><span class="demo">主体 2</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">左中右</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-0 x-col-medium-4 x-col-large-3"><span class="demo">左边栏</span></div>
+            <div class="x-col x-col-12 x-col-medium-8 x-col-large-7"><span class="demo">主体</span></div>
+            <div class="x-col x-col-0 x-col-medium-0 x-col-large-2"><span class="demo">右边栏</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">三等分</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-12 x-col-medium-4"><span class="demo">主体 1</span></div>
+            <div class="x-col x-col-12 x-col-medium-4"><span class="demo">主体 2</span></div>
+            <div class="x-col x-col-12 x-col-medium-4"><span class="demo">主体 3</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">四等分</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-3"><span class="demo">主体 1</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-3"><span class="demo">主体 2</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-3"><span class="demo">主体 3</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-3"><span class="demo">主体 4</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">六等分</h3>
+
+    <aside class="demo">
+        <div class="x-grid">
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 1</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 2</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 3</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 4</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 5</span></div>
+            <div class="x-col x-col-12 x-col-medium-6 x-col-large-4"><span class="demo">主体 6</span></div>
+        </div>
+    </aside>
+
+    <h3 class="demo">其它</h3>
+
+    <aside class="demo">
+
+        <div class="x-clear">
+            <div class="x-col x-col-12">
+                <span class="demo">1/1</span>
+            </div>
+        </div>
+
+        <div class="x-clear">
+            <div class="x-col x-col-6"><span class="demo">1/2</span></div>
+            <div class="x-col x-col-6"><span class="demo">1/2</span></div>
+        </div>
+
+        <div class="x-clear">
+            <div class="x-col x-col-4"><span class="demo">1/3</span></div>
+            <div class="x-col x-col-4"><span class="demo">1/3</span></div>
+            <div class="x-col x-col-4"><span class="demo">1/3</span></div>
+        </div>
+
+        <div class="x-clear">
+            <div class="x-col x-col-3"><span class="demo">1/4</span></div>
+            <div class="x-col x-col-3"><span class="demo">1/4</span></div>
+            <div class="x-col x-col-3"><span class="demo">1/4</span></div>
+            <div class="x-col x-col-3"><span class="demo">1/4</span></div>
+        </div>
+
+        <div class="x-clear">
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+            <div class="x-col x-col-2"><span class="demo">1/6</span></div>
+        </div>
+
+        <div class="x-clear">
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+            <div class="x-col x-col-1"><span class="demo">1/12</span></div>
+        </div>
+
+    </aside>
+
+</body>
+</html>

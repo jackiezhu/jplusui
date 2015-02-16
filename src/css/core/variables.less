@@ -40,7 +40,7 @@
 // 字体
 //--------------------------------
 
-@sansFontFamily:    "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
+@sansFontFamily:    "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
 @serifFontFamily:   Georgia, "Times New Roman", Times, SimSun, serif;
 @monoFontFamily:    Monaco, Menlo, Consolas, "Courier New", monospace;
 
@@ -94,7 +94,53 @@
 // ------------------------ 
 
 // Default 980px grid
-@gridColumns:             12;
-@gridColumnWidth:         67px;
-@gridGutterWidth:         16px;
-@gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+// @gridColumns:             12;
+// @gridColumnWidth:         67px;
+// @gridGutterWidth:         16px;
+// @gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+
+
+// Media Queries
+// NOTE '~' in the beginning - media query must be escaped
+// -----------------------------------------------------------------------------
+
+@breakpoint-small:            640px;  // 0 - 640px
+@breakpoint-medium:           1024px; // 641 - 1024px
+@breakpoint-large:            1280px; // 1025 - 1280px
+@breakpoint-xl:               1440px; // 1281 - 1440px
+@breakpoint-xxl:              1920px; // 1441 -1920px
+
+@breakpoint-small-max:        @breakpoint-small;
+@breakpoint-md:               @breakpoint-small-max; // legacy var, DO NOT USE IT
+
+@breakpoint-medium-min:       (@breakpoint-small + 1);
+@breakpoint-medium-max:       @breakpoint-medium;
+
+@breakpoint-large-min:        (@breakpoint-medium + 1);
+@breakpoint-large-max:        @breakpoint-large;
+
+@breakpoint-xl-min:           (@breakpoint-large + 1);
+@breakpoint-xl-max:           @breakpoint-xl;
+
+@breakpoint-xxl-min:          (@breakpoint-xl + 1);
+@breakpoint-xxl-max:          @breakpoint-xxl;
+
+@screen:        ~"only screen";
+
+@landscape:     ~"@{screen} and (orientation: landscape)";
+@portrait:      ~"@{screen} and (orientation: portrait)";
+
+@smallerUp:      ~"@{screen}";
+@smallerOnly:    ~"@{screen} and (max-width: @{breakpoint-small-max})";
+
+@mediumUp:     ~"@{screen} and (min-width:@{breakpoint-medium-min})";
+@mediumOnly:   ~"@{screen} and (min-width:@{breakpoint-medium-min}) and (max-width:@{breakpoint-medium-max})";
+
+@largeUp:      ~"@{screen} and (min-width:@{breakpoint-large-min})";
+@largeOnly:    ~"@{screen} and (min-width:@{breakpoint-large-min}) and (max-width:@{breakpoint-large-max})";
+
+@xlUp:         ~"@{screen} and (min-width:@{breakpoint-xl-min})";
+@xlOnly:       ~"@{screen} and (min-width:@{breakpoint-xl-min}) and (max-width:@{breakpoint-xl-max})";
+
+@xxlUp:        ~"@{screen} and (min-width:@{breakpoint-xxl-min})";
+@xxlOnly:      ~"@{screen} and (min-width:@{breakpoint-xxl-min}) and (max-width:@{breakpoint-xxl-max})";

@@ -203,6 +203,14 @@ aside.demo:before {
     cursor: default;
 }
 
+aside.demo:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
 html .demo-code-pin {
     margin-top: -1px;
 }

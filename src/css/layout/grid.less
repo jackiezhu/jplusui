@@ -1,0 +1,72 @@
+﻿
+@import "../core/mixins.less";
+
+// 流式布局函数
+// -------------------------
+#fluidGridSystem {
+
+    .columnLoop(@classPrefix, @index, @count) 
+        when (@index =< @count) {
+        .x-col@{classPrefix}-@{index} {
+            width: 100% * @index / @count;
+        }
+        #fluidGridSystem > .columnLoop(@classPrefix, (@index + 1), @count);
+    }
+
+    .columns(@classPrefix: ~'') {
+        .x-col@{classPrefix}-0 {
+            display: none;
+        }
+
+        #fluidGridSystem > .columnLoop(@classPrefix, 1, 12);
+    }
+
+}
+
+.x-grid {
+    margin-left: -10px;
+    margin-right: -10px;
+    .clearfix();
+}
+
+// 容器
+.x-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+// 当容器和布局行一起使用时，不需要设置 margin
+.x-container.x-grid {
+    padding: 0 10px;
+}
+
+.x-col {
+    float: left;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    .box-sizing(border-box);
+}
+
+#fluidGridSystem > .columns();
+
+@media @mediumUp {
+
+    // 恢复默认显示
+    .x-col-0 {
+        display: inherit;
+    }
+
+    #fluidGridSystem > .columns(-medium);
+}
+
+@media @largeUp {
+
+    // 恢复默认显示
+    .x-col-medium-0 {
+        display: inherit;
+    }
+
+    #fluidGridSystem > .columns(-large);
+}

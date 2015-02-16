@@ -10,7 +10,7 @@
 // 全局
 //--------------------------------
 
-body {
+body, input, button {
     margin: 0;
     font-family: @sansFontFamily;
     font-size: @baseFontSize;
@@ -18,15 +18,8 @@ body {
     color: #414243;
 }
 
-p, pre, hr, table, ul, ol, dl {
-    margin: 10px auto;
-}
-
-a img {
-    margin: 0;
-    border: 0;
-    display: inline-block;
-    max-width: 100%;
+p, pre, hr, table, ul, ol, dl, blockquote {
+    margin: @baseFontSize 0;
 }
 
 //--------------------------------
@@ -47,7 +40,7 @@ a {
 //--------------------------------
 
 h1, h2, h3, h4, h5, h6 {
-    margin: 10px 0;
+    margin: @baseFontSize 0;
     font-weight: 500;
     color: #333;
     line-height: 150%;
@@ -85,6 +78,7 @@ h6 {
 hr {
     border-color: @borderColor;
     border-width: 1px 0 0 0;
+    height: 0;
 }
 
 // 小字
@@ -94,7 +88,7 @@ small {
 }
 
 dt {
-    font-weight: bold;
+    font-weight: 600;
     margin-top: 10px;
 }
 
@@ -135,4 +129,19 @@ pre code {
     background-color: transparent;
     color: inherit;
     font-family: inherit;
+}
+
+//--------------------------------
+// 其它
+//--------------------------------
+
+abbr {
+    font-size: 90%;
+    text-transform: uppercase;
+    border-bottom: 1px dotted #ddd;
+    cursor: help;
+}
+
+address, cite {
+    font-style: normal;
 }

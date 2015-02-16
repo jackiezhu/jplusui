@@ -365,7 +365,9 @@ if (typeof module !== 'object') {
 
 				// 处理 aside.demo 。
 				Demo.Dom.iterate('ASIDE', function (node) {
-					insertCode(node, node.$code || node.innerHTML, 'html', true);
+				    if (node.className.indexOf('demo-nosrc') <= 0) {
+				        insertCode(node, node.$code || node.innerHTML, 'html', true);
+				    }
 				});
 
 				// 如果存在代码高亮的插件。
