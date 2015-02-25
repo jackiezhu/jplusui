@@ -9,7 +9,7 @@ button {
   margin: 0;
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
   font-size: 14px;
-  line-height: 28px;
+  line-height: 200%;
   color: #414243;
 }
 p,

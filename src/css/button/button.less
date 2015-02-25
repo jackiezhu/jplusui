@@ -8,7 +8,6 @@
     white-space: nowrap;
     background-image: none;
     border: 1px solid transparent;
-    cursor: pointer;
     -webkit-appearance: none;
     .user-select(none);
     .transition(~"background-color 300ms ease-out, border-color 300ms ease-out");
@@ -20,55 +19,28 @@
         .tab-focus();
     }
 
-    &:hover, &:focus {
-        outline: 0;
-        background-color: #c7c7c7;
-        border-color: #c7c7c7;
-        text-decoration: none;
-    }
-
-    &:active, .x-button-actived {
-        background-image: none;
-        .box-shadow(~"inset 0 1px 8px rgba(0, 0, 0, .125)");
-    }
-
-    &[disabled], &.x-button-disabled, fieldset[disabled] & {
-        // https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
-        pointer-events: none; // Disable mouse events
-        border-color: transparent;
-        cursor: not-allowed; // may not styled because pointer-events: none;
-        opacity: 0.45;
-        box-shadow: none;
-    }
-
 }
 
+.x-button:hover, .x-button:focus {
+    outline: 0;
+    background-color: #c7c7c7;
+    border-color: #c7c7c7;
+    text-decoration: none;
+}
 
+.x-button:active, .x-button-actived {
+    background-image: none;
+    .box-shadow(~"inset 0 1px 8px rgba(0, 0, 0, .125)");
+}
 
-
-
-@buttonBackgroundColor: @white;
-@buttonBackgroundColorHover: darken(@white, 10%);
-@buttonBorder: darken(@white, 20%);
-
-@hintButtonBackgroundColor: #454545;
-@hintButtonBackgroundColorHover: #262626;
-
-@successButtonBackgroundColor: #62c462;
-@successButtonBackgroundColorHover: #51a351;
-
-@infoButtonBackgroundColor: #5bc0de;
-@infoButtonBackgroundColorHover: #2f96b4;
-
-@warningButtonBackgroundColor: lighten(@warning, 15%);
-@warningButtonBackgroundColorHover: @warning;
-
-@errorButtonBackgroundColor: #ee5f5b;
-@errorButtonBackgroundColorHover: #bd362f;
-
-@highlightButtonBackgroundColor: #4AACCA;
-@highlightButtonBackgroundColorHover: spin(@highlightButtonBackgroundColor, 20);
-
+.x-button[disabled], .x-button-disabled {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
+    pointer-events: none; // 禁止事件。
+    border-color: transparent;
+    opacity: 0.5;
+    box-shadow: none;
+    cursor: not-allowed; // 由于 pointer-events: none 可能不生效。
+}
 
 // Mixin for generating button BackgroundColors
 // ---------------------------------------
@@ -76,7 +48,7 @@
     background-color: @endColor;
     border-color: @endColor;
     // in these cases the gradient won't cover the BackgroundColorColor, so we override
-    &:hover, &:focus, &[disabled], &.x-button-disabled {
+    &:hover, &:focus {
         background-color: @startColor;
         border-color: @startColor;
     }
@@ -108,34 +80,33 @@
 // Set the BackgroundColors
 // -------------------------
 
-// Info appears as a neutral blue
-.x-button-hint {
-    .buttonBackgroundColor(@hintButtonBackgroundColor, @hintButtonBackgroundColorHover);
-}
-
-// Success appears as green
-.x-button-success {
-    .buttonBackgroundColor(@successButtonBackgroundColor, @successButtonBackgroundColorHover);
-}
-
-// Info appears as a neutral blue
 .x-button-info {
-    .buttonBackgroundColor(@infoButtonBackgroundColor, @infoButtonBackgroundColorHover);
+    .buttonBackgroundColor(#4AACCA, #2f96b4);
+}
+
+.x-button-success {
+    .buttonBackgroundColor(#62c462, #51a351);
 }
 
 // Warning appears are orange
 .x-button-warning {
-    .buttonBackgroundColor(@warningButtonBackgroundColor, @warningButtonBackgroundColorHover);
+    .buttonBackgroundColor(lighten(@warning, 15%), @warning);
 }
 
 // error and error appear as red
 .x-button-error {
-    .buttonBackgroundColor(@errorButtonBackgroundColor, @errorButtonBackgroundColorHover);
+    .buttonBackgroundColor(#ee5f5b, #bd362f);
 }
 
-// Cross-browser Jank
-// --------------------------------------------------
+.x-button-plain {
+    background: none;
+    color: @grayDark;
+    border-color: transparent;
+    .box-shadow(none);
+}
 
+/*// Cross-browser Jank
+// --------------------------------------------------
 button, input {
 
     &.x-button {
@@ -151,12 +122,4 @@ button, input {
     &.x-button-small {
         *padding-top: 1px;
     }
-}
-
-.x-button-plain {
-    background: none;
-    color: @grayDark;
-    border-color: transparent;
-    .box-shadow(none);
-}
-
+}*/

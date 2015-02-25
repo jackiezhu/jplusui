@@ -7,7 +7,6 @@
   white-space: nowrap;
   background-image: none;
   border: 1px solid transparent;
-  cursor: pointer;
   -webkit-appearance: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -35,20 +34,19 @@
   text-decoration: none;
 }
 .x-button:active,
-.x-button .x-button-actived {
+.x-button-actived {
   background-image: none;
   -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
   -moz-box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
   box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
 }
 .x-button[disabled],
-.x-button.x-button-disabled,
-fieldset[disabled] .x-button {
+.x-button-disabled {
   pointer-events: none;
   border-color: transparent;
-  cursor: not-allowed;
-  opacity: 0.45;
+  opacity: 0.5;
   box-shadow: none;
+  cursor: not-allowed;
 }
 .x-button-large {
   padding: 0.4em 1em;
@@ -74,47 +72,30 @@ fieldset[disabled] .x-button {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   color: #ffffff;
 }
-.x-button-hint {
-  background-color: #262626;
-  border-color: #262626;
+.x-button-info {
+  background-color: #2f96b4;
+  border-color: #2f96b4;
 }
-.x-button-hint:hover,
-.x-button-hint:focus,
-.x-button-hint[disabled],
-.x-button-hint.x-button-disabled {
-  background-color: #454545;
-  border-color: #454545;
+.x-button-info:hover,
+.x-button-info:focus {
+  background-color: #4aacca;
+  border-color: #4aacca;
 }
 .x-button-success {
   background-color: #51a351;
   border-color: #51a351;
 }
 .x-button-success:hover,
-.x-button-success:focus,
-.x-button-success[disabled],
-.x-button-success.x-button-disabled {
+.x-button-success:focus {
   background-color: #62c462;
   border-color: #62c462;
-}
-.x-button-info {
-  background-color: #2f96b4;
-  border-color: #2f96b4;
-}
-.x-button-info:hover,
-.x-button-info:focus,
-.x-button-info[disabled],
-.x-button-info.x-button-disabled {
-  background-color: #5bc0de;
-  border-color: #5bc0de;
 }
 .x-button-warning {
   background-color: #f89406;
   border-color: #f89406;
 }
 .x-button-warning:hover,
-.x-button-warning:focus,
-.x-button-warning[disabled],
-.x-button-warning.x-button-disabled {
+.x-button-warning:focus {
   background-color: #fbb450;
   border-color: #fbb450;
 }
@@ -123,24 +104,9 @@ fieldset[disabled] .x-button {
   border-color: #bd362f;
 }
 .x-button-error:hover,
-.x-button-error:focus,
-.x-button-error[disabled],
-.x-button-error.x-button-disabled {
+.x-button-error:focus {
   background-color: #ee5f5b;
   border-color: #ee5f5b;
-}
-button.x-button,
-input.x-button {
-  *padding: 4px 5px 0;
-}
-button.x-button-large,
-input.x-button-large {
-  *padding-top: 7px;
-  *padding-bottom: 5px;
-}
-button.x-button-small,
-input.x-button-small {
-  *padding-top: 1px;
 }
 .x-button-plain {
   background: none;
