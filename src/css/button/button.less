@@ -2,23 +2,24 @@
 @import "../core/mixins.less";
 
 .x-button {
-    .inline-block();
-    padding: 0.1em 1em; // relative font size
-    text-align: center;
-    white-space: nowrap;
-    background-image: none;
-    border: 1px solid transparent;
+    -moz-appearance: none;
     -webkit-appearance: none;
-    .user-select(none);
-    .transition(~"background-color 300ms ease-out, border-color 300ms ease-out");
+    background-image: none;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    padding: 0.1em 1em; // 相对文本大小
+    border: 1px solid #e6e6e6;
     background-color: #e6e6e6;
-    border-color: #e6e6e6;
     color: #444;
-    
-    &:focus {
-        .tab-focus();
-    }
-
+    -moz-transition: background-color 300ms ease-out, border-color 300ms ease-out;
+    -o-transition: background-color 300ms ease-out, border-color 300ms ease-out;
+    -webkit-transition: background-color 300ms ease-out, border-color 300ms ease-out;
+    transition: background-color 300ms ease-out, border-color 300ms ease-out;
 }
 
 .x-button:hover, .x-button:focus {
@@ -29,8 +30,7 @@
 }
 
 .x-button:active, .x-button-actived {
-    background-image: none;
-    .box-shadow(~"inset 0 1px 8px rgba(0, 0, 0, .125)");
+    box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
 }
 
 .x-button[disabled], .x-button-disabled {
@@ -104,22 +104,3 @@
     border-color: transparent;
     .box-shadow(none);
 }
-
-/*// Cross-browser Jank
-// --------------------------------------------------
-button, input {
-
-    &.x-button {
-        // IE7 has some default padding on button controls
-        *padding: 4px 5px 0;
-    }
-
-    &.x-button-large {
-        *padding-top: 7px;
-        *padding-bottom: 5px;
-    }
-
-    &.x-button-small {
-        *padding-top: 1px;
-    }
-}*/

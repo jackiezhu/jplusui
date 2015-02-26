@@ -3,7 +3,6 @@
 //================================
 
 // 字体
-
 @baseFontSize:          14px;
 
 //--------------------------------
@@ -21,6 +20,29 @@
 @grayLight:         lighten(@black, 60%);   // #999
 @grayLighter:       lighten(@black, 93.5%); // #eee
 
+// 页面
+@borderColor:       #ddd;
+@hintTextColor:			@grayLight;
+
+// Z-index
+@zindexDropdown:          1000;
+@zindexBalloonTip:        1010;
+@zindexTooltip:           1020;
+@zindexFixedNavbar:       1030;
+@zindexDialogBackdrop:    1040;
+@zindexDialog:            1050;
+
+
+
+
+
+
+
+
+
+
+
+
 // 主色
 @primary:           #049cdb;
 @primaryDarker:     lighten(@primary, 15%); // #0064cd
@@ -36,18 +58,6 @@
 @warning:           #f89406;
 @error:             #9d261d;
 @info:              @primaryDarker;
-
-// 页面
-@borderColor:       #ddd;
-
-//--------------------------------
-// 字体
-//--------------------------------
-
-// Form states and alerts
-// -------------------------
-
-@hintTextColor:			@grayLight;
 
 @successTextColor:             #468847;
 @successBackgroundColor:       lighten(#dff0d8, 4%);
@@ -73,70 +83,45 @@
 
 @baseBorderRadius:      4px;
 
-// Z-index master list
-// Used for a bird's eye view of components dependent on the z-axis
-// Try to avoid customizing these :)
-@zindexDropdown:          1000;
-@zindexBalloonTip:        1010;
-@zindexTooltip:           1020;
-@zindexFixedNavbar:       1030;
-@zindexDialogBackdrop:    1040;
-@zindexDialog:            1050;
+// 相应式
+@screenSmall:            640px;  // 手机
+@screenMedium:           1024px; // 平板
+@screenLarge:            1280px; // 电脑
+@screenLarger:           1440px; // 电视
+@screenLargest:          1920px; // 投影仪
 
-// GRID
-// ------------------------ 
+@screenSmall-max:        @screenSmall;
+@breakpoint-md:               @screenSmall-max; // legacy var, DO NOT USE IT
 
-// Default 980px grid
-// @gridColumns:             12;
-// @gridColumnWidth:         67px;
-// @gridGutterWidth:         16px;
-// @gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+@screenMedium-min:       (@screenSmall + 1);
+@screenMedium-max:       @screenMedium;
 
+@screenLarge-min:        (@screenMedium + 1);
+@screenLarge-max:        @screenLarge;
 
-// Media Queries
-// NOTE '~' in the beginning - media query must be escaped
-// -----------------------------------------------------------------------------
+@screenLarger-min:           (@screenLarge + 1);
+@screenLarger-max:           @screenLarger;
 
-@breakpoint-small:            640px;  // 0 - 640px
-@breakpoint-medium:           1024px; // 641 - 1024px
-@breakpoint-large:            1280px; // 1025 - 1280px
-@breakpoint-xl:               1440px; // 1281 - 1440px
-@breakpoint-xxl:              1920px; // 1441 -1920px
+@screenLargest-min:          (@screenLarger + 1);
+@screenLargest-max:          @screenLargest;
 
-@breakpoint-small-max:        @breakpoint-small;
-@breakpoint-md:               @breakpoint-small-max; // legacy var, DO NOT USE IT
+@landscape:     ~"only screen and (orientation: landscape)";
+@portrait:      ~"only screen and (orientation: portrait)";
 
-@breakpoint-medium-min:       (@breakpoint-small + 1);
-@breakpoint-medium-max:       @breakpoint-medium;
+@smallerUp:      ~"only screen";
+@smallerOnly:    ~"only screen and (max-width: @{breakpoint-small-max})";
 
-@breakpoint-large-min:        (@breakpoint-medium + 1);
-@breakpoint-large-max:        @breakpoint-large;
+@mediumUp:     ~"only screen and (min-width:@{breakpoint-medium-min})";
+@mediumOnly:   ~"only screen and (min-width:@{breakpoint-medium-min}) and (max-width:@{breakpoint-medium-max})";
 
-@breakpoint-xl-min:           (@breakpoint-large + 1);
-@breakpoint-xl-max:           @breakpoint-xl;
+@largeUp:      ~"only screen and (min-width:@{breakpoint-large-min})";
+@largeOnly:    ~"only screen and (min-width:@{breakpoint-large-min}) and (max-width:@{breakpoint-large-max})";
 
-@breakpoint-xxl-min:          (@breakpoint-xl + 1);
-@breakpoint-xxl-max:          @breakpoint-xxl;
+@xlUp:         ~"only screen and (min-width:@{screenLarger-min})";
+@xlOnly:       ~"only screen and (min-width:@{screenLarger-min}) and (max-width:@{screenLarger-max})";
 
-@screen:        ~"only screen";
-
-@landscape:     ~"@{screen} and (orientation: landscape)";
-@portrait:      ~"@{screen} and (orientation: portrait)";
-
-@smallerUp:      ~"@{screen}";
-@smallerOnly:    ~"@{screen} and (max-width: @{breakpoint-small-max})";
-
-@mediumUp:     ~"@{screen} and (min-width:@{breakpoint-medium-min})";
-@mediumOnly:   ~"@{screen} and (min-width:@{breakpoint-medium-min}) and (max-width:@{breakpoint-medium-max})";
-
-@largeUp:      ~"@{screen} and (min-width:@{breakpoint-large-min})";
-@largeOnly:    ~"@{screen} and (min-width:@{breakpoint-large-min}) and (max-width:@{breakpoint-large-max})";
-
-@xlUp:         ~"@{screen} and (min-width:@{breakpoint-xl-min})";
-@xlOnly:       ~"@{screen} and (min-width:@{breakpoint-xl-min}) and (max-width:@{breakpoint-xl-max})";
-
-@xxlUp:        ~"@{screen} and (min-width:@{breakpoint-xxl-min})";
-@xxlOnly:      ~"@{screen} and (min-width:@{breakpoint-xxl-min}) and (max-width:@{breakpoint-xxl-max})";
+@xxlUp:        ~"only screen and (min-width:@{screenLargest-min})";
+@xxlOnly:      ~"only screen and (min-width:@{screenLargest-min}) and (max-width:@{screenLargest-max})";
 
 // 清除浮动
 // 另参考：http://nicolasgallagher.com/micro-clearfix-hack/
@@ -147,20 +132,6 @@
         clear: both;
     }
 }
-
-// Box sizing
-.box-sizing(@boxmodel: content-box) {
-	-webkit-box-sizing: @boxmodel;
-		 -moz-box-sizing: @boxmodel;
-					box-sizing: @boxmodel;
-}
-
-//
-// Mixins
-// --------------------------------------------------
-
-// Ulility mixins
-// --------------------------------------------------
 
 // Webkit-style focus
 // ------------------
@@ -180,63 +151,7 @@
 	.clear();
 }
 
-// IE7 inline-block
-// ----------------
-.ie7-inline-block() {
-	*display: inline;
-	*zoom: 1;
-}
-
-// inline-block
-// ----------------
-.inline-block() {
-	display: inline-block;
-	
-    // fix for IE6 & IE7
-	.ie7-inline-block();
-}
-
-// IE7 likes to collapse whitespace on either side of the inline-block elements.
-// Ems because we're attempting to match the width of a space character. Left
-// version is for form buttons, which typically come after other elements, and
-// right version is for icons, which come before. Applying both is ok, but it will
-// mean that space between those elements will be .6em (~2 space characters) in IE7,
-// instead of the 1 space in other browsers.
-.ie7-restore-left-whitespace() {
-	*margin-left: .3em;
-
-	&:first-child {
-		*margin-left: 0;
-	}
-}
-
-.ie7-restore-right-whitespace() {
-	*margin-right: .3em;
-
-	&:last-child {
-		*margin-left: 0;
-	}
-}
-
-// IE7 inline-block
-// ----------------
-.ie6-border-transparent(@baseColor: #ffffff) {
-	 _border-color: @baseColor;
-    _filter: chroma(color=@baseColor);
-}
-
-// Sizing shortcuts
-// -------------------------
-.size(@height: 5px, @width: 5px) {
-	width: @width;
-	height: @height;
-}
-.square(@size: 5px) {
-	.size(@size, @size);
-}
-
-// Placeholder text
-// -------------------------
+// 提示文案
 .placeholder(@color: #999) {
 	&:-moz-placeholder {
 		color: @color;
@@ -249,9 +164,7 @@
 	}
 }
 
-// Text overflow
-// -------------------------
-// Requires inline-block or block for proper styling
+// 文本超流
 .text-overflow() {
     overflow: hidden;
     text-overflow: ellipsis;

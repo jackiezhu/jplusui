@@ -27,8 +27,6 @@ html .x-block {
 }
 html .x-inline-block {
   display: inline-block;
-  *display: inline;
-  *zoom: 1;
 }
 html .x-hide,
 html div.x-hide {
@@ -43,9 +41,7 @@ html .x-row {
   margin-bottom: 10px;
 }
 .x-break-word {
-  -ms-word-wrap: break-word;
   word-wrap: break-word;
-  -ms-word-break: break-all;
   word-break: break-all;
 }
 .x-clear:after {

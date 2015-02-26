@@ -1,30 +1,22 @@
 ﻿.x-button {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  padding: 0.1em 1em;
-  text-align: center;
-  white-space: nowrap;
-  background-image: none;
-  border: 1px solid transparent;
+  -moz-appearance: none;
   -webkit-appearance: none;
-  -webkit-user-select: none;
+  background-image: none;
+  text-align: center;
+  display: inline-block;
+  white-space: nowrap;
   -moz-user-select: none;
   -ms-user-select: none;
-  -o-user-select: none;
+  -webkit-user-select: none;
   user-select: none;
-  -webkit-transition: background-color 300ms ease-out, border-color 300ms ease-out;
+  padding: 0.1em 1em;
+  border: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+  color: #444;
   -moz-transition: background-color 300ms ease-out, border-color 300ms ease-out;
   -o-transition: background-color 300ms ease-out, border-color 300ms ease-out;
+  -webkit-transition: background-color 300ms ease-out, border-color 300ms ease-out;
   transition: background-color 300ms ease-out, border-color 300ms ease-out;
-  background-color: #e6e6e6;
-  border-color: #e6e6e6;
-  color: #444;
-}
-.x-button:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
 }
 .x-button:hover,
 .x-button:focus {
@@ -35,10 +27,7 @@
 }
 .x-button:active,
 .x-button-actived {
-  background-image: none;
-  -webkit-box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
-  -moz-box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
-  box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
+  box-shadow: inset 0 1px 8px rgba(0, 0, 0, 0.125);
 }
 .x-button[disabled],
 .x-button-disabled {
