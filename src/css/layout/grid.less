@@ -1,31 +1,25 @@
 ﻿
 @import "../core/mixins.less";
 
-// 流式布局函数
-// -------------------------
-#fluidGridSystem {
+@padding:       10px;   // 容器之间
 
-    .columnLoop(@classPrefix, @index, @count) 
-        when (@index =< @count) {
-        .x-col@{classPrefix}-@{index} {
-            width: 100% * @index / @count;
-        }
-        #fluidGridSystem > .columnLoop(@classPrefix, (@index + 1), @count);
+.generateColumnStep(@classPrefix, @index, @count) when (@index =< @count) {
+    .x-col@{classPrefix}-@{index} {
+        width: 100% * @index / @count;
     }
-
-    .columns(@classPrefix: ~'') {
-        .x-col@{classPrefix}-0 {
-            display: none;
-        }
-
-        #fluidGridSystem > .columnLoop(@classPrefix, 1, 12);
-    }
-
+    .generateColumnStep(@classPrefix, (@index + 1), @count);
 }
 
+.generateColumns(@classPrefix: ~'') {
+    .x-col@{classPrefix}-0 {
+        display: none;
+    }
+    .generateColumnStep(@classPrefix, 1, 12);
+}
+
+// 布局行
 .x-grid {
-    margin-left: -10px;
-    margin-right: -10px;
+    margin: 0 -@padding;
     .clearfix();
 }
 
@@ -33,7 +27,7 @@
 .x-container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 @padding * 2;
     position: relative;
 }
 
@@ -42,31 +36,32 @@
     padding: 0 10px;
 }
 
+// 列
 .x-col {
     float: left;
-    padding: 0 10px;
-    margin-bottom: 10px;
-    .box-sizing(border-box);
+    padding: 0 @padding;
+    margin-bottom: @padding;
+    box-sizing: border-box;
 }
 
-#fluidGridSystem > .columns();
+.generateColumns();
 
 @media @mediumUp {
 
     // 恢复默认显示
     .x-col-0 {
-        display: inherit;
+        display: block;
     }
 
-    #fluidGridSystem > .columns(-medium);
+    .generateColumns(-medium);
 }
 
 @media @largeUp {
 
     // 恢复默认显示
     .x-col-medium-0 {
-        display: inherit;
+        display: block;
     }
 
-    #fluidGridSystem > .columns(-large);
+    .generateColumns(-large);
 }

@@ -3,14 +3,21 @@
  * @copyright 2011-2015 The JPlusUI Team
  * @license The BSD License
  */
-body,
-input,
-button {
+body {
   margin: 0;
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
   font-size: 14px;
   line-height: 200%;
   color: #414243;
+}
+input,
+button,
+select,
+textarea,
+optgroup,
+pre code {
+  font: inherit;
+  color: inherit;
 }
 p,
 pre,
@@ -37,8 +44,8 @@ h5,
 h6 {
   margin: 14px 0;
   font-weight: 500;
-  color: #333;
   line-height: 150%;
+  color: #333;
 }
 h1 {
   font-size: 28px;
@@ -63,14 +70,6 @@ hr {
   border-width: 1px 0 0 0;
   height: 0;
 }
-small {
-  font-weight: normal;
-  color: #999999;
-}
-dt {
-  font-weight: 600;
-  margin-top: 10px;
-}
 table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -90,12 +89,13 @@ code {
   background-color: #f8f8f8;
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
 }
-pre code {
-  padding: 0;
-  border: 0;
-  background-color: transparent;
-  color: inherit;
-  font-family: inherit;
+dt {
+  font-weight: 600;
+  margin-top: 7px;
+}
+small {
+  font-weight: normal;
+  color: #999999;
 }
 abbr {
   font-size: 90%;

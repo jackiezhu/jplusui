@@ -1,29 +1,149 @@
-﻿//==================================================
-// less 公用函数
-//==================================================
+﻿//================================
+// 全局配置和公用样式
+//================================
 
-@import "variables.less";
+// 字体
 
-// Clearfix
-//
-// For modern browsers
-// 1. The space content is one way to avoid an Opera bug when the
-//    contenteditable attribute is included anywhere else in the document.
-//    Otherwise it causes space to appear at the top and bottom of elements
-//    that are clearfixed.
-// 2. The use of `table` rather than `block` is only necessary if using
-//    `:before` to contain the top-margins of child elements.
-//
-// Source: http://nicolasgallagher.com/micro-clearfix-hack/
+@baseFontSize:          14px;
 
+//--------------------------------
+// 颜色配置
+//--------------------------------
+
+// 黑白
+@black:             #000;
+@white:             #fff;
+
+// 灰色
+@grayDarker:	    lighten(@black, 13.5%); // #222
+@grayDark:          lighten(@black, 20%);   // #333
+@gray:              lighten(@black, 33.5%); // #555
+@grayLight:         lighten(@black, 60%);   // #999
+@grayLighter:       lighten(@black, 93.5%); // #eee
+
+// 主色
+@primary:           #049cdb;
+@primaryDarker:     lighten(@primary, 15%); // #0064cd
+@primaryLighter:    darken(@primary, 15%); // #3A87AD
+
+// 辅色
+@yellow:            #ffc40d;
+@pink:              #c3325f;
+@purple:            #7a43b6;
+
+// 状态
+@success:		    #46a546;
+@warning:           #f89406;
+@error:             #9d261d;
+@info:              @primaryDarker;
+
+// 页面
+@borderColor:       #ddd;
+
+//--------------------------------
+// 字体
+//--------------------------------
+
+// Form states and alerts
+// -------------------------
+
+@hintTextColor:			@grayLight;
+
+@successTextColor:             #468847;
+@successBackgroundColor:       lighten(#dff0d8, 4%);
+@successBorderColor:           darken(spin(@successBackgroundColor, -10), 20%);
+
+@infoTextColor:                #3a87ad;
+@infoBackgroundColor:          lighten(#d9edf7, 4%);
+@infoBorderColor:              lighten(@infoTextColor, 30%); //darken(spin
+
+@warningTextColor:             #c09853;
+@warningBackgroundColor:       #fcf8e3;
+@warningBorderColor:           lighten(@warningTextColor, 30%); //darken(spin(@warningBackground, -10), 3%);
+
+@errorTextColor:               #b94a48;
+@errorBackgroundColor:         #F8E6E6;
+@errorBorderColor:             lighten(@errorTextColor, 30%); //darken(spin(@errorBackground, -10), 3%);(@infoBackground, -10), 7%);
+
+@highlightTextColor:			#FF6600;
+
+
+// Component sizing
+// -------------------------
+
+@baseBorderRadius:      4px;
+
+// Z-index master list
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+@zindexDropdown:          1000;
+@zindexBalloonTip:        1010;
+@zindexTooltip:           1020;
+@zindexFixedNavbar:       1030;
+@zindexDialogBackdrop:    1040;
+@zindexDialog:            1050;
+
+// GRID
+// ------------------------ 
+
+// Default 980px grid
+// @gridColumns:             12;
+// @gridColumnWidth:         67px;
+// @gridGutterWidth:         16px;
+// @gridRowWidth:            (@gridColumns * @gridColumnWidth) + (@gridGutterWidth * (@gridColumns - 1));
+
+
+// Media Queries
+// NOTE '~' in the beginning - media query must be escaped
+// -----------------------------------------------------------------------------
+
+@breakpoint-small:            640px;  // 0 - 640px
+@breakpoint-medium:           1024px; // 641 - 1024px
+@breakpoint-large:            1280px; // 1025 - 1280px
+@breakpoint-xl:               1440px; // 1281 - 1440px
+@breakpoint-xxl:              1920px; // 1441 -1920px
+
+@breakpoint-small-max:        @breakpoint-small;
+@breakpoint-md:               @breakpoint-small-max; // legacy var, DO NOT USE IT
+
+@breakpoint-medium-min:       (@breakpoint-small + 1);
+@breakpoint-medium-max:       @breakpoint-medium;
+
+@breakpoint-large-min:        (@breakpoint-medium + 1);
+@breakpoint-large-max:        @breakpoint-large;
+
+@breakpoint-xl-min:           (@breakpoint-large + 1);
+@breakpoint-xl-max:           @breakpoint-xl;
+
+@breakpoint-xxl-min:          (@breakpoint-xl + 1);
+@breakpoint-xxl-max:          @breakpoint-xxl;
+
+@screen:        ~"only screen";
+
+@landscape:     ~"@{screen} and (orientation: landscape)";
+@portrait:      ~"@{screen} and (orientation: portrait)";
+
+@smallerUp:      ~"@{screen}";
+@smallerOnly:    ~"@{screen} and (max-width: @{breakpoint-small-max})";
+
+@mediumUp:     ~"@{screen} and (min-width:@{breakpoint-medium-min})";
+@mediumOnly:   ~"@{screen} and (min-width:@{breakpoint-medium-min}) and (max-width:@{breakpoint-medium-max})";
+
+@largeUp:      ~"@{screen} and (min-width:@{breakpoint-large-min})";
+@largeOnly:    ~"@{screen} and (min-width:@{breakpoint-large-min}) and (max-width:@{breakpoint-large-max})";
+
+@xlUp:         ~"@{screen} and (min-width:@{breakpoint-xl-min})";
+@xlOnly:       ~"@{screen} and (min-width:@{breakpoint-xl-min}) and (max-width:@{breakpoint-xl-max})";
+
+@xxlUp:        ~"@{screen} and (min-width:@{breakpoint-xxl-min})";
+@xxlOnly:      ~"@{screen} and (min-width:@{breakpoint-xxl-min}) and (max-width:@{breakpoint-xxl-max})";
+
+// 清除浮动
+// 另参考：http://nicolasgallagher.com/micro-clearfix-hack/
 .clearfix() {
-    &:before,
     &:after {
-        content: " "; // 1
-        display: table; // 2
-    }
-
-    &:after {
+        content: " ";
+        display: table;
         clear: both;
     }
 }
@@ -34,6 +154,7 @@
 		 -moz-box-sizing: @boxmodel;
 					box-sizing: @boxmodel;
 }
+
 //
 // Mixins
 // --------------------------------------------------

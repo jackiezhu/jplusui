@@ -10,22 +10,29 @@
 // 全局
 //--------------------------------
 
-body, input, button {
+// 样式重置另参考：https://github.com/necolas/normalize.css
+
+// 全局字体
+body {
     margin: 0;
-    font-family: @sansFontFamily;
+    font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
     font-size: @baseFontSize;
     line-height: 200%;
     color: #414243;
 }
 
+// 恢复部分标签字体
+input, button, select, textarea, optgroup, pre code {
+    font: inherit;
+    color: inherit;
+}
+
+// 块级元素边距
 p, pre, hr, table, ul, ol, dl, blockquote {
     margin: @baseFontSize 0;
 }
 
-//--------------------------------
 // 链接
-//--------------------------------
-
 a {
     color: #095f8b;
     text-decoration: none;
@@ -35,15 +42,12 @@ a {
     }
 }
 
-//--------------------------------
-// 段落
-//--------------------------------
-
+// 标题
 h1, h2, h3, h4, h5, h6 {
     margin: @baseFontSize 0;
     font-weight: 500;
-    color: #333;
     line-height: 150%;
+    color: #333;
 }
 
 h1 {
@@ -70,31 +74,12 @@ h6 {
     font-size: @baseFontSize - 2px;
 }
 
-//--------------------------------
-// 其它
-//--------------------------------
-
 // 水平线
 hr {
     border-color: @borderColor;
     border-width: 1px 0 0 0;
     height: 0;
 }
-
-// 小字
-small {
-    font-weight: normal;
-    color: @grayLight;
-}
-
-dt {
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-//--------------------------------
-// 表格
-//--------------------------------
 
 // 表格
 table {
@@ -112,29 +97,27 @@ th, td {
     border: 1px solid @borderColor;
 }
 
-//--------------------------------
 // 代码
-//--------------------------------
-
 code {
     padding: 2px 4px;
     color: #990000;
     background-color: #f8f8f8;
-    font-family: @monoFontFamily;
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
-pre code {
-    padding: 0;
-    border: 0;
-    background-color: transparent;
-    color: inherit;
-    font-family: inherit;
+// 小标题
+dt {
+    font-weight: 600;
+    margin-top: @baseFontSize / 2;
 }
 
-//--------------------------------
-// 其它
-//--------------------------------
+// 小字
+small {
+    font-weight: normal;
+    color: @grayLight;
+}
 
+// 引用标签
 abbr {
     font-size: 90%;
     text-transform: uppercase;
@@ -142,6 +125,7 @@ abbr {
     cursor: help;
 }
 
+// 地址
 address, cite {
     font-style: normal;
 }
