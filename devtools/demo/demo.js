@@ -25,7 +25,7 @@ Demo.Configs = {
 	/**
 	 * 存放文档文件的文件夹。
 	 */
-	examples: "src",
+	examples: "demo",
 
 	/**
 	 * 存放开发系统文件的文件夹。

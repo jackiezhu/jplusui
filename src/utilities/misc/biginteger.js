@@ -2,16 +2,38 @@
  * @author xuld
  */
 
-
-
+/**
+ * 提供大正整数计算相关函数。
+ */
 var BigInteger = {
 
-	/**
-	 * 计算大数的乘积。
+    /**
+	 * 计算大数的和。
 	 */
-	multiple: function (a, b) {
-		var p = a.match(/\d{1,4}/g).reverse(),
-			q = b.match(/\d{1,4}/g).reverse(),
+    add: function (x, y) {
+        var m = x.split('').reverse();
+        var n = y.split('').reverse();
+        var ret = [];
+        var s = 0;
+
+        for (var i = 0; i < x.length || i < y.length; i++) {
+            var t = (m[i] | 0) + (n[i] | 0) + s;
+
+            ret.push(t % 10);
+            s = (t / 10) | 0;
+        }
+        if (s) {
+            ret.push(s);
+        }
+        return ret.reverse().join('');
+    },
+
+	/**
+	 * 计算大数的积。
+	 */
+    mul: function (x, y) {
+		var p = x.match(/\d{1,4}/g).reverse(),
+			q = y.match(/\d{1,4}/g).reverse(),
 			f1 = 0;
 		result = "0";
 
@@ -29,28 +51,13 @@ var BigInteger = {
 
 	},
 
-	add: function (a, b) {
-		var m = a.split('').reverse();
-		var n = b.split('').reverse();
-		var ret = [];
-		var s = 0;
-
-		for (var i = 0; i < a.length || i < b.length; i++) {
-			var t = (m[i] | 0) + (n[i] | 0) + s;
-
-			ret.push(t % 10);
-			s = (t / 10) | 0;
-		}
-		if (s) {
-			ret.push(s);
-		}
-		return ret.reverse().join('');
-	},
-
-	power: function (a, b) {
+    /**
+	 * 计算大数的幂。
+	 */
+	pow: function (x, y) {
 		var ret = "1";
-		for (var i = 0; i < b; i++) {
-			ret = BigInteger.multiple(ret, a);
+		for (var i = 0; i < y; i++) {
+		    ret = BigInteger.mul(ret, x);
 		}
 		return ret;
 	}
