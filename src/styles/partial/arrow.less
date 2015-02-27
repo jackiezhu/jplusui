@@ -1,18 +1,18 @@
-@import "../core/less/variables.less";
-@import "../core/less/mixins.less";
-
-
+@import "../core/mixins.less";
 
 .x-arrow {
-	font-family: "SimSun";
-	overflow: hidden;
-	display: block;
-	font-size: 21px;
-	line-height: 20px;
-	position: absolute;
-	content: "\25c6";
-	color: #000000; 
-	.user-select(none);
+    font-family: "SimSun";
+    overflow: hidden;
+    display: block;
+    font-size: 21px;
+    line-height: 20px;
+    position: absolute;
+    content: "\25c6";
+    color: #000000;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 .x-arrow-fore {
 	position: absolute;

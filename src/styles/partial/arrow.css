@@ -1,4 +1,4 @@
-.x-arrow {
+﻿.x-arrow {
   font-family: "SimSun";
   overflow: hidden;
   display: block;
@@ -7,10 +7,9 @@
   position: absolute;
   content: "\25c6";
   color: #000000;
-  -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  -o-user-select: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 .x-arrow-fore {
