@@ -1,7 +1,6 @@
 ﻿
 @import "../core/mixins.less";
 
-@padding:       10px;   // 容器之间
 
 .generateColumnStep(@classPrefix, @index, @count) when (@index =< @count) {
     .x-col@{classPrefix}-@{index} {
@@ -19,7 +18,7 @@
 
 // 布局行
 .x-grid {
-    margin: 0 -@padding;
+    margin: 0 -@gridMargin;
     .clearfix();
 }
 
@@ -27,20 +26,20 @@
 .x-container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 @padding * 2;
+    padding: 0 @gridPadding * 2;
     position: relative;
 }
 
 // 当容器和布局行一起使用时，不需要设置 margin
 .x-container.x-grid {
-    padding: 0 10px;
+    padding: 0 @gridPadding;
 }
 
 // 列
 .x-col {
     float: left;
-    padding: 0 @padding;
-    margin-bottom: @padding;
+    padding: 0 @gridPadding;
+    margin-bottom: @gridPadding;
     box-sizing: border-box;
 }
 

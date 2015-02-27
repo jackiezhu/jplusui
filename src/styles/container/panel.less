@@ -1,40 +1,35 @@
-@import "../core/less/variables.less";
-@import "../core/less/mixins.less";
-
-
+@import "../../styles/core/mixins.less";
 
 .x-panel {
-    background: @backgroundColor;
-    border: 1px solid #CCCCCC;
-    .border-radius(@baseBorderRadius);
+    background: @white;
+    border: 1px solid @borderColor;
+    margin-bottom: @gridMargin;
 }
-
 
 .x-panel-header {
-    background-color: #FAFAFA;
-	#gradient > .vertical(#FFFFFF, #F3F3F3);
+    background-color: #F7F7F7;
     border-bottom: 1px solid #CCCCCC;
-    padding: 10px 10px;
-    .border-radius(@baseBorderRadius @baseBorderRadius 0 0);
-}
+    padding: @gridPadding / 2 @gridPadding;
 
-.x-panel-header h2 {
-    font-size: 14px;
-    line-height: 14px;
-    color: @grayDark;
-    margin: 0;
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0;
+    }
+
 }
 
 .x-panel-body {
-    overflow: hidden;
-    .clear();
+    padding: @gridPadding / 2 @gridPadding;
 }
 
-.x-panel-content {
-    padding: 10px;
-}
+// ÕÛµþÐ§¹û
+.x-panel-collapsed {
 
-.x-panel-collapsed .x-panel-header {
-    border-bottom: 0;
-    .border-radius(@baseBorderRadius);
+    .x-panel-header {
+        border-bottom: 0;
+    }
+    
+    .x-panel-body {
+        display: none;
+    }
+
 }

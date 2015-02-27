@@ -2,9 +2,6 @@
 // 全局配置和公用样式
 //================================
 
-// 字体
-@baseFontSize:          14px;
-
 //--------------------------------
 // 颜色配置
 //--------------------------------
@@ -24,6 +21,18 @@
 @borderColor:       #ddd;
 @hintTextColor:			@grayLight;
 
+//--------------------------------
+// 全局配置
+//--------------------------------
+
+// 字体
+@baseFontSize:          14px;
+@baseBorderRadius:      4px;
+
+// 间距
+@gridPadding:             10px;   
+@gridMargin:              @gridPadding * 2;
+
 // Z-index
 @zindexDropdown:          1000;
 @zindexBalloonTip:        1010;
@@ -32,9 +41,41 @@
 @zindexDialogBackdrop:    1040;
 @zindexDialog:            1050;
 
+//--------------------------------
+// 相应式
+//--------------------------------
 
+@screenSmall:            640px;  // 手机
+@screenMedium:           1024px; // 平板
+@screenLarge:            1280px; // 电脑
+@screenLarger:           1440px; // 电视
+@screenLargest:          1920px; // 投影仪
 
+// 内部变量
+@screenSmallPlus1:  @screenSmall + 1;
+@screenMediumPlus1:  @screenMedium + 1;
+@screenLargePlus1:  @screenLarge + 1;
+@screenLargerPlus1:  @screenLarger + 1;
+@screenLargestPlus1:  @screenLargest + 1;
 
+@screenOnly:        ~"only screen";
+@landscape:     ~"@{screenOnly} and (orientation: landscape)";
+@portrait:      ~"@{screenOnly} and (orientation: portrait)";
+
+@smallerUp:      @screenOnly;
+@smallerOnly:    ~"@{screenOnly} and (max-width: @{screenSmall})";
+
+@mediumUp:     ~"@{screenOnly} and (min-width: @{screenSmallPlus1})";
+@mediumOnly:   ~"@{mediumUp} and (max-width: @{screenMedium})";
+
+@largeUp:      ~"@{screenOnly} and (min-width: @{screenMediumPlus1})";
+@largeOnly:    ~"@{largeUp} and (max-width: @{screenLarge})";
+
+@largerUp:      ~"@{screenOnly} and (min-width: @{screenLargePlus1})";
+@largerOnly:    ~"@{largerUp} and (max-width: @{screenLarger})";
+
+@largestUp:      ~"@{screenOnly} and (min-width: @{screenLargerPlus1})";
+@largestOnly:    ~"@{largestUp} and (max-width: @{screenLargest})";
 
 
 
@@ -81,47 +122,6 @@
 // Component sizing
 // -------------------------
 
-@baseBorderRadius:      4px;
-
-// 相应式
-@screenSmall:            640px;  // 手机
-@screenMedium:           1024px; // 平板
-@screenLarge:            1280px; // 电脑
-@screenLarger:           1440px; // 电视
-@screenLargest:          1920px; // 投影仪
-
-@screenSmall-max:        @screenSmall;
-@breakpoint-md:               @screenSmall-max; // legacy var, DO NOT USE IT
-
-@screenMedium-min:       (@screenSmall + 1);
-@screenMedium-max:       @screenMedium;
-
-@screenLarge-min:        (@screenMedium + 1);
-@screenLarge-max:        @screenLarge;
-
-@screenLarger-min:           (@screenLarge + 1);
-@screenLarger-max:           @screenLarger;
-
-@screenLargest-min:          (@screenLarger + 1);
-@screenLargest-max:          @screenLargest;
-
-@landscape:     ~"only screen and (orientation: landscape)";
-@portrait:      ~"only screen and (orientation: portrait)";
-
-@smallerUp:      ~"only screen";
-@smallerOnly:    ~"only screen and (max-width: @{breakpoint-small-max})";
-
-@mediumUp:     ~"only screen and (min-width:@{breakpoint-medium-min})";
-@mediumOnly:   ~"only screen and (min-width:@{breakpoint-medium-min}) and (max-width:@{breakpoint-medium-max})";
-
-@largeUp:      ~"only screen and (min-width:@{breakpoint-large-min})";
-@largeOnly:    ~"only screen and (min-width:@{breakpoint-large-min}) and (max-width:@{breakpoint-large-max})";
-
-@xlUp:         ~"only screen and (min-width:@{screenLarger-min})";
-@xlOnly:       ~"only screen and (min-width:@{screenLarger-min}) and (max-width:@{screenLarger-max})";
-
-@xxlUp:        ~"only screen and (min-width:@{screenLargest-min})";
-@xxlOnly:      ~"only screen and (min-width:@{screenLargest-min}) and (max-width:@{screenLargest-max})";
 
 // 清除浮动
 // 另参考：http://nicolasgallagher.com/micro-clearfix-hack/
@@ -148,7 +148,7 @@
 .center-block() {
 	margin-left: auto;
 	margin-right: auto;
-	.clear();
+	.clearfix();
 }
 
 // 提示文案
