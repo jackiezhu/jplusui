@@ -7,7 +7,7 @@ body {
   margin: 0;
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
   font-size: 14px;
-  line-height: 200%;
+  line-height: 175%;
   color: #414243;
 }
 input,
@@ -68,6 +68,7 @@ h6 {
 hr {
   border-color: #dddddd;
   border-width: 1px 0 0 0;
+  border-style: solid;
   height: 0;
 }
 table {
@@ -75,12 +76,9 @@ table {
   border-spacing: 0;
   empty-cells: show;
 }
-th {
-  text-align: center;
-}
 th,
 td {
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #dddddd;
 }
 code {
@@ -88,6 +86,17 @@ code {
   color: #990000;
   background-color: #f8f8f8;
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+ul ul,
+ol ul,
+dl ul,
+ul ol,
+ol ol,
+dl ol,
+ul dl,
+ol dl,
+dl dl {
+  margin: 0;
 }
 dt {
   font-weight: 600;
@@ -100,7 +109,7 @@ small {
 abbr {
   font-size: 90%;
   text-transform: uppercase;
-  border-bottom: 1px dotted #ddd;
+  border-bottom: 1px dotted #dddddd;
   cursor: help;
 }
 address,

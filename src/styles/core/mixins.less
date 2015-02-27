@@ -3,125 +3,80 @@
 //================================
 
 //--------------------------------
-// 颜色配置
+// 响应式
 //--------------------------------
 
-// 黑白
-@black:             #000;
-@white:             #fff;
+@screen-small:              640px;  // 手机
+@screen-medium:             1024px; // 平板
+@screen-large:              1280px; // 电脑
+@screen-larger:             1440px; // 电视
+@screen-largest:            1920px; // 投影仪
 
-// 灰色
-@grayDarker:	    lighten(@black, 13.5%); // #222
-@grayDark:          lighten(@black, 20%);   // #333
-@gray:              lighten(@black, 33.5%); // #555
-@grayLight:         lighten(@black, 60%);   // #999
-@grayLighter:       lighten(@black, 93.5%); // #eee
+@landscape:                 ~"only screen and (orientation: landscape)";
+@portrait:                  ~"only screen and (orientation: portrait)";
 
-// 页面
-@borderColor:       #ddd;
-@hintTextColor:			@grayLight;
+@small-up:                  "only screen";
+@small-only:                e(%("%s and (max-width: %d)", @small-up, @screen-small));
+
+@medium-up:                 e(%("only screen and (min-width: %d)", (@screen-small + 1)));
+@medium-only:               e(%("%s and (max-width: %d)", @medium-up, @screen-medium));
+
+@large-up:                  e(%("only screen and (min-width: %d)", (@screen-medium + 1)));
+@large-only:                e(%("%s and (max-width: %d)", @large-up, @screen-large));
+
+@larger-up:                 e(%("only screen and (min-width: %d)", (@screen-large + 1)));
+@larger-only:               e(%("%s and (max-width: %d)", @larger-up, @screen-larger));
+
+@largest-up:                e(%("only screen and (min-width: %d)", (@screen-larger + 1)));
+@largest-only:              e(%("%s and (max-width: %d)", @largest-up, @screen-largest));
 
 //--------------------------------
 // 全局配置
 //--------------------------------
 
 // 字体
-@baseFontSize:          14px;
-@baseBorderRadius:      4px;
+@base-font-size:            14px;
+@base-border-radius:        4px;
 
 // 间距
-@gridPadding:             8px;   
-@gridMargin:              @gridPadding * 1.5;
+@base-padding:              8px;   
+@base-margin:               @base-padding * 1.75;
 
 // Z-index
-@zindexDropdown:          1000;
-@zindexBalloonTip:        1010;
-@zindexTooltip:           1020;
-@zindexFixedNavbar:       1030;
-@zindexDialogBackdrop:    1040;
-@zindexDialog:            1050;
+@z-index-dropdown:          1000;
+@z-index-tooltip:           1010;
+@z-index-fixed:             1020;
+@z-index-dialog:            1030;
 
 //--------------------------------
-// 相应式
+// 颜色配置
 //--------------------------------
 
-@screenSmall:            640px;  // 手机
-@screenMedium:           1024px; // 平板
-@screenLarge:            1280px; // 电脑
-@screenLarger:           1440px; // 电视
-@screenLargest:          1920px; // 投影仪
-
-// 内部变量
-@screenSmallPlus1:  @screenSmall + 1;
-@screenMediumPlus1:  @screenMedium + 1;
-@screenLargePlus1:  @screenLarge + 1;
-@screenLargerPlus1:  @screenLarger + 1;
-@screenLargestPlus1:  @screenLargest + 1;
-
-@screenOnly:        ~"only screen";
-@landscape:     ~"@{screenOnly} and (orientation: landscape)";
-@portrait:      ~"@{screenOnly} and (orientation: portrait)";
-
-@smallerUp:      @screenOnly;
-@smallerOnly:    ~"@{screenOnly} and (max-width: @{screenSmall})";
-
-@mediumUp:     ~"@{screenOnly} and (min-width: @{screenSmallPlus1})";
-@mediumOnly:   ~"@{mediumUp} and (max-width: @{screenMedium})";
-
-@largeUp:      ~"@{screenOnly} and (min-width: @{screenMediumPlus1})";
-@largeOnly:    ~"@{largeUp} and (max-width: @{screenLarge})";
-
-@largerUp:      ~"@{screenOnly} and (min-width: @{screenLargePlus1})";
-@largerOnly:    ~"@{largerUp} and (max-width: @{screenLarger})";
-
-@largestUp:      ~"@{screenOnly} and (min-width: @{screenLargerPlus1})";
-@largestOnly:    ~"@{largestUp} and (max-width: @{screenLargest})";
-
-
-
-
-
-
-
-
-// 主色
-@primary:           #049cdb;
-@primaryDarker:     lighten(@primary, 15%); // #0064cd
-@primaryLighter:    darken(@primary, 15%); // #3A87AD
-
-// 辅色
-@yellow:            #ffc40d;
-@pink:              #c3325f;
-@purple:            #7a43b6;
+// 页面
+@background-color:          #fff;
+@border-color:              #ddd;
+@hint-color:                #999;
 
 // 状态
-@success:		    #46a546;
-@warning:           #f89406;
-@error:             #9d261d;
-@info:              @primaryDarker;
+@info-text-color:           #049cdb;
+@info-background-color:     rgba(14, 144, 210, 0.114);
+@info-border-color:         darken(@info-background-color, 20%);
 
-@successTextColor:             #468847;
-@successBackgroundColor:       lighten(#dff0d8, 4%);
-@successBorderColor:           darken(spin(@successBackgroundColor, -10), 20%);
+@success-text-color:        #5eb95e;
+@success-background-color:  rgba(94, 185, 94, 0.114);
+@success-border-color:      darken(@success-background-color, 20%);
 
-@infoTextColor:                #3a87ad;
-@infoBackgroundColor:          lighten(#d9edf7, 4%);
-@infoBorderColor:              lighten(@infoTextColor, 30%); //darken(spin
+@warning-text-color:        #F37B1D;
+@warning-background-color:  rgba(243, 123, 29, 0.114);
+@warning-border-color:      darken(@warning-background-color, 20%);
 
-@warningTextColor:             #c09853;
-@warningBackgroundColor:       #fcf8e3;
-@warningBorderColor:           lighten(@warningTextColor, 30%); //darken(spin(@warningBackground, -10), 3%);
+@error-text-color:          #dd514c;
+@error-background-color:    rgba(221, 81, 76, 0.114);
+@error-border-color:        darken(@error-background-color, 20%);
 
-@errorTextColor:               #b94a48;
-@errorBackgroundColor:         #F8E6E6;
-@errorBorderColor:             lighten(@errorTextColor, 30%); //darken(spin(@errorBackground, -10), 3%);(@infoBackground, -10), 7%);
-
-@highlightTextColor:			#FF6600;
-
-
-// Component sizing
-// -------------------------
-
+//--------------------------------
+// 工具函数
+//--------------------------------
 
 // 清除浮动
 // 另参考：http://nicolasgallagher.com/micro-clearfix-hack/
@@ -133,26 +88,8 @@
     }
 }
 
-// Webkit-style focus
-// ------------------
-.tab-focus() {
-	// Default
-	outline: thin dotted;
-	// Webkit
-	outline: 5px auto -webkit-focus-ring-color;
-	outline-offset: -2px;
-}
-
-// Center-align a block level element
-// ----------------------------------
-.center-block() {
-	margin-left: auto;
-	margin-right: auto;
-	.clearfix();
-}
-
 // 提示文案
-.placeholder(@color: #999) {
+.placeholder(@color: @hint-color) {
 	&:-moz-placeholder {
 		color: @color;
 	}
@@ -165,184 +102,20 @@
 }
 
 // 文本超流
-.text-overflow() {
-    overflow: hidden;
-    text-overflow: ellipsis;
+.text-overflow(@behavior: ellipsis) {
+    width: 100%;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: @behavior;
 }
 
-// CSS image replacement
-// -------------------------
-// Source: https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
+// 隐藏文本。参考 https://github.com/h5bp/html5-boilerplate/commit/aa0396eae757
 .hide-text() {
 	font: 0/0 a;
 	color: transparent;
     text-shadow: none;
 	background-color: transparent;
 	border: 0;
-}
-
-
-// CSS3 PROPERTIES
-// --------------------------------------------------
-
-// Border Radius
-.border-radius(@radius: 5px) {
-	-webkit-border-radius: @radius;
-		 -moz-border-radius: @radius;
-					border-radius: @radius;
-}
-
-// Single Corner Border Radius
-.border-top-left-radius(@radius: 5px) {
-	-webkit-border-top-left-radius: @radius;
-			-moz-border-radius-topleft: @radius;
-					border-top-left-radius: @radius;
-}
-.border-top-right-radius(@radius: 5px) {
-	-webkit-border-top-right-radius: @radius;
-			-moz-border-radius-topright: @radius;
-					border-top-right-radius: @radius;
-}
-.border-bottom-right-radius(@radius: 5px) {
-	-webkit-border-bottom-right-radius: @radius;
-			-moz-border-radius-bottomright: @radius;
-					border-bottom-right-radius: @radius;
-}
-.border-bottom-left-radius(@radius: 5px) {
-	-webkit-border-bottom-left-radius: @radius;
-			-moz-border-radius-bottomleft: @radius;
-					border-bottom-left-radius: @radius;
-}
-
-// Single Side Border Radius
-.border-top-radius(@radius: 5px) {
-	.border-top-right-radius(@radius);
-	.border-top-left-radius(@radius);
-}
-.border-right-radius(@radius: 5px) {
-	.border-top-right-radius(@radius);
-	.border-bottom-right-radius(@radius);
-}
-.border-bottom-radius(@radius: 5px) {
-	.border-bottom-right-radius(@radius);
-	.border-bottom-left-radius(@radius);
-}
-.border-left-radius(@radius: 5px) {
-	.border-top-left-radius(@radius);
-	.border-bottom-left-radius(@radius);
-}
-
-// Drop shadows
-.box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
-	-webkit-box-shadow: @shadow;
-		 -moz-box-shadow: @shadow;
-					box-shadow: @shadow;
-}
-
-// Transitions
-.transition(@transition: 3px) {
-	-webkit-transition: @transition;
-		 -moz-transition: @transition;
-			 -o-transition: @transition;
-					transition: @transition;
-}
-.transition-delay(@transition-delay: 3px) {
-	-webkit-transition-delay: @transition-delay;
-		 -moz-transition-delay: @transition-delay;
-			 -o-transition-delay: @transition-delay;
-					transition-delay: @transition-delay;
-}
-
-// Transformations
-.rotate(@degrees: 90) {
-	-webkit-transform: rotate(@degrees);
-		 -moz-transform: rotate(@degrees);
-			-ms-transform: rotate(@degrees);
-			 -o-transform: rotate(@degrees);
-					transform: rotate(@degrees);
-}
-.scale(@ratio: 2) {
-	-webkit-transform: scale(@ratio);
-		 -moz-transform: scale(@ratio);
-			-ms-transform: scale(@ratio);
-			 -o-transform: scale(@ratio);
-					transform: scale(@ratio);
-}
-.translate(@x: 0, @y: 0) {
-	-webkit-transform: translate(@x, @y);
-		 -moz-transform: translate(@x, @y);
-			-ms-transform: translate(@x, @y);
-			 -o-transform: translate(@x, @y);
-					transform: translate(@x, @y);
-}
-.translate3d(@x: 0, @y: 0, @z: 0) {
-	-webkit-transform: translate3d(@x, @y, @z);
-		 -moz-transform: translate3d(@x, @y, @z);
-			 -o-transform: translate3d(@x, @y, @z);
-					transform: translate3d(@x, @y, @z);
-}
-
-// Backface visibility
-// Prevent browsers from flickering when using CSS 3D transforms.
-// Default value is `visible`, but can be changed to `hidden
-// See git pull https://github.com/dannykeane/bootstrap.git backface-visibility for examples
-.backface-visibility(@visibility: visible){
-	-webkit-backface-visibility: @visibility;
-		 -moz-backface-visibility: @visibility;
-					backface-visibility: @visibility;
-}
-
-.skew(@x: 0, @y: 0) {
-	-webkit-transform: skew(@x, @y);
-		 -moz-transform: skew(@x, @y);
-			-ms-transform: skew(@x, @y);
-			 -o-transform: skew(@x, @y);
-					transform: skew(@x, @y);
-}
-
-// Background sizing
-.background-size(@size: 100%){
-	-webkit-background-size: @size;
-		 -moz-background-size: @size;
-			 -o-background-size: @size;
-					background-size: @size;
-}
-
-// User select
-// For selecting text on the page
-.user-select(@select: auto) {
-	-webkit-user-select: @select;
-		 -moz-user-select: @select;
-			-ms-user-select: @select;
-			 -o-user-select: @select;
-					user-select: @select;
-}
-
-// Resize anything
-.resizable(@direction: both) {
-	resize: @direction; // Options: horizontal, vertical, both
-	overflow: auto; // Safari fix
-}
-
-// CSS3 Content Columns
-.content-columns(@columnCount: 4, @columnGap: 980px) {
-	-webkit-column-count: @columnCount;
-		 -moz-column-count: @columnCount;
-					column-count: @columnCount;
-	-webkit-column-gap: @columnGap;
-		 -moz-column-gap: @columnGap;
-					column-gap: @columnGap;
-}
-
-// Optional hyphenation
-.hyphens(@mode: auto) {
-	word-wrap: break-word;
-	-webkit-hyphens: @mode;
-		 -moz-hyphens: @mode;
-			-ms-hyphens: @mode;
-			 -o-hyphens: @mode;
-					hyphens: @mode;
 }
 
 // Opacity

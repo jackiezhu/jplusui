@@ -1,0 +1,24 @@
+﻿.x-list-horizonal,
+.x-list-vertical {
+  margin: 0;
+  padding: 0;
+}
+.x-list-horizonal:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+.x-list-horizonal li {
+  float: left;
+  list-style: none;
+}
+.x-list-vertical li {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  list-style: none;
+}
+.x-list-vertical .x-list-vertical {
+  margin-left: 1em;
+}

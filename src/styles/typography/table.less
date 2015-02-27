@@ -1,0 +1,43 @@
+
+@import "../core/mixins.less";
+
+.x-table {
+    max-width: 100%;
+    width: 100%;
+    border: 1px solid @borderColor;
+    
+    // 表格间隔行高亮
+    tbody tr:nth-child(odd) {
+        background-color: #f6f6f6;
+    }
+
+}
+
+// 颜色值
+.x-table .x-primary, .x-table tbody tr.x-primary {
+    background-color: rgba(14, 144, 210, 0.114);
+    color: #0b76ac;
+}
+
+.x-table .x-danger, .x-table tbody tr.x-danger {
+    background-color: rgba(221, 81, 76, 0.114);
+    color: #dd514c;
+}
+
+// 鼠标以上高亮
+.x-table tbody tr:hover {
+    background-color: #f3f3f3;
+}
+
+// 激活状态。
+.x-table .x-actived {
+    background-color: #ffd !important;
+}
+
+.x-table-small{
+
+    th, td {
+        padding: 2px 4px;
+    }
+
+}

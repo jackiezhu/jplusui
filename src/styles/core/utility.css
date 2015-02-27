@@ -10,13 +10,12 @@ html .x-middle {
 html .x-center {
   margin-left: auto;
   margin-right: auto;
+  text-align: center;
 }
-html .x-relative,
-html div.x-relative {
+html .x-relative {
   position: relative;
 }
-html .x-absolute,
-html div.x-absolute {
+html .x-absolute {
   position: absolute;
 }
 html .x-inline {
@@ -28,52 +27,42 @@ html .x-block {
 html .x-inline-block {
   display: inline-block;
 }
-html .x-hide,
-html div.x-hide {
+html .x-hide {
   display: none;
-}
-html .x-plain,
-html div.x-plain {
-  margin: 0;
-  padding: 0;
-}
-html .x-row {
-  margin-bottom: 10px;
-}
-.x-break-word {
-  word-wrap: break-word;
-  word-break: break-all;
 }
 .x-clear:after {
   content: " ";
   display: table;
   clear: both;
 }
+.x-break-word {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.x-ellipsis {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .x-hint {
   color: #999999;
 }
-.x-success {
-  color: #468847 !important;
-}
 .x-info {
-  color: #3a87ad !important;
+  color: #049cdb !important;
+}
+.x-success {
+  color: #5eb95e !important;
 }
 .x-warning {
-  color: #c09853 !important;
+  color: #f37b1d !important;
 }
 .x-error {
-  color: #b94a48 !important;
-}
-.x-highlight {
-  color: #ff6600 !important;
+  color: #dd514c !important;
 }
 .x-blank {
-  height: 10px;
+  height: 14px;
   display: block;
   visibility: hidden;
   color: #ffffff;
-}
-.x-debug {
-  background: #C03!important;
-  color: #fff!important;
 }

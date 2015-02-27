@@ -16,8 +16,8 @@
 body {
     margin: 0;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
-    font-size: @baseFontSize;
-    line-height: 200%;
+    font-size: @base-font-size;
+    line-height: 175%;
     color: #414243;
 }
 
@@ -29,7 +29,7 @@ input, button, select, textarea, optgroup, pre code {
 
 // 块级元素边距
 p, pre, hr, table, ul, ol, dl, blockquote {
-    margin: @baseFontSize 0;
+    margin: @base-margin 0;
 }
 
 // 链接
@@ -44,40 +44,41 @@ a {
 
 // 标题
 h1, h2, h3, h4, h5, h6 {
-    margin: @baseFontSize 0;
+    margin: @base-font-size 0;
     font-weight: 500;
     line-height: 150%;
     color: #333;
 }
 
 h1 {
-    font-size: @baseFontSize + 14px;
+    font-size: @base-font-size + 14px;
 }
 
 h2 {
-    font-size: @baseFontSize + 8px;
+    font-size: @base-font-size + 8px;
 }
 
 h3 {
-    font-size: @baseFontSize + 4px;
+    font-size: @base-font-size + 4px;
 }
 
 h4 {
-    font-size: @baseFontSize + 2px;
+    font-size: @base-font-size + 2px;
 }
 
 h5 {
-    font-size: @baseFontSize;
+    font-size: @base-font-size;
 }
 
 h6 {
-    font-size: @baseFontSize - 2px;
+    font-size: @base-font-size - 2px;
 }
 
 // 水平线
 hr {
-    border-color: @borderColor;
+    border-color: @border-color;
     border-width: 1px 0 0 0;
+    border-style: solid;
     height: 0;
 }
 
@@ -88,13 +89,9 @@ table {
     empty-cells: show;
 }
 
-th {
-    text-align: center;
-}
-
 th, td {
-    padding: 10px;
-    border: 1px solid @borderColor;
+    padding: @base-padding;
+    border: 1px solid @border-color;
 }
 
 // 代码
@@ -105,23 +102,29 @@ code {
     font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
-// 小标题
+// 列表
+ul, ol, dl {
+    ul, ol, dl {
+        margin: 0;
+    }
+}
+
 dt {
     font-weight: 600;
-    margin-top: @baseFontSize / 2;
+    margin-top: @base-margin / 2;
 }
 
 // 小字
 small {
     font-weight: normal;
-    color: @grayLight;
+    color: @hint-color;
 }
 
 // 引用标签
 abbr {
     font-size: 90%;
     text-transform: uppercase;
-    border-bottom: 1px dotted #ddd;
+    border-bottom: 1px dotted @border-color;
     cursor: help;
 }
 

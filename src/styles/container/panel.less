@@ -1,9 +1,9 @@
 @import "../../styles/core/mixins.less";
 
 .x-panel {
-    background: @white;
-    border: 1px solid @borderColor;
-    margin-bottom: @gridMargin;
+    background: @background-color;
+    border: 1px solid @border-color;
+    margin-bottom: @base-margin;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 
@@ -14,11 +14,11 @@
 .x-panel-header, .x-panel-footer {
     background-color: #F7F7F7;
     line-height: 150%;
-    padding: @gridPadding / 2 @gridPadding;
+    padding: @base-padding / 2 @base-padding;
 }
 
 .x-panel-header {
-    border-bottom: 1px solid @borderColor;
+    border-bottom: 1px solid @border-color;
     h1, h2, h3, h4, h5, h6 {
         margin: 0;
         color: inherit;
@@ -26,11 +26,11 @@
 }
 
 .x-panel-footer {
-    border-top: 1px solid @borderColor;
+    border-top: 1px solid @border-color;
 }
 
 .x-panel-body {
-    padding: @gridPadding;
+    padding: @base-padding;
 }
 
 // ÕÛµþÐ§¹û

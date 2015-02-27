@@ -18,7 +18,7 @@
 
 // 布局行
 .x-grid {
-    margin: 0 -@gridMargin;
+    margin: 0 -@base-margin;
     .clearfix();
 }
 
@@ -26,26 +26,28 @@
 .x-container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 @gridPadding * 2;
+    padding: 0 @base-padding * 2;
     position: relative;
 }
 
 // 当容器和布局行一起使用时，不需要设置 margin
 .x-container.x-grid {
-    padding: 0 @gridPadding;
+    padding: 0 @base-padding;
 }
 
 // 列
 .x-col {
     float: left;
-    padding: 0 @gridPadding;
-    margin-bottom: @gridPadding;
+    padding: 0 @base-padding;
+    margin-bottom: @base-padding;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
 .generateColumns();
 
-@media @mediumUp {
+@media @medium-up {
 
     // 恢复默认显示
     .x-col-0 {
@@ -55,7 +57,7 @@
     .generateColumns(-medium);
 }
 
-@media @largeUp {
+@media @large-up {
 
     // 恢复默认显示
     .x-col-medium-0 {
