@@ -1,39 +1,39 @@
-﻿html .x-left {
-  float: left;
+﻿.x-left {
+  float: left !important;
 }
-html .x-right {
-  float: right;
-}
-html .x-middle {
-  vertical-align: middle;
-}
-html .x-center {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-html .x-relative {
-  position: relative;
-}
-html .x-absolute {
-  position: absolute;
-}
-html .x-inline {
-  display: inline;
-}
-html .x-block {
-  display: block;
-}
-html .x-inline-block {
-  display: inline-block;
-}
-html .x-hide {
-  display: none;
+.x-right {
+  float: right !important;
 }
 .x-clear:after {
   content: " ";
   display: table;
   clear: both;
+}
+.x-middle {
+  vertical-align: middle !important;
+}
+.x-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.x-relative {
+  position: relative !important;
+}
+.x-absolute {
+  position: absolute !important;
+}
+.x-inline {
+  display: inline !important;
+}
+.x-block {
+  display: block !important;
+}
+.x-inline-block {
+  display: inline-block !important;
+}
+.x-hide {
+  display: none;
 }
 .x-break-word {
   word-wrap: break-word;
@@ -44,6 +44,10 @@ html .x-hide {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+span.x-ellipsis,
+a.x-ellipsis {
+  display: inline-block;
 }
 .x-hint {
   color: #999999;
