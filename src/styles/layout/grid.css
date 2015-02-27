@@ -1,5 +1,5 @@
 ﻿.x-grid {
-  margin: 0 -10px;
+  margin: 0 -12px;
 }
 .x-grid:after {
   content: " ";
@@ -9,16 +9,16 @@
 .x-container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
   position: relative;
 }
 .x-container.x-grid {
-  padding: 0 10px;
+  padding: 0 8px;
 }
 .x-col {
   float: left;
-  padding: 0 10px;
-  margin-bottom: 10px;
+  padding: 0 8px;
+  margin-bottom: 8px;
   box-sizing: border-box;
 }
 .x-col-0 {
@@ -60,7 +60,7 @@
 .x-col-12 {
   width: 100%;
 }
-@media only screen and (min-width:641px) {
+@media only screen and (min-width: 640px + 1) {
   .x-col-0 {
     display: block;
   }
@@ -104,7 +104,7 @@
     width: 100%;
   }
 }
-@media only screen and (min-width:1025px) {
+@media only screen and (min-width: 1024px + 1) {
   .x-col-medium-0 {
     display: block;
   }
