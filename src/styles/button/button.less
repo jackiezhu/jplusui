@@ -12,14 +12,15 @@
     -ms-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    padding: 0.1em 1em; // 相对文本大小
-    border: 1px solid #e6e6e6;
+    padding: 0.2em 1em; // 相对文本大小
+    border: 0;
     background-color: #e6e6e6;
-    color: #444;
+    color: @text-color;
     -moz-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     -o-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     -webkit-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     transition: background-color 300ms ease-out, border-color 300ms ease-out;
+    vertical-align: middle;
 }
 
 .x-button:hover, .x-button:focus {
@@ -34,63 +35,58 @@
 }
 
 .x-button[disabled], .x-button-disabled {
-    // https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
-    pointer-events: none; // 禁止事件。
+    pointer-events: none; // 禁止事件，参考 https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
     border-color: transparent;
     opacity: 0.5;
     box-shadow: none;
-    cursor: not-allowed; // 由于 pointer-events: none 可能不生效。
+    cursor: not-allowed; // 由于 pointer-events: none 可能不生效
 }
 
-// Mixin for generating button BackgroundColors
-// ---------------------------------------
-.buttonBackgroundColor(@startColor, @endColor) {
-    background-color: @endColor;
-    border-color: @endColor;
-    // in these cases the gradient won't cover the BackgroundColorColor, so we override
+// 色系
+
+.buttonBackgroundColor(@color) {
+    background-color: @color;
+    color: @background-color;
+
     &:hover, &:focus {
-        background-color: @startColor;
-        border-color: @startColor;
+        background-color: lighten(@color, 15%);
     }
 }
 
-// --------------------------------------------------
-// 按钮尺寸
-// --------------------------------------------------
+.x-button-info {
+    .buttonBackgroundColor(@info-text-color);
+}
 
+.x-button-success {
+    .buttonBackgroundColor(@success-text-color);
+}
+
+.x-button-warn {
+    .buttonBackgroundColor(@warn-text-color);
+}
+
+.x-button-error {
+    .buttonBackgroundColor(@error-text-color);
+}
+
+// 尺寸
 .x-button-large {
     padding: 0.4em 1em;
     font-size: @base-font-size + 4px;
 }
 
 .x-button-small {
-    padding: 0 0.5em;
-}
-
-// Set the BackgroundColors
-// -------------------------
-
-.x-button-info {
-    .buttonBackgroundColor(#4AACCA, #2f96b4);
-}
-
-.x-button-success {
-    .buttonBackgroundColor(#62c462, #51a351);
-}
-
-// Warning appears are orange
-.x-button-warning {
-    .buttonBackgroundColor(lighten(@warning, 15%), @warning);
-}
-
-// error and error appear as red
-.x-button-error {
-    .buttonBackgroundColor(#ee5f5b, #bd362f);
+    padding: 0 0.3em;
 }
 
 .x-button-plain {
     background: none;
-    color: @grayDark;
     border-color: transparent;
-    .box-shadow(none);
+    box-shadow: none;
+}
+
+// 块级按钮
+.x-button.x-block {
+    margin-bottom: @base-margin;
+    width: 100%;
 }

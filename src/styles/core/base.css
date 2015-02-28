@@ -18,6 +18,21 @@ optgroup,
 pre code {
   font: inherit;
   color: inherit;
+  vertical-align: middle;
+  margin: 0;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+textarea {
+  overflow: auto;
+  vertical-align: baseline;
+  *vertical-align: top;
+}
+select {
+  background-color: #ffffff;
 }
 p,
 pre,
@@ -29,6 +44,37 @@ dl,
 blockquote {
   margin: 14px 0;
 }
+/* #if HTML5 */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden],
+template {
+  display: none;
+}
+/* #endif */
 a {
   color: #095f8b;
   text-decoration: none;

@@ -21,16 +21,75 @@ body {
     color: @text-color;
 }
 
-// 恢复部分标签字体
+// 表单元素字体同步
 input, button, select, textarea, optgroup, pre code {
     font: inherit;
     color: inherit;
+    vertical-align: middle;
+    margin: 0;
+}
+
+// 火狐：删除按钮多余的默认边距
+button::-moz-focus-inner, input::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+// 文本域需要滚动条
+textarea {
+    // 为 IE 6-9 删除默认滚动条
+    overflow: auto;
+    // 改进文本框对齐方式
+    vertical-align: baseline;
+    *vertical-align: top;
+}
+
+// 部分 Webkit 内核需要背景才能显示 select
+select {
+    background-color: @background-color;
 }
 
 // 块级元素边距
 p, pre, hr, table, ul, ol, dl, blockquote {
     margin: @base-margin 0;
 }
+
+// HTML5 标签支持
+
+/* #if HTML5 */
+
+// 修复 IE 8/9 部分 HTML5 标签显示
+// 修复 IE 10/11 和火狐 details, summary 显示
+// 修复 IE 11 main 显示
+article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
+    display: block;
+}
+
+audio, canvas, progress, video {
+
+    // 修复 IE 8/9 部分标签显示
+    display: inline-block;
+
+    // 修复 progress 默认对齐方式
+    vertical-align: baseline;
+}
+
+audio:not([controls]) {
+
+    // 不显示缺少 controls 的 audio 标记。
+    display: none;
+    
+    // 清除 IOS 5 多余高度
+    height: 0;
+}
+
+// IE 8/9/10：[hidden] 隐藏
+// IE 8/9/11, Safari 和 Firefox < 22：隐藏 template
+[hidden], template {
+    display: none;
+}
+
+/* #endif */
 
 // 链接
 a {
