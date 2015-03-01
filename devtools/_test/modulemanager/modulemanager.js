@@ -1,7 +1,7 @@
 
 
 
-var ModuleManager = require("../../node/modulemanager/server/modulemanager.js");
+var ModuleManager = require("../../modulemanager/server/modulemanager.js");
 
 
 

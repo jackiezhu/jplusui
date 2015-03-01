@@ -15,7 +15,7 @@ Demo.Configs = {
 	/**
 	 * 当前开发系统在处理文件操作时使用的远程服务器地址。
 	 */
-	serverBaseUrl: 'http://localhost:8021/',
+    serverBaseUrl: 'http://localhost:5370/',
 
 	/**
 	 * 存放源文件的文件夹。
@@ -464,7 +464,7 @@ if (typeof module !== 'object') {
 					var moduleInfo = Demo.moduleInfo;
 					dropDown.className = 'demo-toolbar-dropdown';
 					dropDown.style.cssText = 'padding:5px;*width:260px;';
-					var html = '<style>#demo-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/node/modulemanager/server/api.njs" method="get">\
+					var html = '<style>#demo-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/modulemanager/server/api.njs" method="get">\
                     <fieldset>\
                         <legend>状态</legend>';
 
@@ -500,7 +500,7 @@ if (typeof module !== 'object') {
                 </fieldset>\
 \
                 <input value="保存修改" class="demo-right" type="submit">\
-                <a href="javascript://彻底删除当前模块及相关源码" onclick="if(prompt(\'确定删除当前模块吗?  如果确认请输入 yes\') === \'yes\')location.href=\'' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/node/modulemanager/server/api.njs?action=delete&path=' + encodeURIComponent(Demo.moduleInfo.path) + '&postback=' + encodeURIComponent(Demo.Configs.serverBaseUrl + Demo.Configs.examples) + '\'">删除模块</a>\
+                <a href="javascript://彻底删除当前模块及相关源码" onclick="if(prompt(\'确定删除当前模块吗?  如果确认请输入 yes\') === \'yes\')location.href=\'' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/modulemanager/server/api.njs?action=delete&path=' + encodeURIComponent(Demo.moduleInfo.path) + '&postback=' + encodeURIComponent(Demo.Configs.serverBaseUrl + Demo.Configs.examples) + '\'">删除模块</a>\
 <input type="hidden" name="path" value="' + Demo.Utils.encodeHTML(location.pathname) + '">\
 <input type="hidden" name="action" value="update">\
 <input type="hidden" name="postback" value="' + Demo.Utils.encodeHTML(location.href) + '">\
