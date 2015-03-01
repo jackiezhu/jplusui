@@ -10,13 +10,13 @@
     <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
     <style>
         #list li {
-            width: 200px;
+            width: 260px;
             float: left;
             list-style: none;
             line-height: 24px;
         }
     </style>
-    <style>
+    <style id="icons">
         .x-icon-search:before {
             content: "\f002";
         }
@@ -817,16 +817,19 @@
 <body class="demo">
     <blockquote class="demo">本组件提供图标。图标由 <a target="_blank" href="http://icomoon.io/app/">IcoMoon</a> 提供，原理上使用字体实现。</blockquote>
 
-    <aside class="demo">
-        <a href="###"><i class="x-icon">&#61441;</i>你好</a>
-        <a href="###"><i class="x-icon">　</i>你好</a>
-    </aside>
-
+    <script type="text/html" class="demo">
+        <a href="###"><i class="x-icon">&#61446;</i>你好</a>
+    </script>
+    
     <script>
         document.write('<ul id="list" class="demo-clear">');
-        for (var span = 61440; span < 61440 + 128; span++) {
-            document.write('<li><i class="x-icon">' + String.fromCharCode(span) + '</i>&amp;#' + span + ';</li>');
-        }
+        document.write('<li><i class="x-icon">　</i>empty:<code class="demo">&amp;#' + '　'.charCodeAt(0) + '</code></li>');
+        var icons = document.getElementById('icons').innerHTML;
+        icons.replace(/\.x-icon-(\w+):before\s*\{\n?\s*content:\s*"\\(\w+)"\s*;\s*\}/g, function (all, name, unicode) {
+            unicode = parseInt(unicode, 16);
+
+            document.write('<li><i class="x-icon">' + String.fromCharCode(unicode) + '</i>' + name + ':<code class="demo">&amp;#' + unicode + '</code></li>');
+        });
         document.write('</ul>');
     </script>
 
