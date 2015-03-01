@@ -1,84 +1,54 @@
 
-
-
 @import "../core/mixins.less";
 
-
-@inputTextColor:				@gray;
-@inputBorderColor:				#ccc;
-
-// Input placeholder text color
-@placeholderTextColor:         @grayLight;
-
-// Mixin for form field states
-.formFieldState(@textColor, @borderColor, @backgroundColor) {
-	border-color: @borderColor;
-	&:focus {
-		border-color: darken(@borderColor, 10%);
-		.box-shadow(0 0 6px lighten(@borderColor, 20%));
-	}
-}
-
 .x-textbox {
-	font-family: @serifFontFamily;
-	font-size: @baseFontSize + 1;
-	line-height: @baseLineHeight;
-	padding: 4px;
-	color: @inputTextColor;
-	border: 1px solid @inputBorderColor;
-	.border-radius(@baseBorderRadius); 
-	.box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
-	.transition(~"border linear .2s, box-shadow linear .2s");
+    padding: 0.3em 0.6em;
+    border: 1px solid #ccc;
+    background-color: @background-color;
+    -moz-transition: border linear .2s, box-shadow linear .2s;
+    -o-transition: border linear .2s, box-shadow linear .2s;
+    -webkit-transition: border linear .2s, box-shadow linear .2s;
+    transition: border linear .2s, box-shadow linear .2s;
+
+    &:hover, &:focus {
+        border-color: rgba(82,168,236,.8);
+    }
+
+    &:focus {
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236, .6);
+    }
+
+    &[disabled], &[readonly] {
+        box-shadow: none !important;
+        background-color: #efefef;
+    }
+
+    textarea& {
+        width: 600px;
+        height: 150px;
+    }
 }
 
-.x-textbox:focus {
-	border-color: rgba(82,168,236,.8);
-	.box-shadow(~"inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6)");
-	outline: 0;
-	//		outline: thin dotted \9; /* IE6-9 */
+.textbox-state(@borderColor) {
+    &, &:hover, &:focus {
+        border-color: @borderColor;
+    }
+
+    &:focus {
+        box-shadow: 0 0 6px lighten(@borderColor, 20%);
+    }
 }
 
-.x-textbox[disabled], .x-textbox[readonly]{
-	border-color: @grayBorder; 
-	background-color: @grayLighter; 
-}
+// ״̬
 
-input.x-textbox {
-  height: @baseLineHeight; 
-}
-
-textarea.x-textbox {
-  width: 600px;
-  height: 150px; 
-  line-height: @baseLineHeight + 1;
-}
-
-// Warning
-.x-textbox-warning {
-	.formFieldState(@warningTextColor, @warningTextColor, @warningBackgroundColor);
-}
-
-// Error
-.x-textbox-error {
-	.formFieldState(@errorTextColor, @errorTextColor, @errorBackgroundColor);
-}
-
-// Success
 .x-textbox-success {
-	.formFieldState(@successTextColor, @successTextColor, @successBackgroundColor);
+    .textbox-state(@success-text-color);
 }
 
-// Placeholder
-
-.x-placeholder {
-	color: @placeholderTextColor;
+.x-textbox-warn {
+    .textbox-state(@warn-text-color);
 }
 
-// Firefox's bug: Can not write these properties in single line.
-:-moz-placeholder {
-    color: @placeholderTextColor;
-}
-
-:-ms-input-placeholder, ::-webkit-input-placeholder {
-    color: @placeholderTextColor;
+.x-textbox-error {
+    .textbox-state(@error-text-color);
 }

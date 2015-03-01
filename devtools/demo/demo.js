@@ -663,7 +663,7 @@ if (typeof module !== 'object') {
 				for (var path in ModuleList.examples) {
 					if (path.indexOf('/' + filter) >= 0) {
 						html += getTpl(path);
-					} else if (path.indexOf(filter) >= 0 || ModuleList.examples[path].name.toLowerCase().indexOf(filter) >= 0) {
+					} else if (path.indexOf(filter) >= 0 || (ModuleList.examples[path].name || '').toLowerCase().indexOf(filter) >= 0) {
 						html2 += getTpl(path);
 					}
 				}

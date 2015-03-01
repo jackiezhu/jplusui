@@ -12,25 +12,25 @@
     -ms-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    padding: 0.2em 1em; // 相对文本大小
-    border: 0;
+    padding: 0.3em 1.25em;
     background-color: #e6e6e6;
+    border: 1px solid #e6e6e6;
     color: @text-color;
+
     -moz-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     -o-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     -webkit-transition: background-color 300ms ease-out, border-color 300ms ease-out;
     transition: background-color 300ms ease-out, border-color 300ms ease-out;
-}
 
-.x-button:hover, .x-button:focus {
-    outline: 0;
-    background-color: #c7c7c7;
-    border-color: #c7c7c7;
-    text-decoration: none;
+    &:hover, &:focus {
+        background-color: #c7c7c7;
+        text-decoration: none;
+    }
+
 }
 
 .x-button:active, .x-button-actived {
-    box-shadow: inset 0 1px 8px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 1px 8px rgba(0, 0, 0, .15);
 }
 
 .x-button[disabled], .x-button-disabled {
@@ -43,49 +43,46 @@
 
 // 色系
 
-.buttonBackgroundColor(@color) {
-    background-color: @color;
+.button-state(@color) {
     color: @background-color;
+    background-color: @color;
+    border-color: @color;
 
     &:hover, &:focus {
         background-color: lighten(@color, 15%);
+        border-color: lighten(@color, 15%);
     }
 }
 
 .x-button-info {
-    .buttonBackgroundColor(@info-text-color);
+    .button-state(@info-text-color);
 }
 
 .x-button-success {
-    .buttonBackgroundColor(@success-text-color);
+    .button-state(@success-text-color);
 }
 
 .x-button-warn {
-    .buttonBackgroundColor(@warn-text-color);
+    .button-state(@warn-text-color);
 }
 
 .x-button-error {
-    .buttonBackgroundColor(@error-text-color);
+    .button-state(@error-text-color);
 }
 
 // 尺寸
+
 .x-button-large {
-    padding: 0.4em 1em;
+    padding: 0.6em 1.5em;
     font-size: @base-font-size + 4px;
 }
 
 .x-button-small {
-    padding: 0 0.3em;
+    padding: 0 0.4em;
 }
 
 .x-button-plain {
     background: none;
     border-color: transparent;
     box-shadow: none;
-}
-
-// 块级按钮
-.x-button-block {
-    margin-bottom: @base-margin;
-    width: 100%;
 }

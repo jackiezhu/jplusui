@@ -1,189 +1,834 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="module-info" content="status=complete">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="module-info" content="status=complete">
     <title>图标</title>
-
     <link rel="stylesheet" type="text/css" href="../../../src/styles/core/base.css" />
     <link rel="stylesheet" type="text/css" href="../../../src/styles/partial/icon.css" />
-
     <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
     <style>
         #list li {
-            width: 213px;
+            width: 200px;
             float: left;
             list-style: none;
             line-height: 24px;
         }
+    </style>
+    <style>
+        .x-icon-search:before {
+            content: "\f002";
+        }
 
-        #list i {
-            margin-right: 4px;
+        .x-icon-envelope-o:before {
+            content: "\f003";
+        }
+
+        .x-icon-heart:before {
+            content: "\f004";
+        }
+
+        .x-icon-star:before {
+            content: "\f005";
+        }
+
+        .x-icon-star-o:before {
+            content: "\f006";
+        }
+
+        .x-icon-user:before {
+            content: "\f007";
+        }
+
+        .x-icon-th-large:before {
+            content: "\f009";
+        }
+
+        .x-icon-th:before {
+            content: "\f00a";
+        }
+
+        .x-icon-th-list:before {
+            content: "\f00b";
+        }
+
+        .x-icon-check:before {
+            content: "\f00c";
+        }
+
+        .x-icon-close:before {
+            content: "\f00d";
+        }
+
+        .x-icon-search-plus:before {
+            content: "\f00e";
+        }
+
+        .x-icon-search-minus:before {
+            content: "\f010";
+        }
+
+        .x-icon-power-off:before {
+            content: "\f011";
+        }
+
+        .x-icon-signal:before {
+            content: "\f012";
+        }
+
+        .x-icon-cog:before {
+            content: "\f013";
+        }
+
+        .x-icon-trash-o:before {
+            content: "\f014";
+        }
+
+        .x-icon-home:before {
+            content: "\f015";
+        }
+
+        .x-icon-file-o:before {
+            content: "\f016";
+        }
+
+        .x-icon-clock-o:before {
+            content: "\f017";
+        }
+
+        .x-icon-road:before {
+            content: "\f018";
+        }
+
+        .x-icon-download:before {
+            content: "\f019";
+        }
+
+        .x-icon-repeat:before {
+            content: "\f01e";
+        }
+
+        .x-icon-refresh:before {
+            content: "\f021";
+        }
+
+        .x-icon-lock:before {
+            content: "\f023";
+        }
+
+        .x-icon-flag:before {
+            content: "\f024";
+        }
+
+        .x-icon-bookmark:before {
+            content: "\f02e";
+        }
+
+        .x-icon-font:before {
+            content: "\f031";
+        }
+
+        .x-icon-bold:before {
+            content: "\f032";
+        }
+
+        .x-icon-italic:before {
+            content: "\f033";
+        }
+
+        .x-icon-text-height:before {
+            content: "\f034";
+        }
+
+        .x-icon-text-width:before {
+            content: "\f035";
+        }
+
+        .x-icon-align-left:before {
+            content: "\f036";
+        }
+
+        .x-icon-align-center:before {
+            content: "\f037";
+        }
+
+        .x-icon-align-right:before {
+            content: "\f038";
+        }
+
+        .x-icon-align-justify:before {
+            content: "\f039";
+        }
+
+        .x-icon-list:before {
+            content: "\f03a";
+        }
+
+        .x-icon-dedent:before {
+            content: "\f03b";
+        }
+
+        .x-icon-indent:before {
+            content: "\f03c";
+        }
+
+        .x-icon-video-camera:before {
+            content: "\f03d";
+        }
+
+        .x-icon-image:before {
+            content: "\f03e";
+        }
+
+        .x-icon-map-marker:before {
+            content: "\f041";
+        }
+
+        .x-icon-edit:before {
+            content: "\f044";
+        }
+
+        .x-icon-share-square-o:before {
+            content: "\f045";
+        }
+
+        .x-icon-check-square-o:before {
+            content: "\f046";
+        }
+
+        .x-icon-arrows:before {
+            content: "\f047";
+        }
+
+        .x-icon-step-backward:before {
+            content: "\f048";
+        }
+
+        .x-icon-fast-backward:before {
+            content: "\f049";
+        }
+
+        .x-icon-backward:before {
+            content: "\f04a";
+        }
+
+        .x-icon-play:before {
+            content: "\f04b";
+        }
+
+        .x-icon-pause:before {
+            content: "\f04c";
+        }
+
+        .x-icon-stop:before {
+            content: "\f04d";
+        }
+
+        .x-icon-forward:before {
+            content: "\f04e";
+        }
+
+        .x-icon-fast-forward:before {
+            content: "\f050";
+        }
+
+        .x-icon-step-forward:before {
+            content: "\f051";
+        }
+
+        .x-icon-eject:before {
+            content: "\f052";
+        }
+
+        .x-icon-chevron-left:before {
+            content: "\f053";
+        }
+
+        .x-icon-chevron-right:before {
+            content: "\f054";
+        }
+
+        .x-icon-question-circle:before {
+            content: "\f059";
+        }
+
+        .x-icon-info-circle:before {
+            content: "\f05a";
+        }
+
+        .x-icon-ban:before {
+            content: "\f05e";
+        }
+
+        .x-icon-arrow-left:before {
+            content: "\f060";
+        }
+
+        .x-icon-arrow-right:before {
+            content: "\f061";
+        }
+
+        .x-icon-arrow-up:before {
+            content: "\f062";
+        }
+
+        .x-icon-arrow-down:before {
+            content: "\f063";
+        }
+
+        .x-icon-mail-forward:before {
+            content: "\f064";
+        }
+
+        .x-icon-expand:before {
+            content: "\f065";
+        }
+
+        .x-icon-compress:before {
+            content: "\f066";
+        }
+
+        .x-icon-plus:before {
+            content: "\f067";
+        }
+
+        .x-icon-minus:before {
+            content: "\f068";
+        }
+
+        .x-icon-exclamation-circle:before {
+            content: "\f06a";
+        }
+
+        .x-icon-fire:before {
+            content: "\f06d";
+        }
+
+        .x-icon-exclamation-triangle:before {
+            content: "\f071";
+        }
+
+        .x-icon-calendar:before {
+            content: "\f073";
+        }
+
+        .x-icon-random:before {
+            content: "\f074";
+        }
+
+        .x-icon-comment:before {
+            content: "\f075";
+        }
+
+        .x-icon-chevron-up:before {
+            content: "\f077";
+        }
+
+        .x-icon-chevron-down:before {
+            content: "\f078";
+        }
+
+        .x-icon-bar-chart:before {
+            content: "\f080";
+        }
+
+        .x-icon-thumbs-o-up:before {
+            content: "\f087";
+        }
+
+        .x-icon-thumbs-o-down:before {
+            content: "\f088";
+        }
+
+        .x-icon-heart-o:before {
+            content: "\f08a";
+        }
+
+        .x-icon-sign-out:before {
+            content: "\f08b";
+        }
+
+        .x-icon-external-link:before {
+            content: "\f08e";
+        }
+
+        .x-icon-sign-in:before {
+            content: "\f090";
+        }
+
+        .x-icon-github-square:before {
+            content: "\f092";
+        }
+
+        .x-icon-upload:before {
+            content: "\f093";
+        }
+
+        .x-icon-phone:before {
+            content: "\f095";
+        }
+
+        .x-icon-square-o:before {
+            content: "\f096";
+        }
+
+        .x-icon-bookmark-o:before {
+            content: "\f097";
+        }
+
+        .x-icon-twitter:before {
+            content: "\f099";
+        }
+
+        .x-icon-credit-card:before {
+            content: "\f09d";
+        }
+
+        .x-icon-bell-o:before {
+            content: "\f0a2";
+        }
+
+        .x-icon-hand-o-right:before {
+            content: "\f0a4";
+        }
+
+        .x-icon-wrench:before {
+            content: "\f0ad";
+        }
+
+        .x-icon-arrows-alt:before {
+            content: "\f0b2";
+        }
+
+        .x-icon-chain:before {
+            content: "\f0c1";
+        }
+
+        .x-icon-flask:before {
+            content: "\f0c3";
+        }
+
+        .x-icon-cut:before {
+            content: "\f0c4";
+        }
+
+        .x-icon-copy:before {
+            content: "\f0c5";
+        }
+
+        .x-icon-paperclip:before {
+            content: "\f0c6";
+        }
+
+        .x-icon-floppy-o:before {
+            content: "\f0c7";
+        }
+
+        .x-icon-bars:before {
+            content: "\f0c9";
+        }
+
+        .x-icon-list-ul:before {
+            content: "\f0ca";
+        }
+
+        .x-icon-list-ol:before {
+            content: "\f0cb";
+        }
+
+        .x-icon-strikethrough:before {
+            content: "\f0cc";
+        }
+
+        .x-icon-underline:before {
+            content: "\f0cd";
+        }
+
+        .x-icon-table:before {
+            content: "\f0ce";
+        }
+
+        .x-icon-google-plus-square:before {
+            content: "\f0d4";
+        }
+
+        .x-icon-caret-down:before {
+            content: "\f0d7";
+        }
+
+        .x-icon-caret-up:before {
+            content: "\f0d8";
+        }
+
+        .x-icon-caret-left:before {
+            content: "\f0d9";
+        }
+
+        .x-icon-caret-right:before {
+            content: "\f0da";
+        }
+
+        .x-icon-columns:before {
+            content: "\f0db";
+        }
+
+        .x-icon-sort:before {
+            content: "\f0dc";
+        }
+
+        .x-icon-sort-desc:before {
+            content: "\f0dd";
+        }
+
+        .x-icon-sort-asc:before {
+            content: "\f0de";
+        }
+
+        .x-icon-rotate-left:before {
+            content: "\f0e2";
+        }
+
+        .x-icon-exchange:before {
+            content: "\f0ec";
+        }
+
+        .x-icon-bell:before {
+            content: "\f0f3";
+        }
+
+        .x-icon-coffee:before {
+            content: "\f0f4";
+        }
+
+        .x-icon-fighter-jet:before {
+            content: "\f0fb";
+        }
+
+        .x-icon-angle-double-left:before {
+            content: "\f100";
+        }
+
+        .x-icon-angle-double-right:before {
+            content: "\f101";
+        }
+
+        .x-icon-angle-double-up:before {
+            content: "\f102";
+        }
+
+        .x-icon-angle-double-down:before {
+            content: "\f103";
+        }
+
+        .x-icon-angle-left:before {
+            content: "\f104";
+        }
+
+        .x-icon-angle-right:before {
+            content: "\f105";
+        }
+
+        .x-icon-angle-up:before {
+            content: "\f106";
+        }
+
+        .x-icon-angle-down:before {
+            content: "\f107";
+        }
+
+        .x-icon-desktop:before {
+            content: "\f108";
+        }
+
+        .x-icon-laptop:before {
+            content: "\f109";
+        }
+
+        .x-icon-tablet:before {
+            content: "\f10a";
+        }
+
+        .x-icon-mobile:before {
+            content: "\f10b";
+        }
+
+        .x-icon-circle-o:before {
+            content: "\f10c";
+        }
+
+        .x-icon-quote-left:before {
+            content: "\f10d";
+        }
+
+        .x-icon-quote-right:before {
+            content: "\f10e";
+        }
+
+        .x-icon-spinner:before {
+            content: "\f110";
+        }
+
+        .x-icon-mail-reply:before {
+            content: "\f112";
+        }
+
+        .x-icon-folder-o:before {
+            content: "\f114";
+        }
+
+        .x-icon-folder-open-o:before {
+            content: "\f115";
+        }
+
+        .x-icon-smile-o:before {
+            content: "\f118";
+        }
+
+        .x-icon-frown-o:before {
+            content: "\f119";
+        }
+
+        .x-icon-meh-o:before {
+            content: "\f11a";
+        }
+
+        .x-icon-gamepad:before {
+            content: "\f11b";
+        }
+
+        .x-icon-keyboard-o:before {
+            content: "\f11c";
+        }
+
+        .x-icon-flag-o:before {
+            content: "\f11d";
+        }
+
+        .x-icon-terminal:before {
+            content: "\f120";
+        }
+
+        .x-icon-code:before {
+            content: "\f121";
+        }
+
+        .x-icon-mail-reply-all:before {
+            content: "\f122";
+        }
+
+        .x-icon-crop:before {
+            content: "\f125";
+        }
+
+        .x-icon-code-fork:before {
+            content: "\f126";
+        }
+
+        .x-icon-chain-broken:before {
+            content: "\f127";
+        }
+
+        .x-icon-superscript:before {
+            content: "\f12b";
+        }
+
+        .x-icon-subscript:before {
+            content: "\f12c";
+        }
+
+        .x-icon-css3:before {
+            content: "\f13c";
+        }
+
+        .x-icon-ellipsis-h:before {
+            content: "\f141";
+        }
+
+        .x-icon-ellipsis-v:before {
+            content: "\f142";
+        }
+
+        .x-icon-minus-square-o:before {
+            content: "\f147";
+        }
+
+        .x-icon-sort-alpha-asc:before {
+            content: "\f15d";
+        }
+
+        .x-icon-sort-alpha-desc:before {
+            content: "\f15e";
+        }
+
+        .x-icon-sort-amount-asc:before {
+            content: "\f160";
+        }
+
+        .x-icon-sort-amount-desc:before {
+            content: "\f161";
+        }
+
+        .x-icon-apple:before {
+            content: "\f179";
+        }
+
+        .x-icon-windows:before {
+            content: "\f17a";
+        }
+
+        .x-icon-android:before {
+            content: "\f17b";
+        }
+
+        .x-icon-linux:before {
+            content: "\f17c";
+        }
+
+        .x-icon-dribbble:before {
+            content: "\f17d";
+        }
+
+        .x-icon-skype:before {
+            content: "\f17e";
+        }
+
+        .x-icon-female:before {
+            content: "\f182";
+        }
+
+        .x-icon-male:before {
+            content: "\f183";
+        }
+
+        .x-icon-bug:before {
+            content: "\f188";
+        }
+
+        .x-icon-dot-circle-o:before {
+            content: "\f192";
+        }
+
+        .x-icon-wheelchair:before {
+            content: "\f193";
+        }
+
+        .x-icon-plus-square-o:before {
+            content: "\f196";
+        }
+
+        .x-icon-google:before {
+            content: "\f1a0";
+        }
+
+        .x-icon-paw:before {
+            content: "\f1b0";
+        }
+
+        .x-icon-tencent-weibo:before {
+            content: "\f1d5";
+        }
+
+        .x-icon-qq:before {
+            content: "\f1d6";
+        }
+
+        .x-icon-wechat:before {
+            content: "\f1d7";
+        }
+
+        .x-icon-paper-plane-o:before {
+            content: "\f1d9";
+        }
+
+        .x-icon-history:before {
+            content: "\f1da";
+        }
+
+        .x-icon-paragraph:before {
+            content: "\f1dd";
+        }
+
+        .x-icon-sliders:before {
+            content: "\f1de";
+        }
+
+        .x-icon-share-alt:before {
+            content: "\f1e0";
+        }
+
+        .x-icon-wifi:before {
+            content: "\f1eb";
+        }
+
+        .x-icon-calculator:before {
+            content: "\f1ec";
+        }
+
+        .x-icon-cc-visa:before {
+            content: "\f1f0";
+        }
+
+        .x-icon-bell-slash:before {
+            content: "\f1f6";
+        }
+
+        .x-icon-bell-slash-o:before {
+            content: "\f1f7";
+        }
+
+        .x-icon-trash:before {
+            content: "\f1f8";
+        }
+
+        .x-icon-area-chart:before {
+            content: "\f1fe";
+        }
+
+        .x-icon-line-chart:before {
+            content: "\f201";
+        }
+
+        .x-icon-toggle-off:before {
+            content: "\f204";
+        }
+
+        .x-icon-toggle-on:before {
+            content: "\f205";
+        }
+
+        .x-icon-mic:before {
+            content: "\e600";
+        }
+
+        .x-icon-search2:before {
+            content: "\e601";
+        }
+
+        .x-icon-feed:before {
+            content: "\e602";
+        }
+
+        .x-icon-cancel:before {
+            content: "\e603";
         }
     </style>
 </head>
 <body class="demo">
+    <blockquote class="demo">本组件提供图标。图标由 <a target="_blank" href="http://icomoon.io/app/">IcoMoon</a> 提供，原理上使用字体实现。</blockquote>
 
-    <article class="demo">
+    <aside class="demo">
+        <a href="###"><i class="x-icon">&#61441;</i>你好</a>
+        <a href="###"><i class="x-icon">　</i>你好</a>
+    </aside>
 
-        <blockquote class="demo demo-info">140个黑白图标，可以直接在各个组件中直接使用。图标由 <a target="_blank" href="http://glyphicons.com">Glyphicons</a> 提供。</blockquote>
-
-        <p class="demo">覆盖 background-image 可自定义更多图标。</p>
-
-        <aside class="demo demo-c4">
-            <i class="x-icon x-icon-glass"></i>
-
-            <i class="x-icon x-icon-white x-icon-glass"></i>
-        </aside>
-
-        <ul id="list" class="demo-clear">
-            <li><i class="x-icon x-icon-glass"></i>x-icon-glass</li>
-            <li><i class="x-icon x-icon-music"></i>x-icon-music</li>
-            <li><i class="x-icon x-icon-search"></i>x-icon-search</li>
-            <li><i class="x-icon x-icon-envelope"></i>x-icon-envelope</li>
-            <li><i class="x-icon x-icon-heart"></i>x-icon-heart</li>
-            <li><i class="x-icon x-icon-star"></i>x-icon-star</li>
-            <li><i class="x-icon x-icon-star-empty"></i>x-icon-star-empty</li>
-            <li><i class="x-icon x-icon-user"></i>x-icon-user</li>
-            <li><i class="x-icon x-icon-film"></i>x-icon-film</li>
-            <li><i class="x-icon x-icon-th-large"></i>x-icon-th-large</li>
-            <li><i class="x-icon x-icon-th"></i>x-icon-th</li>
-            <li><i class="x-icon x-icon-th-list"></i>x-icon-th-list</li>
-            <li><i class="x-icon x-icon-ok"></i>x-icon-ok</li>
-            <li><i class="x-icon x-icon-remove"></i>x-icon-remove</li>
-            <li><i class="x-icon x-icon-zoom-in"></i>x-icon-zoom-in</li>
-            <li><i class="x-icon x-icon-zoom-out"></i>x-icon-zoom-out</li>
-            <li><i class="x-icon x-icon-off"></i>x-icon-off</li>
-            <li><i class="x-icon x-icon-signal"></i>x-icon-signal</li>
-            <li><i class="x-icon x-icon-cog"></i>x-icon-cog</li>
-            <li><i class="x-icon x-icon-trash"></i>x-icon-trash</li>
-            <li><i class="x-icon x-icon-home"></i>x-icon-home</li>
-            <li><i class="x-icon x-icon-file"></i>x-icon-file</li>
-            <li><i class="x-icon x-icon-time"></i>x-icon-time</li>
-            <li><i class="x-icon x-icon-road"></i>x-icon-road</li>
-            <li><i class="x-icon x-icon-download-alt"></i>x-icon-download-alt</li>
-            <li><i class="x-icon x-icon-download"></i>x-icon-download</li>
-            <li><i class="x-icon x-icon-upload"></i>x-icon-upload</li>
-            <li><i class="x-icon x-icon-inbox"></i>x-icon-inbox</li>
-
-            <li><i class="x-icon x-icon-play-circle"></i>x-icon-play-circle</li>
-            <li><i class="x-icon x-icon-repeat"></i>x-icon-repeat</li>
-            <li><i class="x-icon x-icon-refresh"></i>x-icon-refresh</li>
-            <li><i class="x-icon x-icon-list-alt"></i>x-icon-list-alt</li>
-            <li><i class="x-icon x-icon-lock"></i>x-icon-lock</li>
-            <li><i class="x-icon x-icon-flag"></i>x-icon-flag</li>
-            <li><i class="x-icon x-icon-headphones"></i>x-icon-headphones</li>
-            <li><i class="x-icon x-icon-volume-off"></i>x-icon-volume-off</li>
-            <li><i class="x-icon x-icon-volume-down"></i>x-icon-volume-down</li>
-            <li><i class="x-icon x-icon-volume-up"></i>x-icon-volume-up</li>
-            <li><i class="x-icon x-icon-qrcode"></i>x-icon-qrcode</li>
-            <li><i class="x-icon x-icon-barcode"></i>x-icon-barcode</li>
-            <li><i class="x-icon x-icon-tag"></i>x-icon-tag</li>
-            <li><i class="x-icon x-icon-tags"></i>x-icon-tags</li>
-            <li><i class="x-icon x-icon-book"></i>x-icon-book</li>
-            <li><i class="x-icon x-icon-bookmark"></i>x-icon-bookmark</li>
-            <li><i class="x-icon x-icon-print"></i>x-icon-print</li>
-            <li><i class="x-icon x-icon-camera"></i>x-icon-camera</li>
-            <li><i class="x-icon x-icon-font"></i>x-icon-font</li>
-            <li><i class="x-icon x-icon-bold"></i>x-icon-bold</li>
-            <li><i class="x-icon x-icon-italic"></i>x-icon-italic</li>
-            <li><i class="x-icon x-icon-text-height"></i>x-icon-text-height</li>
-            <li><i class="x-icon x-icon-text-width"></i>x-icon-text-width</li>
-            <li><i class="x-icon x-icon-align-left"></i>x-icon-align-left</li>
-            <li><i class="x-icon x-icon-align-center"></i>x-icon-align-center</li>
-            <li><i class="x-icon x-icon-align-right"></i>x-icon-align-right</li>
-            <li><i class="x-icon x-icon-align-justify"></i>x-icon-align-justify</li>
-            <li><i class="x-icon x-icon-list"></i>x-icon-list</li>
-
-            <li><i class="x-icon x-icon-indent-left"></i>x-icon-indent-left</li>
-            <li><i class="x-icon x-icon-indent-right"></i>x-icon-indent-right</li>
-            <li><i class="x-icon x-icon-facetime-video"></i>x-icon-facetime-video</li>
-            <li><i class="x-icon x-icon-picture"></i>x-icon-picture</li>
-            <li><i class="x-icon x-icon-pencil"></i>x-icon-pencil</li>
-            <li><i class="x-icon x-icon-map-marker"></i>x-icon-map-marker</li>
-            <li><i class="x-icon x-icon-adjust"></i>x-icon-adjust</li>
-            <li><i class="x-icon x-icon-tint"></i>x-icon-tint</li>
-            <li><i class="x-icon x-icon-edit"></i>x-icon-edit</li>
-            <li><i class="x-icon x-icon-share"></i>x-icon-share</li>
-            <li><i class="x-icon x-icon-check"></i>x-icon-check</li>
-            <li><i class="x-icon x-icon-move"></i>x-icon-move</li>
-            <li><i class="x-icon x-icon-step-backward"></i>x-icon-step-backward</li>
-            <li><i class="x-icon x-icon-fast-backward"></i>x-icon-fast-backward</li>
-            <li><i class="x-icon x-icon-backward"></i>x-icon-backward</li>
-            <li><i class="x-icon x-icon-play"></i>x-icon-play</li>
-            <li><i class="x-icon x-icon-pause"></i>x-icon-pause</li>
-            <li><i class="x-icon x-icon-stop"></i>x-icon-stop</li>
-            <li><i class="x-icon x-icon-forward"></i>x-icon-forward</li>
-            <li><i class="x-icon x-icon-fast-forward"></i>x-icon-fast-forward</li>
-            <li><i class="x-icon x-icon-step-forward"></i>x-icon-step-forward</li>
-            <li><i class="x-icon x-icon-eject"></i>x-icon-eject</li>
-            <li><i class="x-icon x-icon-chevron-left"></i>x-icon-chevron-left</li>
-            <li><i class="x-icon x-icon-chevron-right"></i>x-icon-chevron-right</li>
-            <li><i class="x-icon x-icon-plus-sign"></i>x-icon-plus-sign</li>
-            <li><i class="x-icon x-icon-minus-sign"></i>x-icon-minus-sign</li>
-            <li><i class="x-icon x-icon-remove-sign"></i>x-icon-remove-sign</li>
-            <li><i class="x-icon x-icon-ok-sign"></i>x-icon-ok-sign</li>
-
-            <li><i class="x-icon x-icon-question-sign"></i>x-icon-question-sign</li>
-            <li><i class="x-icon x-icon-info-sign"></i>x-icon-info-sign</li>
-            <li><i class="x-icon x-icon-screenshot"></i>x-icon-screenshot</li>
-            <li><i class="x-icon x-icon-remove-circle"></i>x-icon-remove-circle</li>
-            <li><i class="x-icon x-icon-ok-circle"></i>x-icon-ok-circle</li>
-            <li><i class="x-icon x-icon-ban-circle"></i>x-icon-ban-circle</li>
-            <li><i class="x-icon x-icon-arrow-left"></i>x-icon-arrow-left</li>
-            <li><i class="x-icon x-icon-arrow-right"></i>x-icon-arrow-right</li>
-            <li><i class="x-icon x-icon-arrow-up"></i>x-icon-arrow-up</li>
-            <li><i class="x-icon x-icon-arrow-down"></i>x-icon-arrow-down</li>
-            <li><i class="x-icon x-icon-share-alt"></i>x-icon-share-alt</li>
-            <li><i class="x-icon x-icon-resize-full"></i>x-icon-resize-full</li>
-            <li><i class="x-icon x-icon-resize-small"></i>x-icon-resize-small</li>
-            <li><i class="x-icon x-icon-plus"></i>x-icon-plus</li>
-            <li><i class="x-icon x-icon-minus"></i>x-icon-minus</li>
-            <li><i class="x-icon x-icon-asterisk"></i>x-icon-asterisk</li>
-            <li><i class="x-icon x-icon-exclamation-sign"></i>x-icon-exclamation-sign</li>
-            <li><i class="x-icon x-icon-gift"></i>x-icon-gift</li>
-            <li><i class="x-icon x-icon-leaf"></i>x-icon-leaf</li>
-            <li><i class="x-icon x-icon-fire"></i>x-icon-fire</li>
-            <li><i class="x-icon x-icon-eye-open"></i>x-icon-eye-open</li>
-            <li><i class="x-icon x-icon-eye-close"></i>x-icon-eye-close</li>
-            <li><i class="x-icon x-icon-warning-sign"></i>x-icon-warning-sign</li>
-            <li><i class="x-icon x-icon-plane"></i>x-icon-plane</li>
-            <li><i class="x-icon x-icon-calendar"></i>x-icon-calendar</li>
-            <li><i class="x-icon x-icon-random"></i>x-icon-random</li>
-            <li><i class="x-icon x-icon-comment"></i>x-icon-comment</li>
-            <li><i class="x-icon x-icon-magnet"></i>x-icon-magnet</li>
-
-            <li><i class="x-icon x-icon-chevron-up"></i>x-icon-chevron-up</li>
-            <li><i class="x-icon x-icon-chevron-down"></i>x-icon-chevron-down</li>
-            <li><i class="x-icon x-icon-retweet"></i>x-icon-retweet</li>
-            <li><i class="x-icon x-icon-shopping-cart"></i>x-icon-shopping-cart</li>
-            <li><i class="x-icon x-icon-folder-close"></i>x-icon-folder-close</li>
-            <li><i class="x-icon x-icon-folder-open"></i>x-icon-folder-open</li>
-            <li><i class="x-icon x-icon-resize-vertical"></i>x-icon-resize-vertical</li>
-            <li><i class="x-icon x-icon-resize-horizontal"></i>x-icon-resize-horizontal</li>
-            <li><i class="x-icon x-icon-hdd"></i>x-icon-hdd</li>
-            <li><i class="x-icon x-icon-bullhorn"></i>x-icon-bullhorn</li>
-            <li><i class="x-icon x-icon-bell"></i>x-icon-bell</li>
-            <li><i class="x-icon x-icon-certificate"></i>x-icon-certificate</li>
-            <li><i class="x-icon x-icon-thumbs-up"></i>x-icon-thumbs-up</li>
-            <li><i class="x-icon x-icon-thumbs-down"></i>x-icon-thumbs-down</li>
-            <li><i class="x-icon x-icon-hand-right"></i>x-icon-hand-right</li>
-            <li><i class="x-icon x-icon-hand-left"></i>x-icon-hand-left</li>
-            <li><i class="x-icon x-icon-hand-up"></i>x-icon-hand-up</li>
-            <li><i class="x-icon x-icon-hand-down"></i>x-icon-hand-down</li>
-            <li><i class="x-icon x-icon-circle-arrow-right"></i>x-icon-circle-arrow-right</li>
-            <li><i class="x-icon x-icon-circle-arrow-left"></i>x-icon-circle-arrow-left</li>
-            <li><i class="x-icon x-icon-circle-arrow-up"></i>x-icon-circle-arrow-up</li>
-            <li><i class="x-icon x-icon-circle-arrow-down"></i>x-icon-circle-arrow-down</li>
-            <li><i class="x-icon x-icon-globe"></i>x-icon-globe</li>
-            <li><i class="x-icon x-icon-wrench"></i>x-icon-wrench</li>
-            <li><i class="x-icon x-icon-tasks"></i>x-icon-tasks</li>
-            <li><i class="x-icon x-icon-filter"></i>x-icon-filter</li>
-            <li><i class="x-icon x-icon-briefcase"></i>x-icon-briefcase</li>
-            <li><i class="x-icon x-icon-fullscreen"></i>x-icon-fullscreen</li>
-        </ul>
-
-    </article>
+    <script>
+        document.write('<ul id="list" class="demo-clear">');
+        for (var span = 61440; span < 61440 + 128; span++) {
+            document.write('<li><i class="x-icon">' + String.fromCharCode(span) + '</i>&amp;#' + span + ';</li>');
+        }
+        document.write('</ul>');
+    </script>
 
 </body>
 </html>
