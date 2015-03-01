@@ -62,7 +62,7 @@
   color: #dd514c !important;
 }
 .x-blank {
-  height: 14px;
+  height: 1em;
   display: block;
   visibility: hidden;
   color: #ffffff;

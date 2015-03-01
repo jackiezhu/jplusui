@@ -11,203 +11,265 @@
 
     <!-- 以下代码仅用于演示 -->
     <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
-
 </head>
 <body class="demo">
 
     <blockquote class="demo">
-        本组件提供最基础 CSS 样式，所有组件都依赖了此组件。
-        <ol class="demo">
-            <li><a href="#cssreset">CSS 重置。</a></li>
-            <li><a href="#typography">标签默认样式。</a></li>
-        </ol>
+        本组件对常用标签样式进行了重置，还定义了默认字体、间距等基础样式。使用本库所有组件之前都必须先引入本组件。
     </blockquote>
+
+    <h2 class="demo">CSS 重置 <small class="demo">(CSS Normalize/Reset)</small></h2>
+
+    <p class="demo">
+        为了方便前端开发，统一浏览器默认行为，JPlusUI 对部分标签的样式进行统一重置。主要有：
+    </p>
+
+    <h3 class="demo">重置 HTML5 新标签</h3>
     
-    <article class="demo" id="cssreset">
-        <h2 class="demo">1. CSS 重置 <small class="demo">(Normalize/Reset)</small></h2>
-
-        <p class="demo">为了方便前端开发，统一浏览器默认行为，JPlusUI 对部分标签的默认样式机进行统一。同时为了精简代码，JPlusUI 并未处理不常用的标签。另外也可参考完整的重置方案：<a href="https://github.com/necolas/normalize.css">normalize.css<i class="x-icon x-icon-external-link"></i></a></p>
-
-        <h3 class="demo">字体</h3>
+    <script class="demo" type="code/css">
+        article, aside, section, header, footer, nav, menu, figcaption, figure, main, details, summary {
+            display: block;
+        }
         
-        <p class="demo">JPlusUI 默认将字体设为：</p>
+        [hidden], template, audio:not([controls]) {
+            display: none;
+        }
+    </script>
+
+    <h3 class="demo">重置表单标签</h3>
+
+    <script class="demo" type="code/css">
+        input, button, select, textarea, optgroup {
+            font: inherit;
+        }
         
-        <script class="demo" type="code/css">
-            body {
-                font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
-                font-size: 14px;
-                line-height: 28px;
+        textarea {
+            overflow: auto;
+            vertical-align: top;
+        }
+    </script>
+
+    <h3 class="demo">重置默认字体</h3>
+
+    <p class="demo">为保证中文排版更加美观，JPlusUI 使用了 14px 大号字体。用户也可通过修改 less 配置默认字体。</p>
+    
+    <script class="demo" type="code/css">
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
+            font-size: 14px;
+            line-height: 28px;
+        }
+    </script>
+
+    <h3 class="demo">重置默认间距</h3>
+
+    <p class="demo">为语义化块级标签定义外边距：</p>
+
+    <script class="demo" type="code/css">
+        p, hr, table, ul, ol, dl, blockquote, pre, address, fieldset, figure {
+            margin: 0 0 14px;
+        }
+    </script>
+
+    <p class="demo">
+        为精简代码，JPlusUI 并未重置其它标签。另参考：<a href="https://github.com/necolas/normalize.css">normalize.css<i class="x-icon x-icon-external-link"></i></a>
+    </p>
+
+    <h2 class="demo">标签默认样式</h2>
+
+    <h3 class="demo">链接</h3>
+
+    <aside class="demo">
+        <a href="###">我是链接</a>
+    </aside>
+
+    <h3 class="demo">标题</h3>
+
+    <aside class="demo demo-noformat">
+        <h1>标题1：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h1>
+        <h2>标题2：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h2>
+        <h3>标题3：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h3>
+        <h4>标题4：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h4>
+        <h5>标题5：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h5>
+        <h6>标题6：标题标题标题标题标题标题标题标题标题标题 Heading <small>副标题 Subheading</small></h6>
+    </aside>
+
+    <h3 class="demo">段落</h3>
+
+    <aside class="demo demo-noformat" id="article_demo">
+        <style>
+            #article_demo h3 {
+                text-align: center;
             }
-        </script>
 
-        <aside class="demo demo-nosrc">
-            JPlusUI 主要针对以下两种用户：
-            <ol>
-                <li>不懂设计的前端码农，可以快速构建漂亮的页面。</li>
-                <li>不懂 Js 的设计师，可以快速添加页面交互。</li>
-            </ol>
-            您可以在 <a href="https://github.com/jplusui/jplusui" target="_blank">Github<i class="x-icon x-icon-github"></i></a> 下载 JPlusUI。
-        </aside>
-
-        <h3 class="demo">间距</h3>
-
-        <p class="demo">JPlusUI 默认将间距设为：</p>
-
-        <script class="demo" type="code/css">
-            h1, h2, h3, h4, h5, h6, p, pre, hr, table, ul, ol, dl, blockquote {
-                margin: 14px 0;
+            #article_demo p {
+                text-indent: 2em;
             }
-        </script>
+        </style>
+        <h3>雪</h3>
+        <p>美丽的雪花飞舞起来了。我已经有三年不曾见着它。</p>
+        <p>去年在福建，仿佛比现在更迟一点，也曾见过雪。但那是远处山顶的积雪，可不是飞舞的雪花。在平原上，它只是偶然的随着雨点洒下来几颗，没有落到地面的时候。它的颜色是灰的，不是白色；它的重量像是雨点，并不会飞舞。一到地面，它立刻融成了水，没有痕迹，也未尝跳跃，也未尝发出唏嘘的声音，像江浙一带下雪时的模样。这样的雪，在四十年来第一次看见它的老年的福建人，诚然能感到特别的意味，谈得津津有味，但在我，却总觉得索然。"福建下过雪"，我可没有这样想过。</p>
+        <p>我喜欢眼前飞舞着的上海的雪花。它才是"雪白"的白色，也才是花一样的美丽。它好像比空气还轻，并不从半空里落下来，而是被空气从地面卷起来的。然而它又像是活的生物，像夏天黄昏时候的成群的蚊蚋(ruì)，像春天酿蜜时期的蜜蜂，它的忙碌的飞翔，或上或下，或快或慢，或粘着人身，或拥入窗隙，仿佛自有它自己的意志和目的。它静默无声。但在它飞舞的时候，我们似乎听见了千百万人马的呼号和脚步声，大海汹涌的波涛声，森林的狂吼声，有时又似乎听见了儿女的窃窃私语声，礼拜堂的平静的晚祷声，花园里的欢乐的鸟歌声……它所带来的是阴沉与严寒。但在它的飞舞的姿态中，我们看见了慈善的母亲，活泼的孩子，微笑的花儿，和暖的太阳，静默的晚霞……它没有气息。但当它扑到我们面上的时候，我们似乎闻到了旷野间鲜洁的空气的气息，山谷中幽雅的兰花的气息，花园里浓郁的玫瑰的气息，清淡的茉莉花的气息……在白天，它做出千百种婀娜的姿态；夜间，它发出银色的光辉，照耀着我们行路的人，又在我们的玻璃窗上扎扎地绘就了各式各样的花卉和树木，斜的，直的，弯的，倒的。还有那河流，那天上的云…</p>
+    </aside>
 
-    </article>
+    <h3 class="demo">水平线</h3>
 
-    <article class="demo" id="typography">
+    <aside class="demo">
+        <hr />
+    </aside>
 
-        <h2 class="demo">2. 标签默认样式</h2>
+    <blockquote class="demo demo-info">更多水平线样式请参考 <a href="../typography/line.html">水平线</a> 组件。</blockquote>
 
-        <p class="demo">JPlusUI 为常用标签定义了默认样式，让页面更美观。</p>
+    <h3 class="demo">列表</h3>
 
-        <section class="demo">
-
-            <h3 class="demo">标题</h3>
-
-            <p class="demo"></p>
-
-            <aside class="demo demo-noformat">
-                <h1>标题1 Heading 1 <small>备注 Hint</small></h1>
-                <h2>标题2 Heading 2 <small>备注 Hint</small></h2>
-                <h3>标题3 Heading 3 <small>备注 Hint</small></h3>
-                <h4>标题4 Heading 4 <small>备注 Hint</small></h4>
-                <h5>标题5 Heading 5 <small>备注 Hint</small></h5>
-                <h6>标题6 Heading 6 <small>备注 Hint</small></h6>
-                <h3>我是很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的标题 <small>备注 Hint</small></h3>
-            </aside>
-
-        </section>
-
-        <section class="demo">
-
-            <h3 class="demo">段落</h3>
-
-            <aside class="demo demo-noformat">
-                <h3 style="text-align: center">雪</h3>
-                <p style="text-indent:2em;">美丽的雪花飞舞起来了。我已经有三年不曾见着它。</p>
-                <p style="text-indent:2em;">去年在福建，仿佛比现在更迟一点，也曾见过雪。但那是远处山顶的积雪，可不是飞舞的雪花。在平原上，它只是偶然的随着雨点洒下来几颗，没有落到地面的时候。它的颜色是灰的，不是白色；它的重量像是雨点，并不会飞舞。一到地面，它立刻融成了水，没有痕迹，也未尝跳跃，也未尝发出唏嘘的声音，像江浙一带下雪时的模样。这样的雪，在四十年来第一次看见它的老年的福建人，诚然能感到特别的意味，谈得津津有味，但在我，却总觉得索然。"福建下过雪"，我可没有这样想过。</p>
-                <p style="text-indent:2em;">我喜欢眼前飞舞着的上海的雪花。它才是"雪白"的白色，也才是花一样的美丽。它好像比空气还轻，并不从半空里落下来，而是被空气从地面卷起来的。然而它又像是活的生物，像夏天黄昏时候的成群的蚊蚋(ruì)，像春天酿蜜时期的蜜蜂，它的忙碌的飞翔，或上或下，或快或慢，或粘着人身，或拥入窗隙，仿佛自有它自己的意志和目的。它静默无声。但在它飞舞的时候，我们似乎听见了千百万人马的呼号和脚步声，大海汹涌的波涛声，森林的狂吼声，有时又似乎听见了儿女的窃窃私语声，礼拜堂的平静的晚祷声，花园里的欢乐的鸟歌声……它所带来的是阴沉与严寒。但在它的飞舞的姿态中，我们看见了慈善的母亲，活泼的孩子，微笑的花儿，和暖的太阳，静默的晚霞……它没有气息。但当它扑到我们面上的时候，我们似乎闻到了旷野间鲜洁的空气的气息，山谷中幽雅的兰花的气息，花园里浓郁的玫瑰的气息，清淡的茉莉花的气息……在白天，它做出千百种婀娜的姿态；夜间，它发出银色的光辉，照耀着我们行路的人，又在我们的玻璃窗上扎扎地绘就了各式各样的花卉和树木，斜的，直的，弯的，倒的。还有那河流，那天上的云…</p>
-            </aside>
-
-        </section>
-
-        <section class="demo">
-
-            <h3 class="demo">列表</h3>
-
-            <aside class="demo">
+    <aside class="demo">
+        <ul>
+            <li>列表1</li>
+            <li>
+                列表 2
                 <ul>
-                    <li>列表1</li>
-                    <li>
-                        列表 2
-                        <ul>
-                            <li>列表 2.1</li>
-                            <li>列表 2.2</li>
-                        </ul>
-                    </li>
+                    <li>列表 2.1</li>
+                    <li>列表 2.2</li>
                 </ul>
+            </li>
+        </ul>
 
-                <ol>
-                    <li>列表1</li>
-                    <li>列表 2</li>
-                </ol>
+        <ol>
+            <li>列表1</li>
+            <li>列表 2</li>
+        </ol>
 
-                <dl>
-                    <dt>列表1</dt>
-                    <dd>列表 2</dd>
-                    <dt>列表1</dt>
-                    <dd>列表 2</dd>
-                </dl>
+        <dl>
+            <dt>列表1</dt>
+            <dd>列表 2</dd>
+            <dt>列表1</dt>
+            <dd>列表 2</dd>
+        </dl>
 
-            </aside>
+    </aside>
 
-        </section>
+    <blockquote class="demo demo-info">更多列表样式请参考 <a href="../typography/list.html">列表</a> 组件。</blockquote>
 
-        <section class="demo">
-            
-            <h3 class="demo">表格</h3>
+    <h3 class="demo">表格</h3>
 
-            <aside class="demo">
-                <table>
-                    <tr>
-                        <td>表格 1-1</td>
-                        <td>表格 1-2</td>
-                    </tr>
-                    <tr>
-                        <td>表格 2-1</td>
-                        <td>表格 2-2</td>
-                    </tr>
-                    <tr>
-                        <td>表格 3-1</td>
-                        <td>表格 3-2</td>
-                    </tr>
-                </table>
-            </aside>
+    <aside class="demo">
+        <table>
+            <tr>
+                <td>表格 1-1</td>
+                <td>表格 1-2</td>
+            </tr>
+            <tr>
+                <td>表格 2-1</td>
+                <td>表格 2-2</td>
+            </tr>
+            <tr>
+                <td>表格 3-1</td>
+                <td>表格 3-2</td>
+            </tr>
+        </table>
+    </aside>
+    
+    <blockquote class="demo demo-info">更多表格样式请参考 <a href="../typography/table.html">表格</a> 组件。</blockquote>
 
+    <h3 class="demo">图片</h3>
 
-        </section>
+    <aside class="demo">
+        <img src="../../../devtools/demo/resources/260x180.gif" />
+        <img src="../../../devtools/demo/resources/260x180.gif" style="border-radius: 10px" />
+        <img src="../../../devtools/demo/resources/200x200.gif" style="border-radius: 50%" />
+    </aside>
 
-        <section class="demo">
+    <blockquote class="demo demo-info">更多图片样式请参考<a href="../typography/article.html">文章</a> 组件、<a href="../typography/thumbnail.html">缩略图</a> 组件、<a href="../typography/videoplaceholder.html">视频缩略图</a> 组件和 <a href="../typography/face.html">头像</a> 组件。</blockquote>
 
-            <h3 class="demo">水平线</h3>
+    <h3 class="demo">表单</h3>
 
-            <aside class="demo">
-                <hr />
-            </aside>
+    <p class="demo">JPlusUI 提供了专门的表单组件，因此基础样式中未定义表单标签的样式，只负责修复表单默认样式。另参考 <a href="../form/form.html">表单</a> 组件。</p>
 
-        </section>
-        
-        <section>
-            
-            <h3 class="demo">表单元素</h3>
+    <aside class="demo">
+        <label>文本</label>:
+        <input type="text" value="文本框" />
+        <select>
+            <optgroup label="选择组">
+                <option>选择框1</option>
+                <option>选择框2</option>
+            </optgroup>
+            <option>选择框1</option>
+            <option>选择框2</option>
+        </select>
+        <input type="button" value="按钮" />
+        <button>按钮2</button>
+        <br />
+        <label>文本</label>:
+        <textarea>文本域</textarea>
+    </aside>
 
-            <p class="demo">因为 JPlusUI 提供了专门的表单组件，基础样式中未指定表单元素的样式。</p>
+    <blockquote class="demo demo-info">更多表单样式请参考 <a href="../form/form.html">表单</a> 组件。</blockquote>
 
-            <aside class="demo">
-                <input type="button" value="按钮" />
+    <h3 class="demo">其它块级标签</h3>
 
-                <button>按钮2</button>
+    <aside class="demo">
+        <address>address</address>
+        <blockquote>blockquote</blockquote>
+    </aside>
 
-                <select>
-                    <option>选择框</option>
-                </select>
+    <blockquote class="demo demo-info">用于表示名言引入的块级引用请参考 <a href="../typography/blockquote.html">块级引用</a> 组件。</blockquote>
 
-                <input type="text" value="文本框" />
+    <h3 class="demo">其它内联标签</h3>
 
-                <textarea>文本域</textarea>
-            </aside>
-            
-        </section>
+    <aside class="demo">
+        文本：
+        <code>code</code>
+        <strong>strong</strong>
+        <em>em</em>
+        <big>big</big>
+        <small>small</small>
+        <sup>sup</sup>
+        <sub>sub</sub>
+        <del>del</del>
+        <cite>cite</cite>
+        <abbr title="我是说明">abbr</abbr>
+        <dfn>dfn</dfn>
+        <u>u</u>
+        <i>i</i>
+        <b>b</b>
+        <q>q</q>
+        <ins>ins</ins>
+        <mark>mark</mark>
+    </aside>
 
-        <section class="demo">
+    <h3 class="demo">HTML5 新标签</h3>
 
-            <h3 class="demo">其它标签</h3>
+    <aside class="demo">
+        <aside>aside</aside>
 
-            <aside class="demo">
-                内联标签：
-                <code>code</code>
-                <strong>strong</strong>
-                <em>em</em>
-                <big>big</big>
-                <small>small</small>
-                <sup>sup</sup>
-                <sub>sub</sub>
-                <del>del</del>
-                <cite>cite</cite>
-                <abbr>abbr</abbr>
-                <address>块级标签：address</address>
-            </aside>
+        <details>
+            <summary>点我展开</summary>
+            <p>我是被展开的内容</p>
+        </details>
 
-        </section>
+        audio:
+        <audio></audio>
+        <audio controls="controls" src="../../../devtools/demo/resources/horse.ogg">
+            您的浏览器不支持 audio 标签。
+        </audio>
+        <br />
 
-    </article>
+        video:
+        <video controls="controls" src="../../../devtools/demo/resources/horse.ogg"></video>
+        <br />
+
+        canvas:
+        <canvas></canvas>
+        <br />
+
+        progress:
+        <progress value="0.8"></progress>
+
+        <template>
+            template 不应该被显示
+        </template>
+    </aside>
 
 </body>
 </html>

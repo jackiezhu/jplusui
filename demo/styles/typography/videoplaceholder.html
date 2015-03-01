@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="module-info" content="status=complete">
-    <title>视频播放按钮</title>
+    <title>视频缩略图</title>
+
+    <!-- 以下是本组件的全部源码 -->
     <link rel="stylesheet" type="text/css" href="../../../src/styles/core/base.css" />
+    <link rel="stylesheet" type="text/css" href="../../../src/styles/typography/thumbnail.css" />
     <link rel="stylesheet" type="text/css" href="../../../src/styles/typography/videoplaceholder.css" />
+
+    <!-- 以下代码仅用于演示 -->
     <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
 </head>
-    <body class="demo">
-        
-        <aside class="demo demo-noformat">
-            <a class="x-videoplaceholder" href="#">
-                <img alt="" src="../../../devtools/demo/resources/200x200.gif">
-                <span class="x-videoplaceholder-icon"></span>
-            </a>
-        </aside>
+<body class="demo">
 
-        <aside class="demo demo-noformat">
-            <a class="x-videoplaceholder x-videoplaceholder-small" href="#">
-                <img alt="" src="../../../devtools/demo/resources/100x100.gif">
-                <span class="x-videoplaceholder-icon"></span>
-            </a>
-        </aside>
+    <aside class="demo demo-noformat">
+        <a href="#" class="x-videoplaceholder">
+            <img class="x-thumbnail" src="../../../devtools/demo/resources/200x200.gif">
+        </a>
+    </aside>
 
-    </body>
+    <aside class="demo demo-noformat">
+        <a href="#" class="x-videoplaceholder x-videoplaceholder-small">
+            <img class="x-thumbnail" src="../../../devtools/demo/resources/100x100.gif">
+        </a>
+    </aside>
+
+</body>
 </html>

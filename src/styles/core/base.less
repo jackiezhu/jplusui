@@ -7,89 +7,61 @@
 @import "../core/mixins.less";
 
 //--------------------------------
-// 全局
+// 样式重置
 //--------------------------------
 
-// 样式重置另参考：https://github.com/necolas/normalize.css
+// 为了精简代码量，本重置仅包含最常用的标签和样式。
+// 完整版另参考：https://github.com/necolas/normalize.css。
 
-// 全局字体
+// HTML5 标签支持。
+
+// IE 9-：修复部分 HTML5 标签显示。
+// IE 11-、Firefox：修复 details, summary 标签显示。
+// IE 11-：修复 main 标签显示。
+// hgroup 已被从 HTML5 标准移除。
+article, aside, section, header, footer, nav, menu, figcaption, figure, main, details, summary {
+    display: block;
+}
+
+// IE 10-：隐藏 [hidden]。
+// IE 11-、Safari、Firefox 21-：隐藏 template
+// 不显示缺少 controls 的 audio 标记。
+[hidden], template, audio:not([controls]) {
+    display: none;
+}
+
+// 表单标签支持。
+
+// 禁止表单元素单独指定字体。
+input, button, select, textarea, optgroup {
+    font: inherit;
+}
+
+// Firefox：删除按钮多余 2px 边距。
+button::-moz-focus-inner, input::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+textarea {
+    overflow: auto;  // IE 6-9：删除默认滚动条。
+    vertical-align: top; // 改进文本框对齐方式。
+}
+
+// 全局字体。
 body {
     margin: 0;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
     font-size: @base-font-size;
     line-height: 175%;
     color: @text-color;
-}
-
-// 表单元素字体同步
-input, button, select, textarea, optgroup, pre code {
-    font: inherit;
-    color: inherit;
-    vertical-align: middle;
-    margin: 0;
-}
-
-// 火狐：删除按钮多余的默认边距
-button::-moz-focus-inner, input::-moz-focus-inner {
-    padding: 0;
-    border: 0;
-}
-
-// 文本域需要滚动条
-textarea {
-    // 为 IE 6-9 删除默认滚动条
-    overflow: auto;
-    // 改进文本框对齐方式
-    vertical-align: baseline;
-    *vertical-align: top;
-}
-
-// 部分 Webkit 内核需要背景才能显示 select
-select {
     background-color: @background-color;
 }
 
 // 块级元素边距
-p, pre, hr, table, ul, ol, dl, blockquote {
-    margin: @base-margin 0;
+p, hr, table, ul, ol, dl, blockquote, pre, address, fieldset, figure {
+    margin: 0 0 @base-margin;
 }
-
-// HTML5 标签支持
-
-/* #if HTML5 */
-
-// 修复 IE 8/9 部分 HTML5 标签显示
-// 修复 IE 10/11 和火狐 details, summary 显示
-// 修复 IE 11 main 显示
-article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
-    display: block;
-}
-
-audio, canvas, progress, video {
-
-    // 修复 IE 8/9 部分标签显示
-    display: inline-block;
-
-    // 修复 progress 默认对齐方式
-    vertical-align: baseline;
-}
-
-audio:not([controls]) {
-
-    // 不显示缺少 controls 的 audio 标记。
-    display: none;
-    
-    // 清除 IOS 5 多余高度
-    height: 0;
-}
-
-// IE 8/9/10：[hidden] 隐藏
-// IE 8/9/11, Safari 和 Firefox < 22：隐藏 template
-[hidden], template {
-    display: none;
-}
-
-/* #endif */
 
 // 链接
 a {
@@ -103,7 +75,7 @@ a {
 
 // 标题
 h1, h2, h3, h4, h5, h6 {
-    margin: @base-font-size 0;
+    margin: @base-margin / 2 0;
     font-weight: 500;
     line-height: 150%;
     color: #333;
@@ -141,26 +113,6 @@ hr {
     height: 0;
 }
 
-// 表格
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    empty-cells: show;
-}
-
-th, td {
-    padding: @base-padding;
-    border: 1px solid @border-color;
-}
-
-// 代码
-code {
-    padding: 2px 4px;
-    color: #990000;
-    background-color: #f8f8f8;
-    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-}
-
 // 列表
 ul, ol, dl {
     ul, ol, dl {
@@ -173,21 +125,50 @@ dt {
     margin-top: @base-margin / 2;
 }
 
-// 小字
-small {
-    font-weight: normal;
-    color: @hint-color;
+// 表格
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
 }
 
-// 引用标签
-abbr {
-    font-size: 90%;
-    text-transform: uppercase;
-    border-bottom: 1px dotted @border-color;
-    cursor: help;
+th, td {
+    padding: @base-padding;
+    border: 1px solid @border-color;
+}
+
+// 图片
+img {
+    max-width: 100%; // 阻止图片超出显示区域。
+    vertical-align: middle; // 优化对齐方式。
+    border: 0; // 删除链接内图片边框。
+}
+
+// 图片
+figure {
+    text-align: center;
 }
 
 // 地址
 address, cite {
     font-style: normal;
+}
+
+// 代码
+code {
+    padding: 2px 4px;
+    color: #990000;
+    background-color: #f8f8f8;
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+
+// 小字
+small {
+    font-weight: 100;
+    color: @hint-color;
+}
+
+// IE 8-11, Safari, and Chrome: 添加下划线。
+abbr[title] {
+    border-bottom: 1px dotted;
 }

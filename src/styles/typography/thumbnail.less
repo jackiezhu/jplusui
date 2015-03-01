@@ -2,27 +2,17 @@
 @import "../core/mixins.less";
 
 .x-thumbnail {
-    display: inline-block;
-    *display: inline;
-    padding: 4px;
-    line-height: 1;
-    border: 1px solid @grayBorder;
-    .border-radius(@baseBorderRadius);
-    .box-shadow(0 1px 3px rgba(0,0,0,.055));
-	*padding: 0;
+    padding: 3px;
+    border: 1px solid @border-color;
+    box-shadow: 0 1px 3px rgba(0,0,0,.055);
+    -moz-transition: border-color .2s ease-in-out;
+    -o-transition: border-color .2s ease-in-out;
+    -webkit-transition: border-color .2s ease-in-out;
+    transition: border-color .2s ease-in-out;
+    /**display: inline;
+    *padding: 0;*/
 }
 
-// Add a hover state for linked versions only
-a.x-thumbnail:hover {
-    border-color: @linkColor;
-    .box-shadow(0 1px 4px rgba(0,105,214,.25));
-	.transition(all .2s ease-in-out);
-}
-
-// Images and captions
-.x-thumbnail img {
-    display: block;
-    maui-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+a:hover .x-thumbnail {
+    border-color: @link-color;
 }

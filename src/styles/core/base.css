@@ -3,23 +3,31 @@
  * @copyright 2011-2015 The JPlusUI Team
  * @license The BSD License
  */
-body {
-  margin: 0;
-  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
-  font-size: 14px;
-  line-height: 175%;
-  color: #414243;
+article,
+aside,
+section,
+header,
+footer,
+nav,
+menu,
+figcaption,
+figure,
+main,
+details,
+summary {
+  display: block;
+}
+[hidden],
+template,
+audio:not([controls]) {
+  display: none;
 }
 input,
 button,
 select,
 textarea,
-optgroup,
-pre code {
+optgroup {
   font: inherit;
-  color: inherit;
-  vertical-align: middle;
-  margin: 0;
 }
 button::-moz-focus-inner,
 input::-moz-focus-inner {
@@ -28,53 +36,29 @@ input::-moz-focus-inner {
 }
 textarea {
   overflow: auto;
-  vertical-align: baseline;
-  *vertical-align: top;
+  vertical-align: top;
 }
-select {
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
+  font-size: 14px;
+  line-height: 175%;
+  color: #414243;
   background-color: #ffffff;
 }
 p,
-pre,
 hr,
 table,
 ul,
 ol,
 dl,
-blockquote {
-  margin: 14px 0;
+blockquote,
+pre,
+address,
+fieldset,
+figure {
+  margin: 0 0 1em;
 }
-/* #if HTML5 */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
-}
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  vertical-align: baseline;
-}
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-[hidden],
-template {
-  display: none;
-}
-/* #endif */
 a {
   color: #095f8b;
   text-decoration: none;
@@ -88,7 +72,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 14px 0;
+  margin: 0.5em 0;
   font-weight: 500;
   line-height: 150%;
   color: #333;
@@ -117,22 +101,6 @@ hr {
   border-style: solid;
   height: 0;
 }
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  empty-cells: show;
-}
-th,
-td {
-  padding: 8px;
-  border: 1px solid #dddddd;
-}
-code {
-  padding: 2px 4px;
-  color: #990000;
-  background-color: #f8f8f8;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-}
 ul ul,
 ol ul,
 dl ul,
@@ -146,19 +114,40 @@ dl dl {
 }
 dt {
   font-weight: 600;
-  margin-top: 7px;
+  margin-top: 0.5em;
 }
-small {
-  font-weight: normal;
-  color: #999999;
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
 }
-abbr {
-  font-size: 90%;
-  text-transform: uppercase;
-  border-bottom: 1px dotted #dddddd;
-  cursor: help;
+th,
+td {
+  padding: 8px;
+  border: 1px solid #dddddd;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
+}
+figure {
+  text-align: center;
 }
 address,
 cite {
   font-style: normal;
+}
+code {
+  padding: 2px 4px;
+  color: #990000;
+  background-color: #f8f8f8;
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+small {
+  font-weight: 100;
+  color: #999999;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
 }
