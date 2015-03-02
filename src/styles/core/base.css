@@ -136,7 +136,7 @@ table {
 }
 th,
 td {
-  padding: 8px;
+  padding: 0.3em 0.6em;
   border: 1px solid #dddddd;
 }
 img {

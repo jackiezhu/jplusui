@@ -4,22 +4,28 @@
   border: 1px solid #dddddd;
 }
 .x-table tbody tr:nth-child(odd) {
-  background-color: #f6f6f6;
-}
-.x-table .x-primary,
-.x-table tbody tr.x-primary {
-  background-color: rgba(14, 144, 210, 0.114);
-  color: #0b76ac;
-}
-.x-table .x-danger,
-.x-table tbody tr.x-danger {
-  background-color: rgba(221, 81, 76, 0.114);
-  color: #dd514c;
+  background-color: #f9f9f9;
 }
 .x-table tbody tr:hover {
   background-color: #f3f3f3;
 }
-.x-table .x-actived {
+.x-table-info {
+  background-color: rgba(14, 144, 210, 0.114) !important;
+  color: #049cdb;
+}
+.x-table-success {
+  background-color: rgba(94, 185, 94, 0.114) !important;
+  color: #5eb95e;
+}
+.x-table-warn {
+  background-color: rgba(243, 123, 29, 0.114) !important;
+  color: #f37b1d;
+}
+.x-table-error {
+  background-color: rgba(221, 81, 76, 0.114) !important;
+  color: #dd514c;
+}
+.x-table-actived {
   background-color: #ffd !important;
 }
 .x-table-small th,

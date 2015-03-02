@@ -391,7 +391,7 @@ if (typeof module !== 'object') {
 
 					pre.textContent = pre.innerText = value;
 
-					pre.innerHTML = pre.innerHTML.replace(/##([\s\S]*?)##/g, "<strong>$1</strong>").replace(/__([\s\S]*?)__/g, "<u>$1</u>");
+					pre.innerHTML = pre.innerHTML.replace(/\[bold\]([\s\S]*?)\[\/bold\]/g, "<strong>$1</strong>").replace(/\[u\]([\s\S]*?)\[\/u\]/g, "<u>$1</u>");
 
 					node.parentNode.insertBefore(pre, node.nextSibling);
 				}
