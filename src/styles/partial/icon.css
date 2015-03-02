@@ -20,6 +20,7 @@
   -webkit-user-select: none;
   user-select: none;
   margin-right: .3em;
+  vertical-align: middle;
 }
 @-moz-keyframes icon-spin {
   0% {

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="module-info" content="status=complete">
+    <meta name="module-info" content="status=release">
     <title>图标</title>
     <link rel="stylesheet" type="text/css" href="../../../src/styles/core/base.css" />
     <link rel="stylesheet" type="text/css" href="../../../src/styles/partial/icon.css" />
@@ -824,12 +824,12 @@
     
     <script>
         document.write('<ul id="list" class="demo-clear">');
-        document.write('<li><i class="x-icon">　</i>empty:<code class="demo">&amp;#' + '　'.charCodeAt(0) + '</code></li>');
+        document.write('<li><i class="x-icon">　</i>empty:<code class="demo">&amp;#' + '　'.charCodeAt(0) + ';</code></li>');
         var icons = document.getElementById('icons').innerHTML;
         icons.replace(/\.x-icon-(\w+):before\s*\{\n?\s*content:\s*"\\(\w+)"\s*;\s*\}/g, function (all, name, unicode) {
             unicode = parseInt(unicode, 16);
 
-            document.write('<li><i class="x-icon">' + String.fromCharCode(unicode) + '</i>' + name + ':<code class="demo">&amp;#' + unicode + '</code></li>');
+            document.write('<li><i class="x-icon">' + String.fromCharCode(unicode) + '</i>' + name + ':<code class="demo">&amp;#' + unicode + ';</code></li>');
         });
         document.write('</ul>');
     </script>

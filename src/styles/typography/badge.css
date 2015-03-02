@@ -1,0 +1,39 @@
+﻿/**
+ * @author xuld
+ */
+.x-badge {
+  display: inline-block;
+  font-size: .8em;
+  margin-right: .4em;
+  color: #fff;
+  line-height: 155%;
+  padding: 0 .4em;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: #999999;
+  -moz-transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+  -o-transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+  -webkit-transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+  transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+}
+sup.x-badge {
+  margin-left: .4em;
+  vertical-align: top;
+}
+a.x-badge:hover {
+  text-decoration: none;
+  opacity: .8;
+}
+.x-badge-info {
+  background: #049cdb;
+}
+.x-badge-success {
+  background: #5eb95e;
+}
+.x-badge-warn {
+  background: #e9985e;
+}
+.x-badge-error {
+  background: #dd514c;
+}

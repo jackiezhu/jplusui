@@ -59,13 +59,13 @@
 }
 .x-button-warn {
   color: #ffffff;
-  background-color: #f37b1d;
-  border-color: #f37b1d;
+  background-color: #e9985e;
+  border-color: #e9985e;
 }
 .x-button-warn:hover,
 .x-button-warn:focus {
-  background-color: #f7a566;
-  border-color: #f7a566;
+  background-color: #f2c3a1;
+  border-color: #f2c3a1;
 }
 .x-button-error {
   color: #ffffff;
@@ -77,15 +77,6 @@
   background-color: #e98f8c;
   border-color: #e98f8c;
 }
-.x-button-large {
-  padding: 0.6em 1.5em;
-  font-size: 18px;
-}
 .x-button-small {
   padding: 0 0.4em;
-}
-.x-button-plain {
-  background: none;
-  border-color: transparent;
-  box-shadow: none;
 }
