@@ -10,8 +10,16 @@
   opacity: 0.8;
   cursor: pointer;
   float: right;
+  transition: all .3s;
 }
 .x-closebutton:hover {
   text-decoration: none;
   opacity: 0.4;
+}
+.x-closebutton-spin:hover {
+  -moz-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
 }
