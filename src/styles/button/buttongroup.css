@@ -1,44 +1,33 @@
-/** #imports Controls.Button.Button */
-.x-buttongroup {
+﻿.x-buttongroup {
   display: inline-block;
-  vertical-align: middle;
-  *margin-left: .3em;
-  *zoom: 1;
-}
-.x-buttongroup:first-child {
-  *margin-left: 0;
 }
 .x-buttongroup:after {
-  content: ".";
-  display: block;
-  height: 0;
+  content: " ";
+  display: table;
   clear: both;
-  visibility: hidden;
 }
 .x-buttongroup .x-button {
-  position: relative;
   float: left;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-buttongroup .x-button:not(:first-child) {
+  border-left-color: #d5d5d5;
   margin-left: -1px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  padding-left: 10px;
-  padding-right: 10px;
 }
-.x-buttongroup .x-button:first-child {
-  margin-left: 0;
-  -webkit-border-top-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
-  border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  border-bottom-left-radius: 4px;
+.x-buttongroup-2 .x-button {
+  width: 50%;
 }
-.x-buttongroup .x-button:last-child {
-  -webkit-border-top-right-radius: 4px;
-  -moz-border-radius-topright: 4px;
-  border-top-right-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  border-bottom-right-radius: 4px;
+.x-buttongroup-3 .x-button {
+  width: 33.33333333%;
+}
+.x-buttongroup-4 .x-button {
+  width: 25%;
+}
+.x-buttongroup-5 .x-button {
+  width: 20%;
+}
+.x-buttongroup-6 .x-button {
+  width: 16.66666667%;
 }

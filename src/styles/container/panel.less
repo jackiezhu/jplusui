@@ -47,27 +47,42 @@
 }
 
 // 不同颜色
-.x-panel-primary {
-    border-color: #10a0ea;
+.x-panel-info {
+    border-color: @info-border-color;
 
     .x-panel-header {
-        background-color: #0e90d2;
-        border-color: #10a0ea;
-        color: #fff;
-
-        a {
-            color: #fff;
-        }
+        background-color: @info-background-color;
+        border-color: @info-border-color;
+        color: @info-text-color;
     }
 }
 
-// 不同颜色
-.x-panel-danger {
-    border-color: #f5cecd;
+.x-panel-success {
+    border-color: @success-border-color;
 
     .x-panel-header {
-        background-color: rgba(221, 81, 76, 0.15);
-        border-color: #f5cecd;
-        color: #dd514c;
+        background-color: @success-background-color;
+        border-color: @success-border-color;
+        color: @success-text-color;
+    }
+}
+
+.x-panel-warn {
+    border-color: @warn-border-color;
+
+    .x-panel-header {
+        background-color: @warn-background-color;
+        border-color: @warn-border-color;
+        color: @warn-text-color;
+        
+    }
+}
+
+.x-panel-error {
+    border-color: @error-border-color;
+    .x-panel-header {
+        background-color: @error-background-color;
+        border-color: @error-border-color;
+        color: @error-text-color;
     }
 }

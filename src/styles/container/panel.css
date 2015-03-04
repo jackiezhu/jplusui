@@ -37,21 +37,34 @@
 .x-panel-collapsed .x-panel-body {
   display: none;
 }
-.x-panel-primary {
-  border-color: #10a0ea;
+.x-panel-info {
+  border-color: #caebfb;
 }
-.x-panel-primary .x-panel-header {
-  background-color: #0e90d2;
-  border-color: #10a0ea;
-  color: #fff;
+.x-panel-info .x-panel-header {
+  background-color: rgba(59, 180, 242, 0.15);
+  border-color: #caebfb;
+  color: #049cdb;
 }
-.x-panel-primary .x-panel-header a {
-  color: #fff;
+.x-panel-success {
+  border-color: #c9e7c9;
 }
-.x-panel-danger {
+.x-panel-success .x-panel-header {
+  background-color: rgba(94, 185, 94, 0.15);
+  border-color: #c9e7c9;
+  color: #5eb95e;
+}
+.x-panel-warn {
+  border-color: #fbd0ae;
+}
+.x-panel-warn .x-panel-header {
+  background-color: rgba(243, 123, 29, 0.15);
+  border-color: #fbd0ae;
+  color: #e9985e;
+}
+.x-panel-error {
   border-color: #f5cecd;
 }
-.x-panel-danger .x-panel-header {
+.x-panel-error .x-panel-header {
   background-color: rgba(221, 81, 76, 0.15);
   border-color: #f5cecd;
   color: #dd514c;

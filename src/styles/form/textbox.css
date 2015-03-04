@@ -10,7 +10,7 @@
 }
 .x-textbox:focus {
   border-color: rgba(82, 168, 236, 0.8);
-  box-shadow: 0 0 8px rgba(82, 168, 236, 0.6);
+  box-shadow: 0 0 6px rgba(174, 214, 246, 0.8);
 }
 .x-textbox[disabled],
 .x-textbox[readonly] {
