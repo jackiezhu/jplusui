@@ -1,13 +1,12 @@
 ﻿.x-table {
   max-width: 100%;
   width: 100%;
-  border: 1px solid #dddddd;
-}
-.x-table tbody tr:nth-child(odd) {
-  background-color: #f9f9f9;
 }
 .x-table tbody tr:hover {
   background-color: #f3f3f3;
+}
+.x-table-stripped tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
 }
 .x-table-info {
   background-color: rgba(59, 180, 242, 0.15) !important;

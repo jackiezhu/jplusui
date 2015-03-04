@@ -1,29 +1,44 @@
 
 @import "../core/mixins.less";
 
-.x-list-horizonal, .x-list-vertical {
-    margin: 0;
-    padding: 0;
-}
+.x-list > li {
+    border-top: 1px solid @border-color;
+    padding: 0.3em 0;
 
-.x-list-horizonal {
-    .clearfix();
-
-    li {
-        float: left;
-        list-style: none;
+    &:first-child {
+        border-top: 0;
     }
 }
 
-.x-list-vertical  {
-    
-    .x-list-vertical {
-        margin-left: 1em;
+.x-list-stripped {
+    > li:nth-child(even) {
+        background-color: #f9f9f9;
     }
+}
 
+.x-list-bordered {
+    border: 1px solid @border-color;
+
+    > li {
+        padding: 0.3em 0.6em;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+}
+
+.x-list-buttongroup {
     li {
-        .text-overflow();
-        list-style: none;
-    }
+        padding: 0;
 
+        > a {
+            display: block;
+            padding: 0.3em 0.6em;
+
+            &:hover {
+                background-color: #f3f3f3;
+                text-decoration: none;
+            }
+        }
+    }
 }

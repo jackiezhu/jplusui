@@ -1,6 +1,26 @@
 ﻿
 @import "../core/mixins.less";
 
-.x-grid-2 {
+.generateColumn(@classPrefix, @columnCount) {
+    .x-grid-@{classPrefix}@{columnCount} > .x-col{
+        width: 100% / @columnCount;
+    }
+}
 
+.generateColumns(@classPrefix: ~''){
+    .generateColumn(@classPrefix, 2);
+    .generateColumn(@classPrefix, 3);
+    .generateColumn(@classPrefix, 4);
+    .generateColumn(@classPrefix, 5);
+    .generateColumn(@classPrefix, 6);
+}
+
+.generateColumns();
+
+@media @medium-up {
+    .generateColumns(-medium);
+}
+
+@media @large-up {
+    .generateColumns(-large);
 }

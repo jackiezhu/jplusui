@@ -4,22 +4,18 @@
 .x-table {
     max-width: 100%;
     width: 100%;
-    border: 1px solid @border-color;
-    
+
     tbody {
-        
-        // 表格间隔行高亮。
-        tr:nth-child(odd) {
-            background-color: #f9f9f9;
-        }
-    
         // 鼠标以上高亮。
         tr:hover {
             background-color: #f3f3f3;
         }
-
     }
-    
+}
+
+// 表格间隔行高亮。
+.x-table-stripped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
 }
 
 // 颜色

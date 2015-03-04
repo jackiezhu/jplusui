@@ -97,3 +97,27 @@
 .x-radius {
     border-radius: 2px;
 }
+
+// 水平和垂直布局。
+.x-horizonal, .x-vertical {
+    margin: 0;
+    padding: 0;
+}
+
+.x-horizonal {
+    .clearfix();
+    > * {
+        float: left;
+        list-style: none;
+    }
+}
+
+.x-vertical  {
+    .x-vertical {
+        margin-left: 1em;
+    }
+    > *{
+        .text-overflow();
+        list-style: none;
+    }
+}

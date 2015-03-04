@@ -1,24 +1,42 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="module-info" content="status=plan" />
+    <meta name="module-info" content="status=plan;index=2" />
     <title>等分布局</title>
 
     <!-- 以下是本组件的全部源码 -->
     <link rel="stylesheet" type="text/css" href="../../../src/styles/core/base.css" />
+    <link rel="stylesheet" type="text/css" href="../../../src/styles/layout/grid.css" />
     <link rel="stylesheet" type="text/css" href="../../../src/styles/layout/flex.css" />
 
     <!-- 以下代码仅用于演示 -->
     <script type="text/javascript" src="../../../devtools/demo/demo.js"></script>
+    <style>
+        .x-col .demo {
+            background: #EEEEEE;
+            height: 20px;
+            width: 100%;
+            text-align: center;
+            line-height: 20px;
+            color: #555555;
+            display: block;
+            font-weight: 700;
+        }
+    </style>
+
+
 </head>
 <body class="demo">
 
     <blockquote class="demo">本组件提供了什么。</blockquote>
 
     <aside class="demo">
-        Test
+        <div class="x-grid x-grid-2">
+            <div class="x-col"><span class="demo">A</span></div>
+            <div class="x-col"><span class="demo">B</span></div>
+        </div>
     </aside>
 
 </body>
