@@ -77,11 +77,6 @@
   margin: 0;
   padding: 0;
 }
-.x-horizonal:after {
-  content: " ";
-  display: table;
-  clear: both;
-}
 .x-horizonal > * {
   float: left;
   list-style: none;

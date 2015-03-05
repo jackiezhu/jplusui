@@ -1,0 +1,24 @@
+﻿
+
+#header {
+    /*background: #F7F7F7;*/
+    border-bottom: 1px solid #e4e4e4;
+    margin-bottom: 18px;
+    background: -moz-linear-gradient(top, #0BA3A4, #15ABAC);
+    background: linear-gradient(top, #0BA3A4, #15ABAC);
+}
+
+#header h1{
+    color: #fff;
+    font-size: 40px;
+}
+
+#header p{
+    color: #fff;
+    margin-bottom: 2em;
+    font-size: 16px;
+}
+
+#footer {
+    background-color: #1c1c1c;
+}
