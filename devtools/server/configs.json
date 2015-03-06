@@ -1,30 +1,33 @@
-{	
-	"port": 5370,
-	"physicalPath": "../",
-	"virtualPaths": {
+{
+    "port": 5370,
+    "physicalPath": "../",
+    "virtualPaths": {
 
-	},
-	"modules": {
-		"urlRewrite": "server/modules/urlrewrite.js",
-		"applaucher": "server/modules/applaucher.js",
-		"assets": "server/modules/assets.js"
-	},
-	"apps": {
-		"edit": "server/apps/edit.js",
-		"e": "server/apps/edit.js",
-		"settings": "server/apps/settings.js",
-		"explorer": "server/apps/explorer.js",
-		"o": "server/apps/explorer.js",
-		"exec": "server/apps/exec.js",
-		"todo": "server/apps/todo.js"
-	},
-	"handlers": {
-		"directory": "server/handlers/directoryhandler.js",
-		"error": "server/handlers/errorhandler.js",
-		".md": "server/handlers/markdownhandler.js",
-		".njs": "server/handlers/njshandler.js",
-		".ejs": "server/handlers/ejshandler.js",
-		".bat": "server/handlers/bathandler.js",
-		"*": "server/handlers/staticfilehandler.js"
-	}
+    },
+    "modules": {
+        "urlRewrite": "server/modules/urlrewrite.js",
+        "applaucher": "server/modules/applaucher.js",
+        "assets": "server/modules/assets.js"
+    },
+    "handlers": {
+        "directory": "server/handlers/directoryhandler.js",
+        "error": "server/handlers/errorhandler.js",
+        ".md": "server/handlers/markdownhandler.js",
+        ".njs": "server/handlers/njshandler.js",
+        ".ejs": "server/handlers/ejshandler.js",
+        ".bat": "server/handlers/bathandler.js",
+        "*": "server/handlers/staticfilehandler.js"
+    },
+    "apps": {
+        "edit": "server/apps/edit.js",
+        "e": "server/apps/edit.js",
+        "settings": "server/apps/settings.js",
+        "explorer": "server/apps/explorer.js",
+        "o": "server/apps/explorer.js",
+        "exec": "server/apps/exec.js",
+        "todo": "server/apps/todo.js"
+    },
+    "urlRewrites": {
+
+    }
 }

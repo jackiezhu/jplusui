@@ -1,0 +1,32 @@
+﻿{
+    "title": "JSON schema for server configs",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+
+    "type": "object",
+    "additionalProperties": true,
+
+    "properties": {
+        "port": {
+            "type": "number",
+            "default": 80,
+            "description": "站点对应端口"
+        },
+        "physicalPath": {
+            "type": "string",
+            "description": "站点对应物理路径"
+        },
+        "virtualPaths": {
+            "type": "array",
+            "description": "子站点虚拟目录"
+        },
+        "modules": {
+            "type": "object",
+            "description": "服务器使用的模块列表"
+        },
+        "handlers": {
+            "type": "object",
+            "description": "服务器使用的句柄列表",
+            "default": ""
+        }
+    }
+}
