@@ -6,7 +6,7 @@
     <title>模板引擎</title>
 
     <!-- 本组件需要以下文件 -->
-    <script type="text/javascript" src="../../../src/utilities/core/core.js"></script>
+    <script type="text/javascript" src="../../../src/utilities/core/base.js"></script>
     <script type="text/javascript" src="../../../src/utilities/text/tpl.js"></script>
     <!-- 本组件需要以上文件 -->
 
@@ -36,11 +36,9 @@
     <article class="demo">
         <h2 class="demo">语法介绍</h2>
         <script>
-
             Demo.writeExamples({
                 'Tpl.parse': 'Tpl.parse("{for p in $data.path}{p}{end}", {path: [1,2,3]})'
             });
-
         </script>
         <h3 class="demo">常量</h3>
         <p class="demo">模板内任意字符串都会原样输出，模板引擎只解析 {} 内的数据。模板内使用 {{ 代替 {，使用 }} 代替 }</p>
@@ -58,21 +56,20 @@
         </script>
         <h4 class="demo">foreach 语句</h4>
         <script class="demo" type="text/plain">
-            {for value, key in [0,1,2]}
+            {foreach value, key in [0,1,2]}
                {key} = {value}
             {end}
         </script>
         <p class="demo">foreach 语句同时支持数组和对象。</p>
         <h4 class="demo">for 语句</h4>
         <script class="demo" type="text/plain">
-            {for(var i=0; i < 3; i++) }
+            {for var i=0; i < 3; i++ }
                 text{i}
             {end}
-            {for(var key in obj) }
+            {for var key in obj }
                 text{key}
             {end}
         </script>
-        <p class="demo">注意 foreach 和 for 语句的区别是：foreach 没有括号；for 语句是JavaScript 自带的语法，需要括号。</p>
         <h4 class="demo">while 语句</h4>
         <script class="demo" type="text/plain">
             {while false }

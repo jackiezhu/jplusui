@@ -2,7 +2,8 @@
  * @fileOverview 简单但完整的模板引擎。
  */
 
-// #include core/core.js
+// 为了支持 foreach 模板使用的 Object.each 函数。
+// #include ../core/base.js
 
 /**
  * 表示一个 JavaScript 模板解析器。
@@ -45,21 +46,21 @@
  * 5. var 语句
  *      {var a = 1, b = 2}
  * 
- * 6. for each 语句
+ * 6. foreach 语句
  *    为了简化循环操作，模板引擎提供了以相同方式遍历类数组和对象的流程语句。
- *    其写法和 for 语句类似，和 for 语句最大的区别是 for each 语句没有小括号。
- *      {for item in obj}
+ *    其写法和 for 语句类似，和 for 语句最大的区别是 foreach 语句没有小括号。
+ *      {foreach item in obj}
  *          {循环输出的内容}
  *      {end}
  *    for each 语句同时支持类数组和对象，item 都表示遍历的值， $key 表示数组索引或对象键。
  *    在 for each 语句中，可以使用 $target 获取当前遍历的对象，使用 $key 获取循环变量值。
  *    存在嵌套 for each 时，它们分别表示最近的值，如需跨语句，可使用变量保存。
  *    在 for each 语句中，可以使用 {break} 和 {continue} 控制流程。
- *      {for item in obj}
+ *      {foreach item in obj}
  *          {if $key == 0}
  *              {continue}
  *          {end}
- *          {for item2 in item}
+ *          {foreach item2 in item}
  *              {item2}
  *          {end}
  *      {end}
@@ -70,22 +71,22 @@
  */
 var Tpl = {
 
-    _cache: {},
+    _compiled: {},
 
     /**
      * 编译指定的模板。
      * @param {String} tplSource 要编译的模板文本。
-     * @param {String?} cacheKey = tplSource 表示当前模板的键，主要用于缓存。
+     * @param {String?} cacheKey = tplSource 表示当前模板的缓存键，相同缓存键的模板可避免被重复编译以提高解析速度。
      */
     compile: function (/*String*/tplSource, /*String?*/cacheKey) {
         cacheKey = cacheKey || tplSource;
-        return Tpl._cache[cacheKey] || (Tpl._cache[cacheKey] = Tpl._compile(tplSource));
+        return Tpl._compiled[cacheKey] || (Tpl._compiled[cacheKey] = Tpl._compileCore(tplSource));
     },
 
     /**
      * 使用指定的数据解析模板，并返回生成的内容。
      * @param {String} tplSource 要解析的模板文本。
-     * @param {Object} data 数据。
+     * @param {Object} data 传递给模板的数据对象。在模板中使用 $data 变量接收此参数。
      * @param {Object} scope 模板中 this 的指向。
      * @param {String?} cacheKey = tplSource 表示当前模板的键，主要用于缓存。
      * @return {String} 返回解析后的模板内容。 
@@ -94,7 +95,7 @@ var Tpl = {
         return Tpl.compile(tplSource, cacheKey).call(scope, data);
     },
 
-    _compile: function (/*String*/tplSource) {
+    _compileCore: function (/*String*/tplSource) {
 
         // 存储已编译的代码段。
         var compiledCode = 'var $output=""\n',
@@ -105,33 +106,36 @@ var Tpl = {
             // 上一个 } 的结束位置。
             blockEnd = -1,
 
-            // 存储所有代码块。
-            commandStack = [],
+            // 存储所有代码语句块。
+            commandsStack = [],
 
             // 纯文本各部分。
-            part,
+            commandText,
 
             // 标准命令。
-            stdCommands,
+            commandMatch,
 
             // 标准命令。
-            subCommands,
-                
-            specialChars = {
-                '"': '\\"',
-                '\n': '\\n',
-                '\r': '\\r',
-                '\\': '\\\\'
-            };
+            commandName;
 
+        // 获取模板指定部分。
         function getSource(start, end) {
             return tplSource.substring(start, end).replace(/([{}])\1/g, '$1');
         }
 
-        function replaceSpecialChars(specialChar) {
-            return specialChars[specialChar];
+        // 获取模板指定部分并解析为字符串。
+        function getSourceAsPlainText(start, end) {
+            return '$output+="' + getSource(start, end).replace(/[\r\n\"\\]/g, function (specialChar) {
+                return ({
+                    '"': '\\"',
+                    '\n': '\\n',
+                    '\r': '\\r',
+                    '\\': '\\\\'
+                })[specialChar];
+            }) + '"\n';
         }
 
+        // 每次处理一个 {} 的部分。
         while ((blockStart = tplSource.indexOf('{', blockStart + 1)) >= 0) {
 
             // 忽略 {{。
@@ -141,7 +145,7 @@ var Tpl = {
             }
 
             // 处理 { 之前的内容。
-            compiledCode += '$output+="' + getSource(blockEnd + 1, blockStart).replace(/[\r\n\"\\]/g, replaceSpecialChars) + '"\n';
+            compiledCode += getSourceAsPlainText(blockEnd + 1, blockStart);
 
             // 从  blockStart 处搜索 }
             blockEnd = blockStart;
@@ -152,7 +156,7 @@ var Tpl = {
 
                 // 处理不存在 } 的情况。
                 if (blockEnd == -1) {
-                    throw new SyntaxError("缺少 “}”\r\n在“", tplSource.substr(blockStart) + "”附近");
+                    throw new SyntaxError("缺少 “}”\r\n在“", tplSource.substr(blockStart) + "”范围");
                 }
 
                 // 忽略 }}。
@@ -164,48 +168,53 @@ var Tpl = {
             }
 
             // 处理 {} 之间的内容。
-            part = getSource(blockStart + 1, blockEnd);
+            commandText = getSource(blockStart + 1, blockEnd);
 
-            stdCommands = /^\s*(\w+)\b/.exec(part) || part;
+            commandMatch = /^\s*(\w+)\b/.exec(commandText) || [];
 
-            switch (stdCommands[1]) {
+            switch (commandName = commandMatch[1]) {
                 case 'end':
-                    if (!commandStack.length) {
-                        throw new SyntaxError("模板语法错误：发现多余的{end}\r\n在“" + tplSource.substring(blockStart - 20, blockStart) + "”附近");
+                    if (!commandsStack.length) {
+                        throw new SyntaxError("模板编译错误：发现多余的{end}\r\n在“" + tplSource.substring(blockStart - 20, blockStart) + "”附近");
                     }
-                    compiledCode += commandStack.pop() === 'foreach' ? '},this)\n' : '}\n';
+                    compiledCode += commandsStack.pop() === 'foreach' ? '},this)\n' : '}\n';
                     break;
-                case 'for':
-                case 'function':
-                    if (subCommands = /^\s*for\s*(var)?\s*([\w$]+)(\s*,\s*([\w$]+))?\s+in\s+(.*)$/.exec(part)) {
-                        commandStack.push('foreach');
-                        compiledCode += 'Object.each(' + subCommands[5] + ',function(' + subCommands[2] + ',' + (subCommands[4] || '$key') + ',$target){\n';
-                        break;
+                case 'foreach':
+                    commandMatch = /^\s*foreach\s*(var)?\s*([\w$]+)(\s*,\s*([\w$]+))?\s+in\s+(.*)$/.exec(commandText);
+                    if (!commandMatch) {
+                        throw new SyntaxError("模板编译错误：foreach 格式不合法，应为 foreach item in object：\r\n在“" + commandText + "”附近");
                     }
-                    commandStack.push(stdCommands[1]);
-                    compiledCode += part + '{\n';
+                    compiledCode += 'Object.each(' + commandMatch[5] + ',function(' + commandMatch[2] + ',' + (commandMatch[4] || '$key') + ',$target){\n';
+                    commandsStack.push(commandName);
                     break;
                 case 'if':
+                case 'for':
                 case 'while':
+                case 'switch':
                 case 'with':
-                    commandStack.push(stdCommands[1]);
-                    // 追加判断表达式括号。
-                    compiledCode += stdCommands[1] + '(' + part.substr(stdCommands[0].length) + '){\n';
+                    // 追加括号。
+                    commandText = commandName + '(' + commandText.substr(commandMatch[0].length) + ')';
+
+                    // 不需要 break 。
+                case 'function':
+                    compiledCode += commandText + '{\n';
+                    commandsStack.push(commandName);
                     break;
                 case 'else':
-                    subCommands = /if\b(.*)/.exec(part);
-                    compiledCode += subCommands ? '}else if(' + subCommands[1] + ') {\n' : '}else{\n';
-                    break
+                    commandMatch = /^\s*else\s+if\b(.*)/.exec(commandText);
+                    compiledCode += commandMatch ? '}else if(' + commandMatch[1] + ') {\n' : '}else{\n';
+                    break;
                 case 'var':
                 case 'void':
-                    compiledCode += part + '\n';
+                case 'case':
+                    compiledCode += commandText + '\n';
                     break;
                 case 'break':
                 case 'continue':
-                    compiledCode += commandStack[commandStack.length - 1] === 'foreach' ? stdCommands[1].length === 5 ? 'return false\n' : 'return\n' : (part + '\n');
+                    compiledCode += commandsStack[commandsStack.length - 1] === 'foreach' ? commandName.length === 5 ? 'return false\n' : 'return\n' : (commandText + '\n');
                     break;
                 default:
-                    compiledCode += (/;\s*$/.test(part) ? part : ('$output+=' + part)) + '\n';
+                    compiledCode += (/;\s*$/.test(commandText) ? commandText : ('$output+=' + commandText)) + '\n';
             }
 
             // 更新下一次开始查找的位置。
@@ -213,17 +222,17 @@ var Tpl = {
 
         }
 
-        if (commandStack.length) {
-            throw new SyntaxError('模板语法错误：缺少 ' + commandStack.length + ' 个 {end}\r\n源码：' + compiledCode);
+        if (commandsStack.length) {
+            throw new SyntaxError('模板编译错误：缺少 ' + commandsStack.length + ' 个 {end}\r\n源码：' + compiledCode);
         }
 
-        // 处理 } 之后的内容。
-        compiledCode += '$output+="' + getSource(blockEnd + 1, tplSource.length).replace(/[\r\n\"\\]/g, replaceSpecialChars) + '"\nreturn $output';
+        // 处理最后一个 } 之后的内容。
+        compiledCode += getSourceAsPlainText(blockEnd + 1, tplSource.length) + 'return $output';
 
         try {
             return new Function("$data", compiledCode);
         } catch (e) {
-            throw new SyntaxError('模板语法错误：' + e.message + '\r\n源码：' + compiledCode);
+            throw new SyntaxError('模板编译错误：' + e.message + '\r\n源码：' + compiledCode);
         }
 
     }
