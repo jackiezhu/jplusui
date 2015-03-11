@@ -42,11 +42,11 @@ var bootjs = {
     /**
      * Resolve the relative path with specified base path.
      */
-    resolvePath: function (basePath, relativePath) {
+    resolveRelativePath: function (basePath, relativePath) {
 		
 		// Replace './' and '../' with current path.
 		if (relativePath.charAt(0) === '.') {
-            relativePath = ('/' + basePath.replace(/[\?#].*$/, "")).replace(/\/[^\/]*$/, "").substr(1) + "/" + relativePath;
+		    relativePath = ('/' + baseFilePath.replace(/[\?#].*$/, "")).replace(/\/[^\/]*$/, "").substr(1) + "/" + relativePath;
         } else if (relativePath.indexOf(':/') < 0) {
 			relativePath = bootjs.basePath + relativePath;
 		}
@@ -83,7 +83,7 @@ var bootjs = {
 	
 	loadModule: function (modulePath, parentModulePath){
 		
-		modulePath = bootjs.resolvePath(parentModulePath, modulePath);
+		modulePath = bootjs.resolveRelativePath(parentModulePath, modulePath);
 		
 		// Donot load more than once.
 		if(modulePath in bootjs.modules){
