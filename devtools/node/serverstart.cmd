@@ -1,1 +1,1 @@
-@node "%~dp0\node_modules\xuld-webserver\bin\serverstart.js" %*
+@node "%~dp0\node_modules\xuld-webserver\bin\serverstart.js" -port 5370 -path ../../../ %*
