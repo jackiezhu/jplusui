@@ -1,4 +1,4 @@
-# JPlusUI 2.0 全新升级 ！
+# JPlusUI 3.0 全新升级 ！
 
 JPlusUI 是一个完整的 HTML5 UI 库。
 
