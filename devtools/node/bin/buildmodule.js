@@ -1,5 +1,5 @@
 ﻿
-var ModuleBuilder = require('../modulebuilder');
+var ModuleBuilder = require('xuld-bootjs/modulebuilder');
 
 ModuleBuilder.build({
     inputs: [process.args[1]],
