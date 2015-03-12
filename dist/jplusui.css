@@ -1,1 +1,338 @@
-﻿
+/*********************************************************
+ * This file is created by boot.js at 2015/3/12 15:40. 
+ * DO NOT EDIT IT!!!
+ ********************************************************/
+
+
+/*********************************************************
+ * #required ../src/styles/core/base.css
+ ********************************************************/
+/**
+ * JPlusUI 2.0
+ * @copyright 2011-2015 The JPlusUI Team
+ * @license The BSD License
+ */
+article,
+aside,
+section,
+header,
+footer,
+nav,
+menu,
+figcaption,
+figure,
+main,
+details,
+summary {
+  display: block;
+}
+[hidden],
+template,
+audio:not([controls]) {
+  display: none;
+}
+input,
+button,
+select,
+textarea,
+optgroup {
+  font: inherit;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+input[type=checkbox],
+input[type=radio] {
+  margin: 4px 6px 0 0;
+  margin-top: 1px \9;
+  vertical-align: text-top;
+}
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+:-moz-placeholder {
+  color: #999999;
+}
+:-ms-input-placeholder,
+::-webkit-input-placeholder {
+  color: #999999;
+}
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
+  font-size: 14px;
+  line-height: 175%;
+  color: #414243;
+  background-color: #ffffff;
+}
+p,
+hr,
+table,
+ul,
+ol,
+dl,
+blockquote,
+pre,
+address,
+fieldset,
+figure {
+  margin: 0 0 1em;
+}
+a {
+  color: #095f8b;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0.5em 0;
+  font-weight: 500;
+  line-height: 150%;
+  color: #333;
+}
+h1 {
+  font-size: 28px;
+}
+h2 {
+  font-size: 22px;
+}
+h3 {
+  font-size: 18px;
+}
+h4 {
+  font-size: 16px;
+}
+h5 {
+  font-size: 14px;
+}
+h6 {
+  font-size: 12px;
+}
+hr {
+  border-color: #dddddd;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  height: 0;
+}
+ul ul,
+ol ul,
+dl ul,
+ul ol,
+ol ol,
+dl ol,
+ul dl,
+ol dl,
+dl dl {
+  margin: 0;
+}
+dt {
+  font-weight: 600;
+  margin-top: 0.5em;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+}
+th,
+td {
+  padding: 0.3em 0.6em;
+  border: 1px solid #dddddd;
+}
+img {
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
+}
+figure {
+  text-align: center;
+}
+address,
+cite {
+  font-style: normal;
+}
+code {
+  padding: 2px 4px;
+  color: #990000;
+  background-color: #f8f8f8;
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+}
+small {
+  font-weight: 100;
+  color: #999999;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+
+
+/*********************************************************
+ * #required ../src/styles/core/print.css
+ ********************************************************/
+@media print {
+  @page {
+    margin: 0.5cm;
+  }
+  *,
+  *:before,
+  *:after {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+  abbr[title]:after {
+    content: " [" attr(title) "] ";
+  }
+  pre,
+  blockquote,
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+  img {
+    max-width: 100% !important;
+  }
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+  select {
+    background: #fff !important;
+  }
+  .x-print-hide {
+    display: none !important;
+  }
+}
+@media not print {
+  .x-print-show {
+    display: none !important;
+  }
+}
+
+
+/*********************************************************
+ * #required ../src/styles/core/utility.css
+ ********************************************************/
+.x-left {
+  float: left !important;
+}
+.x-right {
+  float: right !important;
+}
+.x-clear:after {
+  content: " ";
+  display: table;
+  clear: both;
+}
+.x-middle {
+  vertical-align: middle !important;
+}
+.x-center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.x-relative {
+  position: relative !important;
+}
+.x-absolute {
+  position: absolute !important;
+}
+.x-inline {
+  display: inline !important;
+}
+.x-block {
+  display: block !important;
+}
+.x-inline-block {
+  display: inline-block !important;
+}
+.x-hide {
+  display: none;
+}
+.x-break-word {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.x-ellipsis {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.x-hint {
+  color: #999999;
+}
+.x-info {
+  color: #049cdb !important;
+}
+.x-success {
+  color: #5eb95e !important;
+}
+.x-warn {
+  color: #e9985e !important;
+}
+.x-error {
+  color: #dd514c !important;
+}
+.x-fill {
+  display: block !important;
+  margin-bottom: 1em;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-radius {
+  border-radius: 2px;
+}
+.x-horizonal,
+.x-vertical {
+  margin: 0;
+  padding: 0;
+}
+.x-horizonal > * {
+  float: left;
+  list-style: none;
+}
+.x-vertical .x-vertical {
+  margin-left: 1em;
+}
+.x-vertical > * {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  list-style: none;
+}
