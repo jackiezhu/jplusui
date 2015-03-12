@@ -1,1 +1,1 @@
-@node "%~dp0\node_modules\xuld-bootjs\bin\buildmodule.js" %*
+@node "%~dp0\bin\buildmodule.js" %*
