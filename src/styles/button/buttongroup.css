@@ -13,7 +13,7 @@
   box-sizing: border-box;
 }
 .x-buttongroup .x-button:not(:first-child) {
-  border-left-color: #d5d5d5;
+  border-left-color: #d9d9d9;
   margin-left: -1px;
 }
 .x-buttongroup-2 .x-button {

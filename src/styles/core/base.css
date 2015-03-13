@@ -45,18 +45,18 @@ textarea {
   vertical-align: top;
 }
 :-moz-placeholder {
-  color: #999999;
+  color: #bdbdbd;
 }
 :-ms-input-placeholder,
 ::-webkit-input-placeholder {
-  color: #999999;
+  color: #bdbdbd;
 }
 body {
   margin: 0;
   font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
   font-size: 14px;
   line-height: 175%;
-  color: #414243;
+  color: #212121;
   background-color: #ffffff;
 }
 p,
@@ -109,7 +109,7 @@ h6 {
   font-size: 12px;
 }
 hr {
-  border-color: #dddddd;
+  border-color: #e0e0e0;
   border-width: 1px 0 0 0;
   border-style: solid;
   height: 0;
@@ -137,7 +137,7 @@ table {
 th,
 td {
   padding: 0.3em 0.6em;
-  border: 1px solid #dddddd;
+  border: 1px solid #e0e0e0;
 }
 img {
   max-width: 100%;
@@ -159,7 +159,7 @@ code {
 }
 small {
   font-weight: 100;
-  color: #999999;
+  color: #bdbdbd;
 }
 abbr[title] {
   border-bottom: 1px dotted;
