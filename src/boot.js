@@ -148,7 +148,7 @@ var bootjs = {
 
     // Load all modules.
     if (params) {
-        params = params[1].split('&');
+        params = params[1].split(/[&,]/);
         for (i = 0; i < params.length; i++) {
             bootjs.loadModule(params[i], bootjs.basePath);
         }

@@ -1,15 +1,15 @@
 ﻿/**
- * @fileOverview 用于增删组件, 及组件列表的搜索。
+ * @fileOverview 用于增删模块和生成模块列表。
  * @author xuld
  */
 
-var Demo = require('../../demo/demo.js'),
+var Demo = require('../../assets/demo.js'),
 	Path = require('path'),
-	IO = require('../../node/node_modules/utilskit/io'),
+	IO = require('utilskit/io'),
 	FS = require('fs');
 
 /**
- * 新建一个组件文件。
+ * 新建一个模块。
  * @param {String} module 组件的模块。
  * @param {String} category 组件的分类。
  * @param {String} name 组件的名字。
@@ -196,93 +196,64 @@ exports.updateModuleInfo = function (htmlPath, title, dplInfo) {
 
 };
 
-// 组件列表
-
 /**
- * 搜索返回 DPL 列表。
- * @param {String} folder 搜索的文件夹。
- * @return {Object} 返回 JSON 格式如： {'path0': attributes1, 'path1': attributes2}
+ * 解析一个 HTML 文件内指定的组件信息。
+ * @param {String} filePath 文件路径。
  */
-exports.getModuleList = function (folder) {
-
-	var root = Path.resolve(Demo.basePath, folder);
-	var files = IO.getFiles(root);
-	var r = {};
-	var isDoc = /^\.(html?|md|jade|ejs|asp|php|aspx)$/;
-
-	for (var i = 0; i < files.length; i++) {
-
-		var file = files[i];
-		var ext = Path.extname(file);
-		
-		if (isDoc.test(ext)) {
-
-			// 获取 DPL 信息。
-			var dplInfo = exports.getModuleInfo(Path.resolve(root, file));
-
-			// 检测是否隐藏列表。
-			if (!('hide' in dplInfo) || dplInfo.hide !== "false") {
-				r[file] = dplInfo;
-			}
-		} else {
-			r[file] = ext;
-		}
-	}
-
-	// 删除索引文件。
-	delete r["index.html"];
-	delete r["boot.js"];
-       
-	return r;
+exports.getModuleInfo = function(filePath, modulePath) {
+    var content = IO.readFile(filePath, Demo.Configs.encoding);
+    var match = new RegExp('(<meta\\s+name\\s*=\\s*([\'\"])' + Demo.Configs.metaModuleInfo + '\\2\\s+content\\s*=\\s*([\'\"]))(.*?)(\\3\\s*\\/?>)', 'i').exec(content);
+    var moduleInfo = match && Demo.Module.parseModuleInfo(match[4]) || {};
+    moduleInfo.path = moduleInfo.path || modulePath;
+    moduleInfo.name = moduleInfo.name || (/(<title[^\>]*?>)(.*?)(<\/title>)/i.exec(content) || [])[2] || moduleInfo.path;
+    moduleInfo.status = moduleInfo.status || 'ok';
+    moduleInfo.ignore = moduleInfo.ignore === "true" ||  moduleInfo.ignore === "1";
+    return moduleInfo;
 };
 
 /**
  * 更新指定的列表缓存文件。
  */
 exports.updateModuleList =  function(){
-	var dplListFilePath = Path.resolve(Demo.basePath, Demo.Configs.apps, "data/modulelist.js");
+    var moduleList = {};
+    this.loadModuleList(moduleList, Demo.Configs.demo);
+    this.loadModuleList(moduleList, Demo.Configs.src);
+    delete moduleList["boot.js"];
 
-	var dplList = { examples: this.getModuleList(Demo.Configs.examples), src: this.getModuleList(Demo.Configs.src) };
-	dplList = JSON.stringify(dplList);
-	dplList = 'var ModuleList=' + dplList + ';';
-
-	IO.writeFile(dplListFilePath, dplList, Demo.Configs.encoding);
+    IO.writeFile(Path.resolve(Demo.basePath, Demo.Configs.devtools, Demo.Configs.moduleListPath), 'var ModuleList=' + JSON.stringify(moduleList) + ';', Demo.Configs.encoding);
 };
 
 /**
- * 解析一个文件内指定的组件信息。
+ * 重新搜索模块并返回模块列表。
+ * @param {Object} moduleList 返回 JSON 格式如： {'path0': attributes1, 'path1': attributes2}
+ * @param {String} folder 搜索的文件夹。
  */
-exports.getModuleInfo = function (fullPath) {
+exports.loadModuleList = function (moduleList, folder) {
 
-	var dplInfo;
+    var root = Path.resolve(Demo.basePath, folder);
+    var files = IO.getFiles(root);
 
-	var text = IO.readFile(fullPath, Demo.Configs.encoding);
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        var ext = Path.extname(file);
+        var moduleInfo;
 
-	var meta = new RegExp('(<meta\\s+name\\s*=\\s*([\'\"])' + Demo.Configs.metaModuleInfo + '\\2\\s+content\\s*=\\s*([\'\"]))(.*?)(\\3\\s*\\/?>)');
+        if (/^\.(html?|md|jade|ejs|asp|php|aspx)$/.test(ext)) {
+            moduleInfo = exports.getModuleInfo(Path.resolve(root, file), file);
+            moduleInfo.type = 'demo';
+        } else {
+            moduleInfo = {
+                type: ext
+            };
+        }
 
-	if (meta = meta.exec(text)) {
-		dplInfo = Demo.Module.parseModuleInfo(meta[4]);
-	} else {
-		dplInfo = {};
-	}
+        if (!moduleInfo.ignore) {
+            moduleList[file] = moduleInfo;
+        }
 
-	if (!('title' in dplInfo)) {
+    }
 
-		if (meta = /(<title[^\>]*?>)(.*?)(<\/title>)/.exec(text)) {
-			dplInfo.name = meta[2];
-		} else {
-			dplInfo.name = '';
-		}
-
-	}
-
-	if (!dplInfo.status) {
-		dplInfo.status = 'ok';
-	}
-
-	return dplInfo;
-
-}
+};
 
 function getFileByName(path) {
 	var folder = Path.dirname(path);
