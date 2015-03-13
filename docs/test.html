@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" type="text/css" href="static/common.css" />
     <link rel="stylesheet" type="text/css" href="static/docs.css" />
+    <link rel="stylesheet" type="text/css" href="../devtools/assets/demo.css" />
 </head>
 <body>
     <header id="header">
@@ -30,7 +31,6 @@
                     <li><a href="###">组件列表</a></li>
                     <li><a href="###">下载和定制</a></li>
                     <li><a href="###">关于和支持</a></li>
-                    <li><a href="###">开发者工具</a></li>
                 </ul>
                 <aside class="x-right">
                     <form id="searchform" class="x-left">
@@ -43,9 +43,9 @@
 
         <div class="x-container">
 
-            <h1>开始使用</h1>
+            <h1>基础样式</h1>
 
-            <p>从零开始快速上手 JPlusUI，搭建页面。</p>
+            <p>提供常用 CSS 下载</p>
 
         </div>
 
@@ -88,53 +88,26 @@
         </div>
         <div class="x-col x-col-12 x-col-medium-9" id="main">
 
-            <h1 class="demo">下载</h1>
+            <h1 class="demo">基础样式</h1>
 
-            <p class="demo">下载 <a href="https://github.com/downloads/jplusui/jplusui/jplusui-1.0b-release.zip">jplusui-latest-release.zip</a> , 或者下载 <a href="https://github.com/jplusui/jplus-milk/zipball/master">jPlusUI 源码</a> </p>
+            <blockquote class="demo">
+                注意：本组件不支持 IE6/7。
+            </blockquote>
 
-            <p class="demo">解压zip文件，会得到如下文件结构: </p>
+            <h2 class="demo">标题2</h2>
 
-            <script class="demo" type="text/plain">
-                jPlusUI-latest/
-                └── dist/
-                ├── images/
-                ├── fonts/
-                ├── jplusui.js
-                └── jplus.min.js
-                │     ├── jplus.css
-                │     ├── jplus.min.css
-            </script>
+            <h3 class="demo">标题3</h3>
 
-            <p>其中，<code>jplus.*</code> 是已经编译好的源文件，包含了 100 多个常用组件。<code>jplus.min.*</code> 是相应的压缩版。您也可以使用 <a href="/assets/dpl/dplfilelist.html" target="_blank">组件合成工具</a> 来自行编译需要用到的组件。</p>
+            <p class="demo">测试</p>
 
-            <h3 class="demo">2. 引入文件</h3>
+            <h3 class="demo">标题3</h3>
 
-            <p class="demo">新建一个 HTML 文件，内容如下:</p>
-
-            <script class="demo-noformat" type="text/html">
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>My First Page</title>
-                    ##
-                    <link href="__build/styles/jplus.css__" rel="stylesheet">##
-                    ##
-                    <script src="__build/scripts/jplus.js__" type="text/javascript">
-                        < /script>##
-                    </head>
-                    <body>
-                    <h1>Hello j+ UI!</h1>
-                </body>
-                </html>
-             </script>
-
-                    <p class="demo">以上文件已经引入了 jPlusUI 所需要的全部文件。jPlusUI 不支持怪癖(Quirks)模式，因此必须定义&lt;!DOCTYPE&gt;, 推荐使用 HTML 5版本的 &lt;!DOCTYPE&gt</p>
-
+            <p class="demo">测试</p>
+        </div>
     </div>
-</div>
-<footer id="footer" class="x-container">
-    <span class="x-right"><a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="community.html">加入我们</a></span>
-    Copyright &copy; 2011-2012 jPlusUI Team. All Rights Reserved.
-</footer>
+    <footer id="footer" class="x-container">
+            <span class="x-right"><a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="community.html">加入我们</a></span>
+            Copyright &copy; 2011-2012 jPlusUI Team. All Rights Reserved.
+    </footer>
 </body>
 </html>

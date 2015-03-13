@@ -5,6 +5,10 @@
     box-shadow: none;
 }
 
+#topbar a {
+    line-height: 225%;
+}
+
 #topbar a:hover, #topbar .x-actived a {
     background-color: #1a237e;
 }
@@ -30,12 +34,24 @@
 }
 
 #footer {
-    background-color: #1c1c1c;
+    
 }
 
 #sidebar {
     border-right: 1px solid #ddd;
     padding-right: 0;
+    height: 600px;
+    overflow: hidden;
+}
+
+#sidebar:hover {
+    overflow: auto;
+}
+
+#main {
+    border-left: 1px solid #ddd;
+    margin-left: -1px;
+    margin-right: -1px;
 }
 
 #sidebar dd {
