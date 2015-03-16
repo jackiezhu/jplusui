@@ -1,9 +1,10 @@
 ﻿
 var HttpServer = require("xuld-webserver/lib/httpserver");
+var Configs = require('../../assets/demo.js').Configs;
 
 var server = new HttpServer({
-    "port": 5373,
-    "physicalPath": require('path').resolve(__dirname, "../../../")
+    "port": Configs.port,
+    "physicalPath": Configs.basePath
 });
 
 server.on('start', function () {

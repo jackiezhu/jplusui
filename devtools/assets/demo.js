@@ -1,5 +1,5 @@
 ﻿/**
- * @fileOverview 开发系统驱动文件。此文件同时运行于浏览器端及 node 端。
+ * @fileOverview 开发系统驱动文件。此文件同时运行于浏览器及 node。
  * @author xuld
  */
 
@@ -8,34 +8,59 @@
 var Demo = Demo || {};
 
 /**
- * 配置模块。
+ * 全局配置。
  */
 Demo.Configs = {
 
-	/**
-	 * 当前开发系统在处理文件操作时使用的远程服务器地址。
-	 */
-    serverBaseUrl: 'http://localhost:5370/',
+    /**
+     * 当前服务器使用的端口。
+     */
+    port: 5373,
+
+    /**
+     * 当前项目的基础路径。
+     */
+    basePath: '../../',
 
 	/**
 	 * 存放源文件的文件夹。
 	 */
-	src: "src",
+	sources: "src",
 
 	/**
 	 * 存放文档文件的文件夹。
 	 */
-	examples: "demo",
+	demos: "demo",
 
 	/**
 	 * 存放开发系统文件的文件夹。
 	 */
-	apps: "devtools",
+	devTools: "devtools",
+
+    /**
+	 * 存放模块列表路径的地址。
+	 */
+	moduleListPath: 'assets/data/modulelist.js',
+
+    /**
+	 * 存放模块列表路径的地址。
+	 */
+	templatesPath: 'assets/templates',
+
+    /**
+	 * 存放用于处理前端请求的接口地址。
+	 */
+	serviceApiPath: 'node/service/api.njs',
 
 	/**
 	 * 存放数据字段的 meta 节点。
 	 */
-	metaModuleInfo: 'module-info',
+	moduleInfo: 'module-info',
+    
+    /**
+	 * 整个项目标配使用的编码。
+	 */
+	encoding: 'utf-8',
 
 	/**
 	 * 组件访问历史最大值。
@@ -45,7 +70,7 @@ Demo.Configs = {
 	/**
 	 * 工具的下拉菜单 HTML 模板。
 	 */
-	tool: '<a href="~/devtools/node/modulebuilder/index.html" target="_blank">模块打包工具</a>\
+	tools: '<a href="~/devtools/node/modulebuilder/index.html" target="_blank">模块打包工具</a>\
                 <a href="~/devtools/tools/codehelper/index.html" target="_blank">代码工具</a>\
                 <a href="~/devtools/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
                 <a href="~/devtools/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
@@ -89,11 +114,6 @@ Demo.Configs = {
 	 */
 	support: 'PC端|移动端|兼容IE6+'.split('|'),
 
-	/**
-	 * 整个项目标配使用的编码。
-	 */
-	encoding: 'utf-8'
-
 };
 
 Demo.Module = {
@@ -102,34 +122,25 @@ Demo.Module = {
      * 获取当前页面指定的控件的信息。
      */
 	parseModuleInfo: function (value) {
-
-		var r = {}, i, t, s;
-
-		value = value.split(';');
-
-		for (i = 0; i < value.length; i++) {
-			t = value[i];
-			s = t.indexOf('=');
+		var r = {};
+		value = value.split(/,\s*/);
+		for (var i = 0; i < value.length; i++) {
+			var t = value[i],
+			    s = t.indexOf('=');
 			r[t.substr(0, s)] = t.substr(s + 1);
 		}
-
 		return r;
-
 	},
 
 	/**
      * 获取当前页面指定的控件的信息。
      */
 	stringifyModuleInfo: function (value) {
-
 		var r = [];
-
 		for (var key in value) {
 			r.push(key + '=' + value[key]);
 		}
-
-		return r.join(';');
-
+		return r.join(', ');
 	},
 
 	/**
@@ -144,356 +155,367 @@ Demo.Module = {
 //#endregion
 
 // 指示当前系统是否在后台运行。
-if (typeof module !== 'object') {
+if (typeof module === 'object') {
 
-	//#region 前台部分
+    //#region 后台部分
 
-	/**
+    Demo.Configs.basePath = require('path').resolve(__dirname, Demo.Configs.basePath);
+
+    // 导出 Demo 模块。
+    module.exports = Demo;
+
+    //#endregion
+
+} else {
+
+    //#region 前台部分
+
+    /**
 	* DOM辅助处理模块。
 	*/
-	Demo.Dom = {
+    Demo.Dom = {
 
-		/**
+        /**
 		 * 指示当前是否为 IE6-8 浏览器。
 		 */
-		isIE: !+"\v1",
+        isIE: !+"\v1",
 
-		/**
+        /**
 		 * 遍历指定的标签名并执行指定函数。仅对 class=demo 的元素有效。
 		 */
-		iterate: function (tagName, fn) {
-			var domlist = document.getElementsByTagName(tagName), r = [], i, t;
-			for (i = 0; t = domlist[i]; i++) {
-				if (t.className.indexOf('demo') >= 0) {
-					r.push(t);
-				}
-			}
+        iterate: function (tagName, fn) {
+            var domlist = document.getElementsByTagName(tagName), r = [], i, t;
+            for (i = 0; t = domlist[i]; i++) {
+                if (t.className.indexOf('demo') >= 0) {
+                    r.push(t);
+                }
+            }
 
-			for (i = 0; i < r.length; i++) {
-				fn(r[i]);
-			}
-		},
+            for (i = 0; i < r.length; i++) {
+                fn(r[i]);
+            }
+        },
 
-		/**
+        /**
 		 * 设置 DOM ready 后的回调。
 		 */
-		ready: function (callback) {
+        ready: function (callback) {
 
-			function check() {
-				/in/.test(document.readyState) ? setTimeout(check, 1) : callback();
-			}
+            function check() {
+                /in/.test(document.readyState) ? setTimeout(check, 1) : callback();
+            }
 
-			check();
-		}
-	};
+            check();
+        }
+    };
 
-	/**
+    /**
 	 * 代码处理模块。
 	 */
-	Demo.Utils = {
+    Demo.Utils = {
 
-		indexOf: function (arr, value) {
-			for (var i = 0; i < arr.length; i++) {
-				if (arr[i] === value) {
-					return i;
-				}
-			}
+        indexOf: function (arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] === value) {
+                    return i;
+                }
+            }
 
-			return -1;
-		},
+            return -1;
+        },
 
-		removeIndents: function (value) {
-			value = value.replace(/^[\r\n]+/, "").replace(/\s+$/, "");
-			var space = /^\s+/.exec(value);
+        removeIndents: function (value) {
+            value = value.replace(/^[\r\n]+/, "").replace(/\s+$/, "");
+            var space = /^\s+/.exec(value);
 
-			if (space) {
-				space = space[0];
-				value = value.split(/[\r\n]/);
-				for (var i = value.length - 1; i >= 0; i--) {
-					value[i] = value[i].replace(space, "");
-				}
-				value = value.join('\r\n');
-			}
-			return value;
-		},
+            if (space) {
+                space = space[0];
+                value = value.split(/[\r\n]/);
+                for (var i = value.length - 1; i >= 0; i--) {
+                    value[i] = value[i].replace(space, "");
+                }
+                value = value.join('\r\n');
+            }
+            return value;
+        },
 
-		/**
+        /**
 		 * 编码 HTML 特殊字符。
 		 * @param {String} value 要编码的字符串。
 		 * @return {String} 返回已编码的字符串。
 		 * @remark 此函数主要将 & < > ' " 分别编码成 &amp; &lt; &gt; &#39; &quot; 。
 		 */
-		encodeHTML: (function () {
+        encodeHTML: (function () {
 
-			var map = {
-				'&': '&amp;',
-				'<': '&lt;',
-				'>': '&gt;',
-				'\'': '&#39;',
-				'\"': '&quot;'
-			};
+            var map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '\'': '&#39;',
+                '\"': '&quot;'
+            };
 
-			function replaceMap(v) {
-				return map[v];
-			}
+            function replaceMap(v) {
+                return map[v];
+            }
 
-			return function (value) {
-				return value.replace(/[&<>\'\"]/g, replaceMap);
-			};
-		})(),
-		
-		/**
+            return function (value) {
+                return value.replace(/[&<>\'\"]/g, replaceMap);
+            };
+        })(),
+
+        /**
 		 * 获取一个函数内的源码。
 		 */
-		getFunctionSource: function (fn){
-			return Demo.Utils.removeIndents(fn.toString().replace(/^function\s+[^(]*\s*\(.*?\)\s*\{[\r\n]*/, "").replace(/\s*\}\s*$/, "").replace(/\\u([0-9a-f]{3})([0-9a-f])/gi, function (a, b, c) {
-				return String.fromCharCode((parseInt(b, 16) * 16 + parseInt(c, 16)))
-			}));
-		}
+        getFunctionSource: function (fn) {
+            return Demo.Utils.removeIndents(fn.toString().replace(/^function\s+[^(]*\s*\(.*?\)\s*\{[\r\n]*/, "").replace(/\s*\}\s*$/, "").replace(/\\u([0-9a-f]{3})([0-9a-f])/gi, function (a, b, c) {
+                return String.fromCharCode((parseInt(b, 16) * 16 + parseInt(c, 16)))
+            }));
+        }
 
-	};
+    };
 
-	/**系统模块*/
-	Demo.Page = {
+    /**系统模块*/
+    Demo.Page = {
 
-		/**
+        /**
 		 * 预处理页面。
 		 */
-		init: function () {
+        init: function () {
 
-			// 令 IE6-8 支持显示 HTML5 新元素。
-			if (Demo.Dom.isIE) {
-				'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
-					document.createElement(tagName);
-				});
-			}
+            // 令 IE6-8 支持显示 HTML5 新元素。
+            if (Demo.Dom.isIE) {
+                'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
+                    document.createElement(tagName);
+                });
+            }
 
-			var configs = Demo.Configs;
+            var configs = Demo.Configs;
 
-			// 判断当前开发系统是否在本地运行。
-			Demo.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
+            // 判断当前开发系统是否在本地运行。
+            Demo.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
 
-			// 自动获取项目跟目录。
-			var node = document.getElementsByTagName("script");
-			node = node[node.length - 1];
-			node = (!Demo.Dom.isIE || typeof document.constructor === 'object') ? node.src : node.getAttribute('src', 5);
+            // 自动获取项目跟目录。
+            var node = document.getElementsByTagName("script");
+            node = node[node.length - 1];
+            node = (!Demo.Dom.isIE || typeof document.constructor === 'object') ? node.src : node.getAttribute('src', 5);
 
             // 保存 demo.js 路径。
-			Demo.demoJsUrl = node;
+            Demo.demoJsUrl = node;
 
-		    node = node.replace(configs.apps + "/demo/demo.js", "");
+            node = node.replace(configs.apps + "/demo/demo.js", "");
 
-			Demo.baseUrl = node;
-			
-			// 获取当前的目录信息。
-			var pathname = location.href.substr(Demo.baseUrl.length);
-			var slashIndex = pathname.indexOf('/');
-			Demo.urlPrefix = pathname.substr(0, slashIndex);
-			Demo.urlPostfix = pathname.substr(slashIndex + 1);
+            Demo.baseUrl = node;
 
-			// 判断当前开发系统的打开模式。
-			// 如果是在一个网页上使用，则不生成其它额外的内容。
-			// 如果是在 docs 里使用，则自动生成标题部分。
-			if (Demo.urlPrefix) {
-				Demo.writeHeader();
-			}
+            // 获取当前的目录信息。
+            var pathname = location.href.substr(Demo.baseUrl.length);
+            var slashIndex = pathname.indexOf('/');
+            Demo.urlPrefix = pathname.substr(0, slashIndex);
+            Demo.urlPostfix = pathname.substr(slashIndex + 1);
 
-			Demo.Dom.ready(function () {
+            // 判断当前开发系统的打开模式。
+            // 如果是在一个网页上使用，则不生成其它额外的内容。
+            // 如果是在 docs 里使用，则自动生成标题部分。
+            if (Demo.urlPrefix) {
+                Demo.writeHeader();
+            }
 
-				// 处理 script.demo 。
-				// script.demo[type=text/html] => aside.demo
-				// script.demo[type=text/javascript] => 插入 pre.demo
-				// script.demo[type=code/html] => pre.demo
-				// script.demo[type=code/javascript] => pre.demo
-				Demo.Dom.iterate('SCRIPT', function (node) {
-					var value = node.innerHTML.replace(/< (\/?)script/g, "<$1script");
-					switch (node.type) {
-						case '':
-						case 'text/javascript':
-							insertCode(node, node.innerHTML, 'js', true);
-							break;
-						case 'text/html':
-							var code = document.createElement('ASIDE');
-							code.className = node.className;
-							node.parentNode.replaceChild(code, node);
-							code.$code = value;
+            Demo.Dom.ready(function () {
 
-							if (Demo.Dom.isIE) {
-								code.innerHTML = '$' + value;
-								code.removeChild(code.firstChild);
-							} else {
-								code.innerHTML = value;
-							}
+                // 处理 script.demo 。
+                // script.demo[type=text/html] => aside.demo
+                // script.demo[type=text/javascript] => 插入 pre.demo
+                // script.demo[type=code/html] => pre.demo
+                // script.demo[type=code/javascript] => pre.demo
+                Demo.Dom.iterate('SCRIPT', function (node) {
+                    var value = node.innerHTML.replace(/< (\/?)script/g, "<$1script");
+                    switch (node.type) {
+                        case '':
+                        case 'text/javascript':
+                            insertCode(node, node.innerHTML, 'js', true);
+                            break;
+                        case 'text/html':
+                            var code = document.createElement('ASIDE');
+                            code.className = node.className;
+                            node.parentNode.replaceChild(code, node);
+                            code.$code = value;
 
-							// 模拟执行全部脚本。
-							var scripts = code.getElementsByTagName('SCRIPT');
-							for (var i = 0; scripts[i]; i++) {
-								if (window.execScript) {
-									window.execScript(scripts[i].innerHTML);
-								} else {
-									window.eval(scripts[i].innerHTML);
-								}
-							}
-							break;
-						case 'text/markdown':
-							if (Demo.Markdown) {
-								value = Demo.Markdown.toHTML(Demo.Utils.removeIndents(value));
-								var div = document.createElement('SECTION');
-								div.innerHTML = value;
-								var nodes = div.getElementsByTagName('*');
-								for (var i = 0; nodes[i]; i++) {
-									nodes[i].className = 'demo';
-								}
-								node.parentNode.replaceChild(div, node);
-							} else {
-								insertCode(node, value, 'text');
-							}
-							break;
-						case 'code/javascript':
-							insertCode(node, value, 'js');
-							break;
-						default:
-							if (/^code\//.test(node.type)) {
-								insertCode(node, value, node.type.substr(5));
-							} else {
-								insertCode(node, value, 'text');
-							}
+                            if (Demo.Dom.isIE) {
+                                code.innerHTML = '$' + value;
+                                code.removeChild(code.firstChild);
+                            } else {
+                                code.innerHTML = value;
+                            }
 
-							break;
-					}
-				});
+                            // 模拟执行全部脚本。
+                            var scripts = code.getElementsByTagName('SCRIPT');
+                            for (var i = 0; scripts[i]; i++) {
+                                if (window.execScript) {
+                                    window.execScript(scripts[i].innerHTML);
+                                } else {
+                                    window.eval(scripts[i].innerHTML);
+                                }
+                            }
+                            break;
+                        case 'text/markdown':
+                            if (Demo.Markdown) {
+                                value = Demo.Markdown.toHTML(Demo.Utils.removeIndents(value));
+                                var div = document.createElement('SECTION');
+                                div.innerHTML = value;
+                                var nodes = div.getElementsByTagName('*');
+                                for (var i = 0; nodes[i]; i++) {
+                                    nodes[i].className = 'demo';
+                                }
+                                node.parentNode.replaceChild(div, node);
+                            } else {
+                                insertCode(node, value, 'text');
+                            }
+                            break;
+                        case 'code/javascript':
+                            insertCode(node, value, 'js');
+                            break;
+                        default:
+                            if (/^code\//.test(node.type)) {
+                                insertCode(node, value, node.type.substr(5));
+                            } else {
+                                insertCode(node, value, 'text');
+                            }
 
-				// 处理 aside.demo 。
-				Demo.Dom.iterate('ASIDE', function (node) {
-				    if (node.className.indexOf('demo-nosrc') <= 0) {
-				        insertCode(node, node.$code || node.innerHTML, 'html', true);
-				    }
-				});
+                            break;
+                    }
+                });
 
-				// 如果存在代码高亮的插件。
-				if (Demo.SyntaxHighligher) {
-					setTimeout(function () {
-						Demo.Dom.iterate('PRE', Demo.SyntaxHighligher.one);
-					}, 0);
-				}
+                // 处理 aside.demo 。
+                Demo.Dom.iterate('ASIDE', function (node) {
+                    if (node.className.indexOf('demo-nosrc') <= 0) {
+                        insertCode(node, node.$code || node.innerHTML, 'html', true);
+                    }
+                });
 
-				function insertCode(node, value, language, canHide) {
+                // 如果存在代码高亮的插件。
+                if (Demo.SyntaxHighligher) {
+                    setTimeout(function () {
+                        Demo.Dom.iterate('PRE', Demo.SyntaxHighligher.one);
+                    }, 0);
+                }
 
-					var pre = document.createElement('pre');
-					pre.className = 'demo demo-code-pin demo-sh demo-sh-' + language + (canHide ? ' demo-sourcecode' : '');
+                function insertCode(node, value, language, canHide) {
 
-					// 如果存在格式代码插件，判断当前是否需要格式化代码。
-					if (Demo.Beautify && (language in Demo.Beautify) && node.className.indexOf('demo-noformat') < 0) {
-						value = Demo.Beautify[language](value);
-					} else {
-						value = Demo.Utils.removeIndents(value);
-					}
+                    var pre = document.createElement('pre');
+                    pre.className = 'demo demo-code-pin demo-sh demo-sh-' + language + (canHide ? ' demo-sourcecode' : '');
 
-					pre.textContent = pre.innerText = value;
+                    // 如果存在格式代码插件，判断当前是否需要格式化代码。
+                    if (Demo.Beautify && (language in Demo.Beautify) && node.className.indexOf('demo-noformat') < 0) {
+                        value = Demo.Beautify[language](value);
+                    } else {
+                        value = Demo.Utils.removeIndents(value);
+                    }
 
-					pre.innerHTML = pre.innerHTML.replace(/\[bold\]([\s\S]*?)\[\/bold\]/g, "<strong>$1</strong>").replace(/\[u\]([\s\S]*?)\[\/u\]/g, "<u>$1</u>");
+                    pre.textContent = pre.innerText = value;
 
-					node.parentNode.insertBefore(pre, node.nextSibling);
-				}
+                    pre.innerHTML = pre.innerHTML.replace(/\[bold\]([\s\S]*?)\[\/bold\]/g, "<strong>$1</strong>").replace(/\[u\]([\s\S]*?)\[\/u\]/g, "<u>$1</u>");
 
-			});
-		},
+                    node.parentNode.insertBefore(pre, node.nextSibling);
+                }
 
-		/**
+            });
+        },
+
+        /**
 		 * 切换折叠或展开全部源码。
 		 */
-		toggleSources: function (value) {
+        toggleSources: function (value) {
 
-			Demo.Page.sourceDisplay = Demo.Page.sourceDisplay === 'none' ? '' : 'none';
+            Demo.Page.sourceDisplay = Demo.Page.sourceDisplay === 'none' ? '' : 'none';
 
-			Demo.Dom.iterate('PRE', function (node) {
-				if (node.className.indexOf('demo-sourcecode') >= 0) {
-					node.style.display = Demo.Page.sourceDisplay;
-				}
-			});
+            Demo.Dom.iterate('PRE', function (node) {
+                if (node.className.indexOf('demo-sourcecode') >= 0) {
+                    node.style.display = Demo.Page.sourceDisplay;
+                }
+            });
 
-		},
+        },
 
-		initDropDown: function (id) {
-			var dropDown = document.createElement('div');
-			dropDown.id = id;
-			document.getElementById('demo-toolbar').appendChild(dropDown);
-			switch (id) {
-				case "demo-toolbar-tool":
-					simpleDropDown('tool', '100px');
-					break;
-				case "demo-toolbar-goto":
-					dropDown.className = 'demo-toolbar-dropdown';
-					dropDown.style.width = '300px';
-					dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
-					dropDown.defaultButton = dropDown.firstChild;
-					dropDown.defaultButton.onkeydown = function (e) {
-						e = e || window.event;
-						var keyCode = e.keyCode;
-						if (keyCode == 40 || keyCode == 38) {
-							Demo.Page.gotoMoveListHover(keyCode == 40);
+        initDropDown: function (id) {
+            var dropDown = document.createElement('div');
+            dropDown.id = id;
+            document.getElementById('demo-toolbar').appendChild(dropDown);
+            switch (id) {
+                case "demo-toolbar-tool":
+                    simpleDropDown('tool', '100px');
+                    break;
+                case "demo-toolbar-goto":
+                    dropDown.className = 'demo-toolbar-dropdown';
+                    dropDown.style.width = '300px';
+                    dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
+                    dropDown.defaultButton = dropDown.firstChild;
+                    dropDown.defaultButton.onkeydown = function (e) {
+                        e = e || window.event;
+                        var keyCode = e.keyCode;
+                        if (keyCode == 40 || keyCode == 38) {
+                            Demo.Page.gotoMoveListHover(keyCode == 40);
 
-						}
-					};
+                        }
+                    };
 
-					dropDown.defaultButton.onkeypress = function (e) {
-						e = e || window.event;
-						var keyCode = e.keyCode;
-						if (keyCode == 13 || keyCode == 10) {
-							var link = Demo.Page.gotoGetCurrent();
+                    dropDown.defaultButton.onkeypress = function (e) {
+                        e = e || window.event;
+                        var keyCode = e.keyCode;
+                        if (keyCode == 13 || keyCode == 10) {
+                            var link = Demo.Page.gotoGetCurrent();
 
-							if (link) {
-								location.href = link.href;
-							}
+                            if (link) {
+                                location.href = link.href;
+                            }
 
-						}
-					};
+                        }
+                    };
 
-					dropDown.defaultButton.onkeyup = function (e) {
-						e = e || window.event;
-						var keyCode = e.keyCode;
-						if (keyCode !== 40 && keyCode !== 38 && keyCode != 13 && keyCode != 10) {
-							Demo.Page.gotoUpdateList();
-						}
-					};
+                    dropDown.defaultButton.onkeyup = function (e) {
+                        e = e || window.event;
+                        var keyCode = e.keyCode;
+                        if (keyCode !== 40 && keyCode !== 38 && keyCode != 13 && keyCode != 10) {
+                            Demo.Page.gotoUpdateList();
+                        }
+                    };
 
-					Demo.Page.loadModuleList(Demo.Page.gotoUpdateList);
+                    Demo.Page.loadModuleList(Demo.Page.gotoUpdateList);
 
-					break;
-				case "demo-toolbar-controlstate":
-					var moduleInfo = Demo.moduleInfo;
-					dropDown.className = 'demo-toolbar-dropdown';
-					dropDown.style.cssText = 'padding:5px;*width:260px;';
-					var html = '<style>#demo-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/modulemanager/server/api.njs" method="get">\
+                    break;
+                case "demo-toolbar-controlstate":
+                    var moduleInfo = Demo.moduleInfo;
+                    dropDown.className = 'demo-toolbar-dropdown';
+                    dropDown.style.cssText = 'padding:5px;*width:260px;';
+                    var html = '<style>#demo-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Demo.Configs.serverBaseUrl + Demo.Configs.apps + '/modulemanager/server/api.njs" method="get">\
                     <fieldset>\
                         <legend>状态</legend>';
 
-					var i = 1, key;
-					for (key in Demo.Configs.status) {
-						html += '<input name="status" type="radio"' + (moduleInfo.status === key ? ' checked="checked"' : '') + ' id="demo-controlstate-status-' + key + '" value="' + key + '"><label for="demo-controlstate-status-' + key + '">' + Demo.Configs.status[key] + '</label>';
+                    var i = 1, key;
+                    for (key in Demo.Configs.status) {
+                        html += '<input name="status" type="radio"' + (moduleInfo.status === key ? ' checked="checked"' : '') + ' id="demo-controlstate-status-' + key + '" value="' + key + '"><label for="demo-controlstate-status-' + key + '">' + Demo.Configs.status[key] + '</label>';
 
-						if (i++ === 3) {
-							html += '<br>';
-						}
-					}
+                        if (i++ === 3) {
+                            html += '<br>';
+                        }
+                    }
 
-					html += '</fieldset>\
+                    html += '</fieldset>\
                     <fieldset>\
                         <legend>兼容</legend>';
 
-					i = 1;
-					var support = moduleInfo.support ? moduleInfo.support.split('|') : Demo.Configs.support;
+                    i = 1;
+                    var support = moduleInfo.support ? moduleInfo.support.split('|') : Demo.Configs.support;
 
-					for (i = 0; i < Demo.Configs.support.length; i++) {
-						key = Demo.Configs.support[i];
-						html += '<input name="support" type="checkbox"' + (Demo.Utils.indexOf(support, key) >= 0 ? ' checked="checked"' : '') + ' id="demo-controlstate-support-' + key + '" value="' + key + '"><label for="demo-controlstate-support-' + key + '">' + Demo.Configs.support[i] + '</label>';
+                    for (i = 0; i < Demo.Configs.support.length; i++) {
+                        key = Demo.Configs.support[i];
+                        html += '<input name="support" type="checkbox"' + (Demo.Utils.indexOf(support, key) >= 0 ? ' checked="checked"' : '') + ' id="demo-controlstate-support-' + key + '" value="' + key + '"><label for="demo-controlstate-support-' + key + '">' + Demo.Configs.support[i] + '</label>';
 
-						if (i === 5) {
-							html += '<br>';
-						}
-					}
+                        if (i === 5) {
+                            html += '<br>';
+                        }
+                    }
 
-					html += '</fieldset>\
+                    html += '</fieldset>\
                     <fieldset>\
                         <legend>描述</legend>\
                     <input style="width:224px" type="text" name="title" value="' + moduleInfo.name + '">\
@@ -505,152 +527,152 @@ if (typeof module !== 'object') {
 <input type="hidden" name="action" value="update">\
 <input type="hidden" name="postback" value="' + Demo.Utils.encodeHTML(location.href) + '">\
             </form>';
-					dropDown.innerHTML = html;
-					break;
-			}
+                    dropDown.innerHTML = html;
+                    break;
+            }
 
-			function simpleDropDown(id, right) {
-				dropDown.style.right = right;
-				dropDown.className = 'demo-toolbar-dropdown demo-toolbar-dropdown-menu demo-toolbar-dropdown-menu-usehover';
-				dropDown.innerHTML = Demo.Configs[id].replace(/~\//g, Demo.baseUrl);
-				dropDown.onclick = function () {
-					dropDown.style.display = 'none';
-				};
-			}
+            function simpleDropDown(id, right) {
+                dropDown.style.right = right;
+                dropDown.className = 'demo-toolbar-dropdown demo-toolbar-dropdown-menu demo-toolbar-dropdown-menu-usehover';
+                dropDown.innerHTML = Demo.Configs[id].replace(/~\//g, Demo.baseUrl);
+                dropDown.onclick = function () {
+                    dropDown.style.display = 'none';
+                };
+            }
 
-			return dropDown;
-		},
+            return dropDown;
+        },
 
-		showDropDown: function (id, delay) {
+        showDropDown: function (id, delay) {
 
-			Demo.Page.cleanDropDownTimer();
+            Demo.Page.cleanDropDownTimer();
 
-			Demo.Page.dropDownTimerShow = setTimeout(function () {
+            Demo.Page.dropDownTimerShow = setTimeout(function () {
 
-				// 删除延时状态。
-				Demo.Page.dropDownTimerShow = 0;
+                // 删除延时状态。
+                Demo.Page.dropDownTimerShow = 0;
 
-				// 如果已经显示了一个菜单，则关闭之。
-				if (Demo.Page.dropDownShown) {
-					Demo.Page.dropDownShown.style.display = 'none';
-				}
+                // 如果已经显示了一个菜单，则关闭之。
+                if (Demo.Page.dropDownShown) {
+                    Demo.Page.dropDownShown.style.display = 'none';
+                }
 
-				var dropDown = document.getElementById(id);
+                var dropDown = document.getElementById(id);
 
-				if (!dropDown) {
-					dropDown = Demo.Page.initDropDown(id);
-				}
+                if (!dropDown) {
+                    dropDown = Demo.Page.initDropDown(id);
+                }
 
-				// 如果移到了菜单上，则停止关闭菜单的计时器。
-				dropDown.onmouseover = function () {
-					if (Demo.Page.dropDownTimerHide) {
-						clearTimeout(Demo.Page.dropDownTimerHide);
-						Demo.Page.dropDownTimerHide = 0;
-					}
-				};
+                // 如果移到了菜单上，则停止关闭菜单的计时器。
+                dropDown.onmouseover = function () {
+                    if (Demo.Page.dropDownTimerHide) {
+                        clearTimeout(Demo.Page.dropDownTimerHide);
+                        Demo.Page.dropDownTimerHide = 0;
+                    }
+                };
 
-				dropDown.onmouseout = Demo.Page.hideDropDown;
+                dropDown.onmouseout = Demo.Page.hideDropDown;
 
-				dropDown.style.display = '';
+                dropDown.style.display = '';
 
-				if (dropDown.defaultButton) {
-					dropDown.defaultButton.focus();
-				}
-				Demo.Page.dropDownShown = dropDown;
-			}, delay || 200);
+                if (dropDown.defaultButton) {
+                    dropDown.defaultButton.focus();
+                }
+                Demo.Page.dropDownShown = dropDown;
+            }, delay || 200);
 
-		},
+        },
 
-		cleanDropDownTimer: function () {
+        cleanDropDownTimer: function () {
 
-			// 如果正在隐藏，则忽略之。
-			if (Demo.Page.dropDownTimerHide) {
-				clearTimeout(Demo.Page.dropDownTimerHide);
-				Demo.Page.dropDownTimerHide = 0;
-			}
+            // 如果正在隐藏，则忽略之。
+            if (Demo.Page.dropDownTimerHide) {
+                clearTimeout(Demo.Page.dropDownTimerHide);
+                Demo.Page.dropDownTimerHide = 0;
+            }
 
-			// 如果正在显示，则忽略之。
-			if (Demo.Page.dropDownTimerShow) {
-				clearTimeout(Demo.Page.dropDownTimerShow);
-				Demo.Page.dropDownTimerShow = 0;
-			}
-		},
+            // 如果正在显示，则忽略之。
+            if (Demo.Page.dropDownTimerShow) {
+                clearTimeout(Demo.Page.dropDownTimerShow);
+                Demo.Page.dropDownTimerShow = 0;
+            }
+        },
 
-		hideDropDown: function () {
+        hideDropDown: function () {
 
-			Demo.Page.cleanDropDownTimer();
+            Demo.Page.cleanDropDownTimer();
 
-			if (Demo.Page.dropDownShown) {
-				Demo.Page.dropDownTimerHide = setTimeout(function () {
-					Demo.Page.dropDownShown.style.display = 'none';
-					Demo.Page.dropDownShown = null;
-				}, 400);
-			}
-		},
+            if (Demo.Page.dropDownShown) {
+                Demo.Page.dropDownTimerHide = setTimeout(function () {
+                    Demo.Page.dropDownShown.style.display = 'none';
+                    Demo.Page.dropDownShown = null;
+                }, 400);
+            }
+        },
 
-		addModuleHistory: function (dpl) {
-			if (window.localStorage) {
-				var dplList = localStorage.demoModuleHistory;
-				dplList = dplList ? dplList.split(';') : [];
+        addModuleHistory: function (dpl) {
+            if (window.localStorage) {
+                var dplList = localStorage.demoModuleHistory;
+                dplList = dplList ? dplList.split(';') : [];
 
-				for (var i = 0; i < dplList.length; i++) {
-					if (dplList[i] === dpl) {
-						dplList.splice(i, 1);
-						break;
-					}
-				}
+                for (var i = 0; i < dplList.length; i++) {
+                    if (dplList[i] === dpl) {
+                        dplList.splice(i, 1);
+                        break;
+                    }
+                }
 
-				if (dplList.length > Demo.Configs.maxHistory) {
-					dplList.shift();
-				}
+                if (dplList.length > Demo.Configs.maxHistory) {
+                    dplList.shift();
+                }
 
-				dplList.push(dpl);
-				localStorage.demoModuleHistory = dplList.join(';');
-			}
-		},
+                dplList.push(dpl);
+                localStorage.demoModuleHistory = dplList.join(';');
+            }
+        },
 
-		exploreSource: function () {
-			if (Demo.local) {
-				var img = new Image();
-				img.src = Demo.Configs.serverBaseUrl + Demo.Configs.apps + "/server/explorer.njs?path=" + encodeURIComponent(location.pathname) + "&_=" + (+new Date()) + Math.random();
-			} else {
-				location.href = 'view-source:' + location.href;
-			}
-		},
+        exploreSource: function () {
+            if (Demo.local) {
+                var img = new Image();
+                img.src = Demo.Configs.serverBaseUrl + Demo.Configs.apps + "/server/explorer.njs?path=" + encodeURIComponent(location.pathname) + "&_=" + (+new Date()) + Math.random();
+            } else {
+                location.href = 'view-source:' + location.href;
+            }
+        },
 
-		/**
+        /**
 		 * 载入 DPL 列表。
 		 */
-		loadModuleList: function (callback) {
+        loadModuleList: function (callback) {
 
-			if (window.ModuleList) {
-				callback(window.ModuleList);
-				return;
-			}
+            if (window.ModuleList) {
+                callback(window.ModuleList);
+                return;
+            }
 
-			var script = document.createElement('SCRIPT');
-			script.onload = script.onreadystatechange = function () {
-				if (!script.readyState || !/in/.test(script.readyState)) {
-					script.onload = script.onreadystatechange = null;
+            var script = document.createElement('SCRIPT');
+            script.onload = script.onreadystatechange = function () {
+                if (!script.readyState || !/in/.test(script.readyState)) {
+                    script.onload = script.onreadystatechange = null;
 
-					callback(window.ModuleList);
-				}
-			};
+                    callback(window.ModuleList);
+                }
+            };
 
-			script.type = 'text/javascript';
-			script.src = Demo.baseUrl + Demo.Configs.apps + "/data/modulelist.js";
+            script.type = 'text/javascript';
+            script.src = Demo.baseUrl + Demo.Configs.apps + "/data/modulelist.js";
 
-			var head = document.getElementsByTagName('HEAD')[0];
-			head.insertBefore(script, head.firstChild);
-		},
+            var head = document.getElementsByTagName('HEAD')[0];
+            head.insertBefore(script, head.firstChild);
+        },
 
-		gotoUpdateList: function () {
+        gotoUpdateList: function () {
 
-			if (!window.ModuleList) {
-				return;
-			}
+            if (!window.ModuleList) {
+                return;
+            }
 
-			var dropDown = document.getElementById('demo-toolbar-goto'),
+            var dropDown = document.getElementById('demo-toolbar-goto'),
 				filter = dropDown.defaultButton.value.toLowerCase(),
 				pathLower,
 				html = '',
@@ -658,93 +680,93 @@ if (typeof module !== 'object') {
 				histories,
 				sep = false;
 
-			if (filter) {
-				filter = filter.replace(/^\s+|\s+$/g, "").toLowerCase();
-				for (var path in ModuleList.examples) {
-					if (path.indexOf('/' + filter) >= 0) {
-						html += getTpl(path);
-					} else if (path.indexOf(filter) >= 0 || (ModuleList.examples[path].name || '').toLowerCase().indexOf(filter) >= 0) {
-						html2 += getTpl(path);
-					}
-				}
-			} else {
+            if (filter) {
+                filter = filter.replace(/^\s+|\s+$/g, "").toLowerCase();
+                for (var path in ModuleList.examples) {
+                    if (path.indexOf('/' + filter) >= 0) {
+                        html += getTpl(path);
+                    } else if (path.indexOf(filter) >= 0 || (ModuleList.examples[path].name || '').toLowerCase().indexOf(filter) >= 0) {
+                        html2 += getTpl(path);
+                    }
+                }
+            } else {
 
-				if (histories = window.localStorage && localStorage.demoModuleHistory) {
-					histories = histories.split(';');
-					for (var i = histories.length - 1; i >= 0; i--) {
-						if (histories[i] in ModuleList.examples) {
-							html += getTpl(histories[i]);
-						}
-					}
+                if (histories = window.localStorage && localStorage.demoModuleHistory) {
+                    histories = histories.split(';');
+                    for (var i = histories.length - 1; i >= 0; i--) {
+                        if (histories[i] in ModuleList.examples) {
+                            html += getTpl(histories[i]);
+                        }
+                    }
 
-					sep = !!html;
-				}
+                    sep = !!html;
+                }
 
-				for (var path in ModuleList.examples) {
-					html2 += getTpl(path);
-				}
-			}
+                for (var path in ModuleList.examples) {
+                    html2 += getTpl(path);
+                }
+            }
 
-			function getTpl(path) {
-				var tpl = '';
-				if (sep) {
-					tpl = ' style="border-top: 1px solid #EBEBEB"';
-					sep = false;
-				}
-				return '<a' + tpl + ' onmouseover="Demo.Page.gotoSetListHover(this)" href="' + Demo.baseUrl + Demo.Configs.examples + "/" + path + '">' + path.replace(/\.\w+$/, "") + '<small style="color: #999"> - ' + ModuleList.examples[path].name + '</small></a>';
-			}
+            function getTpl(path) {
+                var tpl = '';
+                if (sep) {
+                    tpl = ' style="border-top: 1px solid #EBEBEB"';
+                    sep = false;
+                }
+                return '<a' + tpl + ' onmouseover="Demo.Page.gotoSetListHover(this)" href="' + Demo.baseUrl + Demo.Configs.examples + "/" + path + '">' + path.replace(/\.\w+$/, "") + '<small style="color: #999"> - ' + ModuleList.examples[path].name + '</small></a>';
+            }
 
-			dropDown.lastChild.innerHTML = html + html2;
+            dropDown.lastChild.innerHTML = html + html2;
 
-			if (dropDown.lastChild.firstChild) {
-				dropDown.lastChild.firstChild.className = 'demo-toolbar-dropdown-menu-hover';
-			}
+            if (dropDown.lastChild.firstChild) {
+                dropDown.lastChild.firstChild.className = 'demo-toolbar-dropdown-menu-hover';
+            }
 
-		},
+        },
 
-		gotoMoveListHover: function (goDown) {
-			var currentNode = Demo.Page.gotoGetCurrent();
+        gotoMoveListHover: function (goDown) {
+            var currentNode = Demo.Page.gotoGetCurrent();
 
-			if (currentNode) {
-				currentNode.className = '';
-			}
+            if (currentNode) {
+                currentNode.className = '';
+            }
 
-			if (!currentNode || !currentNode[goDown ? 'nextSibling' : 'previousSibling']) {
-				currentNode = document.getElementById('demo-toolbar-goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
-			} else {
-				currentNode = currentNode[goDown ? 'nextSibling' : 'previousSibling'];
-			}
+            if (!currentNode || !currentNode[goDown ? 'nextSibling' : 'previousSibling']) {
+                currentNode = document.getElementById('demo-toolbar-goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
+            } else {
+                currentNode = currentNode[goDown ? 'nextSibling' : 'previousSibling'];
+            }
 
-			if (currentNode)
-				currentNode.className = 'demo-toolbar-dropdown-menu-hover';
-		},
+            if (currentNode)
+                currentNode.className = 'demo-toolbar-dropdown-menu-hover';
+        },
 
-		gotoSetListHover: function (newHover) {
-			var current = Demo.Page.gotoGetCurrent();
-			if (current) {
-				current.className = '';
-			}
-			newHover.className = 'demo-toolbar-dropdown-menu-hover';
-		},
+        gotoSetListHover: function (newHover) {
+            var current = Demo.Page.gotoGetCurrent();
+            if (current) {
+                current.className = '';
+            }
+            newHover.className = 'demo-toolbar-dropdown-menu-hover';
+        },
 
-		gotoGetCurrent: function () {
-			var node = document.getElementById('demo-toolbar-goto').lastChild;
-			for (node = node.firstChild; node; node = node.nextSibling) {
-				if (node.className === 'demo-toolbar-dropdown-menu-hover') {
-					return node;
-				}
-			}
-		}
+        gotoGetCurrent: function () {
+            var node = document.getElementById('demo-toolbar-goto').lastChild;
+            for (node = node.firstChild; node; node = node.nextSibling) {
+                if (node.className === 'demo-toolbar-dropdown-menu-hover') {
+                    return node;
+                }
+            }
+        }
 
-	};
+    };
 
-	/**
+    /**
 	 * 生成页眉。
 	 */
-	Demo.writeHeader = function () {
+    Demo.writeHeader = function () {
 
-		// 获取当前页面的配置信息。
-		var configs = Demo.Configs,
+        // 获取当前页面的配置信息。
+        var configs = Demo.Configs,
 			space = navigator.userAgent.indexOf('Firefox/') > 0 ? '' : ' ',
 			html = '',
 			node = document.getElementsByTagName("meta"),
@@ -753,43 +775,43 @@ if (typeof module !== 'object') {
 			isInDocs = Demo.urlPrefix === configs.examples,
 			isHomePage = !Demo.urlPostfix || /^index\./.test(Demo.urlPostfix);
 
-	    // 生成 componentInfo 字段。
+        // 生成 componentInfo 字段。
 
-		for (i = 0; node[i]; i++) {
-			if (node[i].name === configs.metaModuleInfo) {
-				node = node[i].content;
-				moduleInfo = Demo.Module.parseModuleInfo(node);
-				break;
-			}
-		}
+        for (i = 0; node[i]; i++) {
+            if (node[i].name === configs.metaModuleInfo) {
+                node = node[i].content;
+                moduleInfo = Demo.Module.parseModuleInfo(node);
+                break;
+            }
+        }
 
-		Demo.moduleInfo = moduleInfo = moduleInfo || {};
+        Demo.moduleInfo = moduleInfo = moduleInfo || {};
 
-		if (!(moduleInfo.status in configs.status)) {
-			moduleInfo.status = 'ok';
-		}
+        if (!(moduleInfo.status in configs.status)) {
+            moduleInfo.status = 'ok';
+        }
 
-		// 默认使用 document.title 作为标题。
-		if (!moduleInfo.name) {
-			moduleInfo.name = document.title;
-		}
+        // 默认使用 document.title 作为标题。
+        if (!moduleInfo.name) {
+            moduleInfo.name = document.title;
+        }
 
-		// 输出 css 和 js
-		document.write('<link type="text/css" rel="stylesheet" href="' + Demo.demoJsUrl.replace(/\.js$/, ".css") + '" />');
+        // 输出 css 和 js
+        document.write('<link type="text/css" rel="stylesheet" href="' + Demo.demoJsUrl.replace(/\.js$/, ".css") + '" />');
 
-		// 非本地运行时，自动载入统计代码。
-		if (!Demo.local) {
-		    document.write('<script type="text/javascript" src="' + Demo.demoJsUrl.replace(/\demo.js$/, "social.js") + '"></script>');
-		}
+        // 非本地运行时，自动载入统计代码。
+        if (!Demo.local) {
+            document.write('<script type="text/javascript" src="' + Demo.demoJsUrl.replace(/\demo.js$/, "social.js") + '"></script>');
+        }
 
-		// IE6 需要强制中止 <head>
-		if (Demo.Dom.isIE) {
-			document.write('<div id="demo-ie6-html5hack">&nbsp;</div>');
-			document.body.removeChild(document.getElementById("demo-ie6-html5hack"));
-		}
+        // IE6 需要强制中止 <head>
+        if (Demo.Dom.isIE) {
+            document.write('<div id="demo-ie6-html5hack">&nbsp;</div>');
+            document.body.removeChild(document.getElementById("demo-ie6-html5hack"));
+        }
 
-		// 输出 header
-		html += '<header class="demo">\
+        // 输出 header
+        html += '<header class="demo">\
 	        <style>\
                 \
                 html .demo-toolbar-dropdown {\
@@ -835,84 +857,84 @@ if (typeof module !== 'object') {
 	        <div id="demo-toolbar" style="height: 10px; position: relative;">\
 	            <nav class="demo-toolbar">';
 
-		// 如果当前的页面是 docs 下的一个页面。
-		// 则添加模块状态和历史记录。
-		if (isInDocs && !isHomePage) {
+        // 如果当前的页面是 docs 下的一个页面。
+        // 则添加模块状态和历史记录。
+        if (isInDocs && !isHomePage) {
 
-			if (!('path' in moduleInfo)) {
-				moduleInfo.path = Demo.Module.toModulePath(Demo.urlPostfix);
-			}
+            if (!('path' in moduleInfo)) {
+                moduleInfo.path = Demo.Module.toModulePath(Demo.urlPostfix);
+            }
 
-			// 模块默认使用路径作为副标题。
-			if (!moduleInfo.subtitle) {
-				moduleInfo.subtitle = moduleInfo.path;
-			}
+            // 模块默认使用路径作为副标题。
+            if (!moduleInfo.subtitle) {
+                moduleInfo.subtitle = moduleInfo.path;
+            }
 
-			Demo.Page.addModuleHistory(Demo.urlPostfix);
+            Demo.Page.addModuleHistory(Demo.urlPostfix);
 
-			// 只有本地的时候，才支持修改模块状态。
-			html += '<a href="javascript://查看组件属性" onclick="Demo.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
-		}
+            // 只有本地的时候，才支持修改模块状态。
+            html += '<a href="javascript://查看组件属性" onclick="Demo.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
+        }
 
-		html += '<a href="javascript://常用工具" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Demo.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a></nav></div>';
+        html += '<a href="javascript://常用工具" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Demo.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Demo.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Demo.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Demo.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a></nav></div>';
 
-		// 生成标题。
-		if (moduleInfo.name) {
-			html += '<h1 class="demo">' + moduleInfo.name;
+        // 生成标题。
+        if (moduleInfo.name) {
+            html += '<h1 class="demo">' + moduleInfo.name;
 
-			if (moduleInfo.subtitle) {
-			    html += '<small class="demo">' + moduleInfo.subtitle + '</small>';
-			}
+            if (moduleInfo.subtitle) {
+                html += '<small class="demo">' + moduleInfo.subtitle + '</small>';
+            }
 
-			html += '</h1>';
-		}
+            html += '</h1>';
+        }
 
-		html += '</header>';
+        html += '</header>';
 
-		document.write(html);
+        document.write(html);
 
-	};
+    };
 
-	/**
+    /**
 	* 向页面写入自动生成的底部信息。
 	*/
-	Demo.writeFooter = function () {
-		document.write(Demo.Configs.footer.replace(/~\//g, Demo.baseUrl));
-	};
+    Demo.writeFooter = function () {
+        document.write(Demo.Configs.footer.replace(/~\//g, Demo.baseUrl));
+    };
 
-	/**
+    /**
 	 * 代码高亮模块。
 	 */
-	Demo.SyntaxHighligher = (function () {
-		// Copyright (C) 2012 xuld
-		//
-		// Licensed under the Apache License, Version 2.0 (the "License");
-		// you may not use this file except in compliance with the License.
-		// You may obtain a copy of the License at
-		//
-		//      http://www.apache.org/licenses/LICENSE-2.0
-		//
-		// Unless required by applicable law or agreed to in writing, software
-		// distributed under the License is distributed on an "AS IS" BASIS,
-		// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-		// See the License for the specific language governing permissions and
-		// limitations under the License.
+    Demo.SyntaxHighligher = (function () {
+        // Copyright (C) 2012 xuld
+        //
+        // Licensed under the Apache License, Version 2.0 (the "License");
+        // you may not use this file except in compliance with the License.
+        // You may obtain a copy of the License at
+        //
+        //      http://www.apache.org/licenses/LICENSE-2.0
+        //
+        // Unless required by applicable law or agreed to in writing, software
+        // distributed under the License is distributed on an "AS IS" BASIS,
+        // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        // See the License for the specific language governing permissions and
+        // limitations under the License.
 
-		/**
+        /**
 		 * @namespace SyntaxHighligher
 		 */
-		var SH = {
+        var SH = {
 
-			/**
+            /**
 			 * 所有可用的刷子。
 			 */
-			brushes: {
-				none: function (sourceCode, position) {
-					return [position, 'plain'];
-				}
-			},
+            brushes: {
+                none: function (sourceCode, position) {
+                    return [position, 'plain'];
+                }
+            },
 
-			/**
+            /**
 			 * 创建一个用于指定规则的语法刷子。
 			 * @param {Array} stylePatterns 匹配的正则列表，格式为：。
 			 * [[css样式名1, 正则1, 可选的头字符], [css样式名2, 正则2], ...]
@@ -927,35 +949,35 @@ if (typeof module !== 'object') {
 			 *
 			 * 表示源码中， 位置n-1 到 位置n 之间应用样式n-1
 			 */
-			createBrush: function (stylePatterns) {
-				var shortcuts = {},
+            createBrush: function (stylePatterns) {
+                var shortcuts = {},
 					tokenizer, stylePatternsStart = 0,
 					stylePatternsEnd = stylePatterns.length;
-				(function () {
-					var allRegexs = [],
+                (function () {
+                    var allRegexs = [],
 						i, stylePattern, shortcutChars, c;
-					for (i = 0; i < stylePatternsEnd; i++) {
-						stylePattern = stylePatterns[i];
-						if ((shortcutChars = stylePattern[2])) {
-							for (c = shortcutChars.length; --c >= 0;) {
-								shortcuts[shortcutChars.charAt(c)] = stylePattern;
-							}
+                    for (i = 0; i < stylePatternsEnd; i++) {
+                        stylePattern = stylePatterns[i];
+                        if ((shortcutChars = stylePattern[2])) {
+                            for (c = shortcutChars.length; --c >= 0;) {
+                                shortcuts[shortcutChars.charAt(c)] = stylePattern;
+                            }
 
-							if (i == stylePatternsStart) stylePatternsStart++;
-						}
-						allRegexs.push(stylePattern[1]);
-					}
-					allRegexs.push(/[\0-\uffff]/);
-					tokenizer = combinePrefixPatterns(allRegexs);
-				})();
+                            if (i == stylePatternsStart) stylePatternsStart++;
+                        }
+                        allRegexs.push(stylePattern[1]);
+                    }
+                    allRegexs.push(/[\0-\uffff]/);
+                    tokenizer = combinePrefixPatterns(allRegexs);
+                })();
 
-				function decorate(sourceCode, position) {
-					/** Even entries are positions in source in ascending order.  Odd enties
+                function decorate(sourceCode, position) {
+                    /** Even entries are positions in source in ascending order.  Odd enties
 					 * are style markers (e.g., COMMENT) that run from that position until
 					 * the end.
 					 * @type {Array<number/string>}
 					 */
-					var decorations = [position, 'plain'],
+                    var decorations = [position, 'plain'],
 						tokens = sourceCode.match(tokenizer) || [],
 						pos = 0,
 						// index into sourceCode
@@ -964,124 +986,124 @@ if (typeof module !== 'object') {
 						nTokens = tokens.length,
 						token, style, match, isEmbedded, stylePattern;
 
-					while (ti < nTokens) {
-						token = tokens[ti++];
+                    while (ti < nTokens) {
+                        token = tokens[ti++];
 
-						if (styleCache.hasOwnProperty(token)) {
-							style = styleCache[token];
-							isEmbedded = false;
-						} else {
+                        if (styleCache.hasOwnProperty(token)) {
+                            style = styleCache[token];
+                            isEmbedded = false;
+                        } else {
 
-							// 测试 shortcuts。
-							stylePattern = shortcuts[token.charAt(0)];
-							if (stylePattern) {
-								match = token.match(stylePattern[1]);
-								style = stylePattern[0];
-							} else {
-								for (var i = stylePatternsStart; i < stylePatternsEnd; ++i) {
-									stylePattern = stylePatterns[i];
-									match = token.match(stylePattern[1]);
-									if (match) {
-										style = stylePattern[0];
-										break;
-									}
-								}
+                            // 测试 shortcuts。
+                            stylePattern = shortcuts[token.charAt(0)];
+                            if (stylePattern) {
+                                match = token.match(stylePattern[1]);
+                                style = stylePattern[0];
+                            } else {
+                                for (var i = stylePatternsStart; i < stylePatternsEnd; ++i) {
+                                    stylePattern = stylePatterns[i];
+                                    match = token.match(stylePattern[1]);
+                                    if (match) {
+                                        style = stylePattern[0];
+                                        break;
+                                    }
+                                }
 
-								if (!match) { // make sure that we make progress
-									style = 'plain';
-								}
-							}
+                                if (!match) { // make sure that we make progress
+                                    style = 'plain';
+                                }
+                            }
 
-							if (style in SH.brushes) {
-								if (style === 'none') {
-									style = SH.guessLanguage(match[1]);
-								}
-								style = SH.brushes[style];
-							}
+                            if (style in SH.brushes) {
+                                if (style === 'none') {
+                                    style = SH.guessLanguage(match[1]);
+                                }
+                                style = SH.brushes[style];
+                            }
 
-							isEmbedded = typeof style === 'function';
+                            isEmbedded = typeof style === 'function';
 
-							if (!isEmbedded) {
-								styleCache[token] = style;
-							}
-						}
+                            if (!isEmbedded) {
+                                styleCache[token] = style;
+                            }
+                        }
 
-						if (isEmbedded) {
-							// Treat group 1 as an embedded block of source code.
-							var embeddedSource = match[1];
-							var embeddedSourceStart = token.indexOf(embeddedSource);
-							var embeddedSourceEnd = embeddedSourceStart + embeddedSource.length;
-							if (match[2]) {
-								// If embeddedSource can be blank, then it would match at the
-								// beginning which would cause us to infinitely recurse on the
-								// entire token, so we catch the right context in match[2].
-								embeddedSourceEnd = token.length - match[2].length;
-								embeddedSourceStart = embeddedSourceEnd - embeddedSource.length;
-							}
+                        if (isEmbedded) {
+                            // Treat group 1 as an embedded block of source code.
+                            var embeddedSource = match[1];
+                            var embeddedSourceStart = token.indexOf(embeddedSource);
+                            var embeddedSourceEnd = embeddedSourceStart + embeddedSource.length;
+                            if (match[2]) {
+                                // If embeddedSource can be blank, then it would match at the
+                                // beginning which would cause us to infinitely recurse on the
+                                // entire token, so we catch the right context in match[2].
+                                embeddedSourceEnd = token.length - match[2].length;
+                                embeddedSourceStart = embeddedSourceEnd - embeddedSource.length;
+                            }
 
-							// Decorate the left of the embedded source
-							appendDecorations(position + pos, token.substring(0, embeddedSourceStart), decorate, decorations);
-							// Decorate the embedded source
-							appendDecorations(position + pos + embeddedSourceStart, embeddedSource, style, decorations);
-							// Decorate the right of the embedded section
-							appendDecorations(position + pos + embeddedSourceEnd, token.substring(embeddedSourceEnd), decorate, decorations);
-						} else {
-							decorations.push(position + pos, style);
-						}
-						pos += token.length;
-					}
+                            // Decorate the left of the embedded source
+                            appendDecorations(position + pos, token.substring(0, embeddedSourceStart), decorate, decorations);
+                            // Decorate the embedded source
+                            appendDecorations(position + pos + embeddedSourceStart, embeddedSource, style, decorations);
+                            // Decorate the right of the embedded section
+                            appendDecorations(position + pos + embeddedSourceEnd, token.substring(embeddedSourceEnd), decorate, decorations);
+                        } else {
+                            decorations.push(position + pos, style);
+                        }
+                        pos += token.length;
+                    }
 
 
-					removeEmptyAndNestedDecorations(decorations);
-					return decorations;
-				};
+                    removeEmptyAndNestedDecorations(decorations);
+                    return decorations;
+                };
 
-				return decorate;
-			},
+                return decorate;
+            },
 
-			/**
+            /**
 			 * 根据源码猜测对应的刷子。
 			 * @param {String} sourceCode 需要高亮的源码。
 			 * @return {String} 返回一个语言名。
 			 */
-			guessLanguage: function (sourceCode) {
-				// Treat it as markup if the first non whitespace character is a < and
-				// the last non-whitespace character is a >.
-				return /^\s*</.test(sourceCode) ? 'xml' : 'default';
-			},
+            guessLanguage: function (sourceCode) {
+                // Treat it as markup if the first non whitespace character is a < and
+                // the last non-whitespace character is a >.
+                return /^\s*</.test(sourceCode) ? 'xml' : 'default';
+            },
 
-			/**
+            /**
 			 * 搜索用于处理指定语言的刷子。
 			 * @param {String} language 要查找的语言名。
 			 * @return {Function} 返回一个刷子，用于高亮指定的源码。
 			 */
-			findBrush: function (language) {
-				return SH.brushes[language] || SH.brushes.none;
-			},
+            findBrush: function (language) {
+                return SH.brushes[language] || SH.brushes.none;
+            },
 
-			/**
+            /**
 			 * 注册一个语言的刷子。
 			 * @param {String} language 要注册的语言名。
 			 * @param {Array} stylePatterns 匹配的正则列表。见 {@link SyntaxHighligher.createBrush}
 			 * @return {Function} 返回一个刷子，用于高亮指定的源码。
 			 */
-			register: function (language, stylePatterns) {
-				language = language.split(' ');
-				stylePatterns = SH.createBrush(stylePatterns);
-				for (var i = 0; i < language.length; i++) {
-					SH.brushes[language[i]] = stylePatterns;
-				}
-			}
+            register: function (language, stylePatterns) {
+                language = language.split(' ');
+                stylePatterns = SH.createBrush(stylePatterns);
+                for (var i = 0; i < language.length; i++) {
+                    SH.brushes[language[i]] = stylePatterns;
+                }
+            }
 
-		};
+        };
 
-		// CAVEAT: this does not properly handle the case where a regular
-		// expression immediately follows another since a regular expression may
-		// have flags for case-sensitivity and the like.  Having regexp tokens
-		// adjacent is not valid in any language I'm aware of, so I'm punting.
-		// TODO: maybe style special characters inside a regexp as punctuation.
+        // CAVEAT: this does not properly handle the case where a regular
+        // expression immediately follows another since a regular expression may
+        // have flags for case-sensitivity and the like.  Having regexp tokens
+        // adjacent is not valid in any language I'm aware of, so I'm punting.
+        // TODO: maybe style special characters inside a regexp as punctuation.
 
-		/**
+        /**
 		 * Given a group of {@link RegExp}s, returns a {@code RegExp} that globally
 		 * matches the union of the sets of strings matched by the input RegExp.
 		 * Since it matches globally, if the input strings have a start-of-input
@@ -1089,27 +1111,27 @@ if (typeof module !== 'object') {
 		 * @param {Array.<RegExp>} regexs non multiline, non-global regexs.
 		 * @return {RegExp} a global regex.
 		 */
-		function combinePrefixPatterns(regexs) {
-			var capturedGroupIndex = 0;
+        function combinePrefixPatterns(regexs) {
+            var capturedGroupIndex = 0;
 
-			var needToFoldCase = false;
-			var ignoreCase = false;
-			for (var i = 0, n = regexs.length; i < n; ++i) {
-				var regex = regexs[i];
-				if (regex.ignoreCase) {
-					ignoreCase = true;
-				} else if (/[a-z]/i.test(regex.source.replace(/\\u[0-9a-f]{4}|\\x[0-9a-f]{2}|\\[^ux]/gi, ''))) {
-					needToFoldCase = true;
-					ignoreCase = false;
-					break;
-				}
-			}
+            var needToFoldCase = false;
+            var ignoreCase = false;
+            for (var i = 0, n = regexs.length; i < n; ++i) {
+                var regex = regexs[i];
+                if (regex.ignoreCase) {
+                    ignoreCase = true;
+                } else if (/[a-z]/i.test(regex.source.replace(/\\u[0-9a-f]{4}|\\x[0-9a-f]{2}|\\[^ux]/gi, ''))) {
+                    needToFoldCase = true;
+                    ignoreCase = false;
+                    break;
+                }
+            }
 
-			function allowAnywhereFoldCaseAndRenumberGroups(regex) {
-				// Split into character sets, escape sequences, punctuation strings
-				// like ('(', '(?:', ')', '^'), and runs of characters that do not
-				// include any of the above.
-				var parts = regex.source.match(
+            function allowAnywhereFoldCaseAndRenumberGroups(regex) {
+                // Split into character sets, escape sequences, punctuation strings
+                // like ('(', '(?:', ')', '^'), and runs of characters that do not
+                // include any of the above.
+                var parts = regex.source.match(
 				new RegExp('(?:' + '\\[(?:[^\\x5C\\x5D]|\\\\[\\s\\S])*\\]' // a character set
 				+
 				'|\\\\u[A-Fa-f0-9]{4}' // a unicode escape
@@ -1127,261 +1149,261 @@ if (typeof module !== 'object') {
 				'|[^\\x5B\\x5C\\(\\)\\^]+' // run of other characters
 				+
 				')', 'g'));
-				var n = parts.length;
+                var n = parts.length;
 
-				// Maps captured group numbers to the number they will occupy in
-				// the output or to -1 if that has not been determined, or to
-				// undefined if they need not be capturing in the output.
-				var capturedGroups = [];
+                // Maps captured group numbers to the number they will occupy in
+                // the output or to -1 if that has not been determined, or to
+                // undefined if they need not be capturing in the output.
+                var capturedGroups = [];
 
-				// Walk over and identify back references to build the capturedGroups
-				// mapping.
-				for (var i = 0, groupIndex = 0; i < n; ++i) {
-					var p = parts[i];
-					if (p === '(') {
-						// groups are 1-indexed, so max group index is count of '('
-						++groupIndex;
-					} else if ('\\' === p.charAt(0)) {
-						var decimalValue = +p.substring(1);
-						if (decimalValue && decimalValue <= groupIndex) {
-							capturedGroups[decimalValue] = -1;
-						}
-					}
-				}
+                // Walk over and identify back references to build the capturedGroups
+                // mapping.
+                for (var i = 0, groupIndex = 0; i < n; ++i) {
+                    var p = parts[i];
+                    if (p === '(') {
+                        // groups are 1-indexed, so max group index is count of '('
+                        ++groupIndex;
+                    } else if ('\\' === p.charAt(0)) {
+                        var decimalValue = +p.substring(1);
+                        if (decimalValue && decimalValue <= groupIndex) {
+                            capturedGroups[decimalValue] = -1;
+                        }
+                    }
+                }
 
-				// Renumber groups and reduce capturing groups to non-capturing groups
-				// where possible.
-				for (var i = 1; i < capturedGroups.length; ++i) {
-					if (-1 === capturedGroups[i]) {
-						capturedGroups[i] = ++capturedGroupIndex;
-					}
-				}
-				for (var i = 0, groupIndex = 0; i < n; ++i) {
-					var p = parts[i];
-					if (p === '(') {
-						++groupIndex;
-						if (capturedGroups[groupIndex] === undefined) {
-							parts[i] = '(?:';
-						}
-					} else if ('\\' === p.charAt(0)) {
-						var decimalValue = +p.substring(1);
-						if (decimalValue && decimalValue <= groupIndex) {
-							parts[i] = '\\' + capturedGroups[groupIndex];
-						}
-					}
-				}
+                // Renumber groups and reduce capturing groups to non-capturing groups
+                // where possible.
+                for (var i = 1; i < capturedGroups.length; ++i) {
+                    if (-1 === capturedGroups[i]) {
+                        capturedGroups[i] = ++capturedGroupIndex;
+                    }
+                }
+                for (var i = 0, groupIndex = 0; i < n; ++i) {
+                    var p = parts[i];
+                    if (p === '(') {
+                        ++groupIndex;
+                        if (capturedGroups[groupIndex] === undefined) {
+                            parts[i] = '(?:';
+                        }
+                    } else if ('\\' === p.charAt(0)) {
+                        var decimalValue = +p.substring(1);
+                        if (decimalValue && decimalValue <= groupIndex) {
+                            parts[i] = '\\' + capturedGroups[groupIndex];
+                        }
+                    }
+                }
 
-				// Remove any prefix anchors so that the output will match anywhere.
-				// ^^ really does mean an anchored match though.
-				for (var i = 0, groupIndex = 0; i < n; ++i) {
-					if ('^' === parts[i] && '^' !== parts[i + 1]) {
-						parts[i] = '';
-					}
-				}
+                // Remove any prefix anchors so that the output will match anywhere.
+                // ^^ really does mean an anchored match though.
+                for (var i = 0, groupIndex = 0; i < n; ++i) {
+                    if ('^' === parts[i] && '^' !== parts[i + 1]) {
+                        parts[i] = '';
+                    }
+                }
 
-				// Expand letters to groups to handle mixing of case-sensitive and
-				// case-insensitive patterns if necessary.
-				if (regex.ignoreCase && needToFoldCase) {
-					for (var i = 0; i < n; ++i) {
-						var p = parts[i];
-						var ch0 = p.charAt(0);
-						if (p.length >= 2 && ch0 === '[') {
-							parts[i] = caseFoldCharset(p);
-						} else if (ch0 !== '\\') {
-							// TODO: handle letters in numeric escapes.
-							parts[i] = p.replace(/[a-zA-Z]/g, function (ch) {
-								var cc = ch.charCodeAt(0);
-								return '[' + String.fromCharCode(cc & ~32, cc | 32) + ']';
-							});
-						}
-					}
-				}
+                // Expand letters to groups to handle mixing of case-sensitive and
+                // case-insensitive patterns if necessary.
+                if (regex.ignoreCase && needToFoldCase) {
+                    for (var i = 0; i < n; ++i) {
+                        var p = parts[i];
+                        var ch0 = p.charAt(0);
+                        if (p.length >= 2 && ch0 === '[') {
+                            parts[i] = caseFoldCharset(p);
+                        } else if (ch0 !== '\\') {
+                            // TODO: handle letters in numeric escapes.
+                            parts[i] = p.replace(/[a-zA-Z]/g, function (ch) {
+                                var cc = ch.charCodeAt(0);
+                                return '[' + String.fromCharCode(cc & ~32, cc | 32) + ']';
+                            });
+                        }
+                    }
+                }
 
-				return parts.join('');
-			}
+                return parts.join('');
+            }
 
-			var rewritten = [];
-			for (var i = 0, n = regexs.length; i < n; ++i) {
-				var regex = regexs[i];
-				if (regex.global || regex.multiline) {
-					throw new Error('' + regex);
-				}
-				rewritten.push('(?:' + allowAnywhereFoldCaseAndRenumberGroups(regex) + ')');
-			}
+            var rewritten = [];
+            for (var i = 0, n = regexs.length; i < n; ++i) {
+                var regex = regexs[i];
+                if (regex.global || regex.multiline) {
+                    throw new Error('' + regex);
+                }
+                rewritten.push('(?:' + allowAnywhereFoldCaseAndRenumberGroups(regex) + ')');
+            }
 
-			return new RegExp(rewritten.join('|'), ignoreCase ? 'gi' : 'g');
-		}
+            return new RegExp(rewritten.join('|'), ignoreCase ? 'gi' : 'g');
+        }
 
-		function encodeEscape(charCode) {
-			if (charCode < 0x20) {
-				return (charCode < 0x10 ? '\\x0' : '\\x') + charCode.toString(16);
-			}
-			var ch = String.fromCharCode(charCode);
-			if (ch === '\\' || ch === '-' || ch === '[' || ch === ']') {
-				ch = '\\' + ch;
-			}
-			return ch;
-		}
+        function encodeEscape(charCode) {
+            if (charCode < 0x20) {
+                return (charCode < 0x10 ? '\\x0' : '\\x') + charCode.toString(16);
+            }
+            var ch = String.fromCharCode(charCode);
+            if (ch === '\\' || ch === '-' || ch === '[' || ch === ']') {
+                ch = '\\' + ch;
+            }
+            return ch;
+        }
 
-		var escapeCharToCodeUnit = {
-			'b': 8,
-			't': 9,
-			'n': 0xa,
-			'v': 0xb,
-			'f': 0xc,
-			'r': 0xd
-		};
+        var escapeCharToCodeUnit = {
+            'b': 8,
+            't': 9,
+            'n': 0xa,
+            'v': 0xb,
+            'f': 0xc,
+            'r': 0xd
+        };
 
-		function decodeEscape(charsetPart) {
-			var cc0 = charsetPart.charCodeAt(0);
-			if (cc0 !== 92 /* \\ */) {
-				return cc0;
-			}
-			var c1 = charsetPart.charAt(1);
-			cc0 = escapeCharToCodeUnit[c1];
-			if (cc0) {
-				return cc0;
-			} else if ('0' <= c1 && c1 <= '7') {
-				return parseInt(charsetPart.substring(1), 8);
-			} else if (c1 === 'u' || c1 === 'x') {
-				return parseInt(charsetPart.substring(2), 16);
-			} else {
-				return charsetPart.charCodeAt(1);
-			}
-		}
+        function decodeEscape(charsetPart) {
+            var cc0 = charsetPart.charCodeAt(0);
+            if (cc0 !== 92 /* \\ */) {
+                return cc0;
+            }
+            var c1 = charsetPart.charAt(1);
+            cc0 = escapeCharToCodeUnit[c1];
+            if (cc0) {
+                return cc0;
+            } else if ('0' <= c1 && c1 <= '7') {
+                return parseInt(charsetPart.substring(1), 8);
+            } else if (c1 === 'u' || c1 === 'x') {
+                return parseInt(charsetPart.substring(2), 16);
+            } else {
+                return charsetPart.charCodeAt(1);
+            }
+        }
 
-		function caseFoldCharset(charSet) {
-			var charsetParts = charSet.substring(1, charSet.length - 1).match(
+        function caseFoldCharset(charSet) {
+            var charsetParts = charSet.substring(1, charSet.length - 1).match(
 			new RegExp('\\\\u[0-9A-Fa-f]{4}' + '|\\\\x[0-9A-Fa-f]{2}' + '|\\\\[0-3][0-7]{0,2}' + '|\\\\[0-7]{1,2}' + '|\\\\[\\s\\S]' + '|-' + '|[^-\\\\]', 'g'));
-			var groups = [];
-			var ranges = [];
-			var inverse = charsetParts[0] === '^';
-			for (var i = inverse ? 1 : 0, n = charsetParts.length; i < n; ++i) {
-				var p = charsetParts[i];
-				if (/\\[bdsw]/i.test(p)) { // Don't muck with named groups.
-					groups.push(p);
-				} else {
-					var start = decodeEscape(p);
-					var end;
-					if (i + 2 < n && '-' === charsetParts[i + 1]) {
-						end = decodeEscape(charsetParts[i + 2]);
-						i += 2;
-					} else {
-						end = start;
-					}
-					ranges.push([start, end]);
-					// If the range might intersect letters, then expand it.
-					// This case handling is too simplistic.
-					// It does not deal with non-latin case folding.
-					// It works for latin source code identifiers though.
-					if (!(end < 65 || start > 122)) {
-						if (!(end < 65 || start > 90)) {
-							ranges.push([Math.max(65, start) | 32, Math.min(end, 90) | 32]);
-						}
-						if (!(end < 97 || start > 122)) {
-							ranges.push([Math.max(97, start) & ~32, Math.min(end, 122) & ~32]);
-						}
-					}
-				}
-			}
+            var groups = [];
+            var ranges = [];
+            var inverse = charsetParts[0] === '^';
+            for (var i = inverse ? 1 : 0, n = charsetParts.length; i < n; ++i) {
+                var p = charsetParts[i];
+                if (/\\[bdsw]/i.test(p)) { // Don't muck with named groups.
+                    groups.push(p);
+                } else {
+                    var start = decodeEscape(p);
+                    var end;
+                    if (i + 2 < n && '-' === charsetParts[i + 1]) {
+                        end = decodeEscape(charsetParts[i + 2]);
+                        i += 2;
+                    } else {
+                        end = start;
+                    }
+                    ranges.push([start, end]);
+                    // If the range might intersect letters, then expand it.
+                    // This case handling is too simplistic.
+                    // It does not deal with non-latin case folding.
+                    // It works for latin source code identifiers though.
+                    if (!(end < 65 || start > 122)) {
+                        if (!(end < 65 || start > 90)) {
+                            ranges.push([Math.max(65, start) | 32, Math.min(end, 90) | 32]);
+                        }
+                        if (!(end < 97 || start > 122)) {
+                            ranges.push([Math.max(97, start) & ~32, Math.min(end, 122) & ~32]);
+                        }
+                    }
+                }
+            }
 
-			// [[1, 10], [3, 4], [8, 12], [14, 14], [16, 16], [17, 17]]
-			// -> [[1, 12], [14, 14], [16, 17]]
-			ranges.sort(function (a, b) {
-				return (a[0] - b[0]) || (b[1] - a[1]);
-			});
-			var consolidatedRanges = [];
-			var lastRange = [NaN, NaN];
-			for (var i = 0; i < ranges.length; ++i) {
-				var range = ranges[i];
-				if (range[0] <= lastRange[1] + 1) {
-					lastRange[1] = Math.max(lastRange[1], range[1]);
-				} else {
-					consolidatedRanges.push(lastRange = range);
-				}
-			}
+            // [[1, 10], [3, 4], [8, 12], [14, 14], [16, 16], [17, 17]]
+            // -> [[1, 12], [14, 14], [16, 17]]
+            ranges.sort(function (a, b) {
+                return (a[0] - b[0]) || (b[1] - a[1]);
+            });
+            var consolidatedRanges = [];
+            var lastRange = [NaN, NaN];
+            for (var i = 0; i < ranges.length; ++i) {
+                var range = ranges[i];
+                if (range[0] <= lastRange[1] + 1) {
+                    lastRange[1] = Math.max(lastRange[1], range[1]);
+                } else {
+                    consolidatedRanges.push(lastRange = range);
+                }
+            }
 
-			var out = ['['];
-			if (inverse) {
-				out.push('^');
-			}
-			out.push.apply(out, groups);
-			for (var i = 0; i < consolidatedRanges.length; ++i) {
-				var range = consolidatedRanges[i];
-				out.push(encodeEscape(range[0]));
-				if (range[1] > range[0]) {
-					if (range[1] + 1 > range[0]) {
-						out.push('-');
-					}
-					out.push(encodeEscape(range[1]));
-				}
-			}
-			out.push(']');
-			return out.join('');
-		}
+            var out = ['['];
+            if (inverse) {
+                out.push('^');
+            }
+            out.push.apply(out, groups);
+            for (var i = 0; i < consolidatedRanges.length; ++i) {
+                var range = consolidatedRanges[i];
+                out.push(encodeEscape(range[0]));
+                if (range[1] > range[0]) {
+                    if (range[1] + 1 > range[0]) {
+                        out.push('-');
+                    }
+                    out.push(encodeEscape(range[1]));
+                }
+            }
+            out.push(']');
+            return out.join('');
+        }
 
-		/**
+        /**
 		 * Apply the given language handler to sourceCode and add the resulting
 		 * decorations to out.
 		 * @param {number} basePos the index of sourceCode within the chunk of source
 		 *    whose decorations are already present on out.
 		 */
-		function appendDecorations(basePos, sourceCode, brush, out) {
-			if (sourceCode) {
-				out.push.apply(out, brush(sourceCode, basePos));
-			}
-		}
+        function appendDecorations(basePos, sourceCode, brush, out) {
+            if (sourceCode) {
+                out.push.apply(out, brush(sourceCode, basePos));
+            }
+        }
 
-		/**
+        /**
 		 * 删除空的位置和相邻的位置。
 		 */
-		function removeEmptyAndNestedDecorations(decorations) {
-			for (var srcIndex = 0, destIndex = 0, length = decorations.length, lastPos, lastStyle; srcIndex < length;) {
+        function removeEmptyAndNestedDecorations(decorations) {
+            for (var srcIndex = 0, destIndex = 0, length = decorations.length, lastPos, lastStyle; srcIndex < length;) {
 
-				// 如果上一个长度和当前长度相同，或者上一个样式和现在的相同，则跳过。
-				if (lastPos === decorations[srcIndex]) {
-					srcIndex++;
-					decorations[destIndex - 1] = lastStyle = decorations[srcIndex++];
-				} else if (lastStyle === decorations[srcIndex + 1]) {
-					srcIndex += 2;
-				} else {
-					decorations[destIndex++] = lastPos = decorations[srcIndex++];
-					decorations[destIndex++] = lastStyle = decorations[srcIndex++];
-				}
-			};
+                // 如果上一个长度和当前长度相同，或者上一个样式和现在的相同，则跳过。
+                if (lastPos === decorations[srcIndex]) {
+                    srcIndex++;
+                    decorations[destIndex - 1] = lastStyle = decorations[srcIndex++];
+                } else if (lastStyle === decorations[srcIndex + 1]) {
+                    srcIndex += 2;
+                } else {
+                    decorations[destIndex++] = lastPos = decorations[srcIndex++];
+                    decorations[destIndex++] = lastStyle = decorations[srcIndex++];
+                }
+            };
 
-			decorations.length = destIndex;
+            decorations.length = destIndex;
 
-		}
+        }
 
-		/**
+        /**
 		 * 高亮单一的节点。
 		 * @param {Element} elem 要高亮的节点。
 		 * @param {String} [language] 语言本身。系统会自动根据源码猜测语言。
 		 * @param {Number} lineNumberStart=null 第一行的计数，如果是null，则不显示行号。
 		 */
-		SH.one = function (pre, language, lineNumberStart) {
+        SH.one = function (pre, language, lineNumberStart) {
 
-			// Extract tags, and convert the source code to plain text.
-			var sourceAndSpans = extractSourceSpans(pre),
+            // Extract tags, and convert the source code to plain text.
+            var sourceAndSpans = extractSourceSpans(pre),
 				specificLanuage = (pre.className.match(/\bsh-(\w+)(?!\S)/i) || [0, null])[1];
 
-			// 自动决定 language 和 lineNumbers
-			if (!language) {
-				language = specificLanuage || SH.guessLanguage(sourceAndSpans.sourceCode);
-			}
+            // 自动决定 language 和 lineNumbers
+            if (!language) {
+                language = specificLanuage || SH.guessLanguage(sourceAndSpans.sourceCode);
+            }
 
-			if (!specificLanuage) {
-			    pre.className += ' demo-sh-' + language;
-			}
+            if (!specificLanuage) {
+                pre.className += ' demo-sh-' + language;
+            }
 
-			// Apply the appropriate language handler
-			// Integrate the decorations and tags back into the source code,
-			// modifying the sourceNode in place.
-			recombineTagsAndDecorations(sourceAndSpans, SH.findBrush(language)(sourceAndSpans.sourceCode, 0));
-		};
+            // Apply the appropriate language handler
+            // Integrate the decorations and tags back into the source code,
+            // modifying the sourceNode in place.
+            recombineTagsAndDecorations(sourceAndSpans, SH.findBrush(language)(sourceAndSpans.sourceCode, 0));
+        };
 
-		/**
+        /**
 		 * Split markup into a string of source code and an array mapping ranges in
 		 * that string to the text nodes in which they appear.
 		 *
@@ -1424,65 +1446,65 @@ if (typeof module !== 'object') {
 		 * @param {Node} node an HTML DOM subtree containing source-code.
 		 * @return {Object} source code and the text nodes in which they occur.
 		 */
-		function extractSourceSpans(node) {
+        function extractSourceSpans(node) {
 
-			var chunks = [];
-			var length = 0;
-			var spans = [];
-			var k = 0;
+            var chunks = [];
+            var length = 0;
+            var spans = [];
+            var k = 0;
 
-			var whitespace;
-			if (node.currentStyle) {
-				whitespace = node.currentStyle.whiteSpace;
-			} else if (window.getComputedStyle) {
-				whitespace = document.defaultView.getComputedStyle(node, null).getPropertyValue('white-space');
-			}
-			var isPreformatted = whitespace && 'pre' === whitespace.substring(0, 3);
+            var whitespace;
+            if (node.currentStyle) {
+                whitespace = node.currentStyle.whiteSpace;
+            } else if (window.getComputedStyle) {
+                whitespace = document.defaultView.getComputedStyle(node, null).getPropertyValue('white-space');
+            }
+            var isPreformatted = whitespace && 'pre' === whitespace.substring(0, 3);
 
-			function walk(node) {
-				switch (node.nodeType) {
-					case 1:
-						// Element
-						for (var child = node.firstChild; child; child = child.nextSibling) {
-							walk(child);
-						}
-						var nodeName = node.nodeName;
-						if ('BR' === nodeName || 'LI' === nodeName) {
-							chunks[k] = '\n';
-							spans[k << 1] = length++;
-							spans[(k++ << 1) | 1] = node;
-						}
-						break;
-					case 3:
-					case 4:
-						// Text
-						var text = node.nodeValue;
-						if (text.length) {
-							if (isPreformatted) {
-								text = text.replace(/\r\n?/g, '\n'); // Normalize newlines.
-							} else {
-								text = text.replace(/[\r\n]+/g, '\r\n　');
-								text = text.replace(/[ \t]+/g, ' ');
-							}
-							// TODO: handle tabs here?
-							chunks[k] = text;
-							spans[k << 1] = length;
-							length += text.length;
-							spans[(k++ << 1) | 1] = node;
-						}
-						break;
-				}
-			}
+            function walk(node) {
+                switch (node.nodeType) {
+                    case 1:
+                        // Element
+                        for (var child = node.firstChild; child; child = child.nextSibling) {
+                            walk(child);
+                        }
+                        var nodeName = node.nodeName;
+                        if ('BR' === nodeName || 'LI' === nodeName) {
+                            chunks[k] = '\n';
+                            spans[k << 1] = length++;
+                            spans[(k++ << 1) | 1] = node;
+                        }
+                        break;
+                    case 3:
+                    case 4:
+                        // Text
+                        var text = node.nodeValue;
+                        if (text.length) {
+                            if (isPreformatted) {
+                                text = text.replace(/\r\n?/g, '\n'); // Normalize newlines.
+                            } else {
+                                text = text.replace(/[\r\n]+/g, '\r\n　');
+                                text = text.replace(/[ \t]+/g, ' ');
+                            }
+                            // TODO: handle tabs here?
+                            chunks[k] = text;
+                            spans[k << 1] = length;
+                            length += text.length;
+                            spans[(k++ << 1) | 1] = node;
+                        }
+                        break;
+                }
+            }
 
-			walk(node);
+            walk(node);
 
-			return {
-				sourceCode: chunks.join('').replace(/\n$/, ''),
-				spans: spans
-			};
-		}
+            return {
+                sourceCode: chunks.join('').replace(/\n$/, ''),
+                spans: spans
+            };
+        }
 
-		/**
+        /**
 		 * Breaks {@code job.sourceCode} around style boundaries in
 		 * {@code job.decorations} and modifies {@code job.sourceNode} in place.
 		 * @param {Object} job like <pre>{
@@ -1495,93 +1517,93 @@ if (typeof module !== 'object') {
 		 * }</pre>
 		 * @private
 		 */
-		function recombineTagsAndDecorations(sourceAndSpans, decorations) {
-			//var isIE = /\bMSIE\b/.test(navigator.userAgent);
-			var newlineRe = /\n/g;
+        function recombineTagsAndDecorations(sourceAndSpans, decorations) {
+            //var isIE = /\bMSIE\b/.test(navigator.userAgent);
+            var newlineRe = /\n/g;
 
-			var source = sourceAndSpans.sourceCode;
-			var sourceLength = source.length;
-			// Index into source after the last code-unit recombined.
-			var sourceIndex = 0;
+            var source = sourceAndSpans.sourceCode;
+            var sourceLength = source.length;
+            // Index into source after the last code-unit recombined.
+            var sourceIndex = 0;
 
-			var spans = sourceAndSpans.spans;
-			var nSpans = spans.length;
-			// Index into spans after the last span which ends at or before sourceIndex.
-			var spanIndex = 0;
+            var spans = sourceAndSpans.spans;
+            var nSpans = spans.length;
+            // Index into spans after the last span which ends at or before sourceIndex.
+            var spanIndex = 0;
 
-			var decorations = decorations;
-			var nDecorations = decorations.length;
-			var decorationIndex = 0;
+            var decorations = decorations;
+            var nDecorations = decorations.length;
+            var decorationIndex = 0;
 
-			var decoration = null;
-			while (spanIndex < nSpans) {
-				var spanStart = spans[spanIndex];
-				var spanEnd = spans[spanIndex + 2] || sourceLength;
+            var decoration = null;
+            while (spanIndex < nSpans) {
+                var spanStart = spans[spanIndex];
+                var spanEnd = spans[spanIndex + 2] || sourceLength;
 
-				var decStart = decorations[decorationIndex];
-				var decEnd = decorations[decorationIndex + 2] || sourceLength;
+                var decStart = decorations[decorationIndex];
+                var decEnd = decorations[decorationIndex + 2] || sourceLength;
 
-				var end = Math.min(spanEnd, decEnd);
+                var end = Math.min(spanEnd, decEnd);
 
-				var textNode = spans[spanIndex + 1];
-				var styledText;
-				if (textNode.nodeType !== 1 // Don't muck with <BR>s or <LI>s
-					// Don't introduce spans around empty text nodes.
+                var textNode = spans[spanIndex + 1];
+                var styledText;
+                if (textNode.nodeType !== 1 // Don't muck with <BR>s or <LI>s
+                    // Don't introduce spans around empty text nodes.
 				&&
 				(styledText = source.substring(sourceIndex, end))) {
-					// This may seem bizarre, and it is.  Emitting LF on IE causes the
-					// code to display with spaces instead of line breaks.
-					// Emitting Windows standard issue linebreaks (CRLF) causes a blank
-					// space to appear at the beginning of every line but the first.
-					// Emitting an old Mac OS 9 line separator makes everything spiffy.
-					// if (isIE) {
-					// styledText = styledText.replace(newlineRe, '\r');
-					// }
-					textNode.nodeValue = styledText;
-					var document = textNode.ownerDocument;
-					var span = document.createElement('SPAN');
-					span.className = 'demo-sh-' + decorations[decorationIndex + 1];
-					var parentNode = textNode.parentNode;
-					parentNode.replaceChild(span, textNode);
-					span.appendChild(textNode);
-					if (sourceIndex < spanEnd) { // Split off a text node.
-						spans[spanIndex + 1] = textNode
+                    // This may seem bizarre, and it is.  Emitting LF on IE causes the
+                    // code to display with spaces instead of line breaks.
+                    // Emitting Windows standard issue linebreaks (CRLF) causes a blank
+                    // space to appear at the beginning of every line but the first.
+                    // Emitting an old Mac OS 9 line separator makes everything spiffy.
+                    // if (isIE) {
+                    // styledText = styledText.replace(newlineRe, '\r');
+                    // }
+                    textNode.nodeValue = styledText;
+                    var document = textNode.ownerDocument;
+                    var span = document.createElement('SPAN');
+                    span.className = 'demo-sh-' + decorations[decorationIndex + 1];
+                    var parentNode = textNode.parentNode;
+                    parentNode.replaceChild(span, textNode);
+                    span.appendChild(textNode);
+                    if (sourceIndex < spanEnd) { // Split off a text node.
+                        spans[spanIndex + 1] = textNode
 						// TODO: Possibly optimize by using '' if there's no flicker.
 						=
 						document.createTextNode(source.substring(end, spanEnd));
-						parentNode.insertBefore(textNode, span.nextSibling);
-					}
-				}
+                        parentNode.insertBefore(textNode, span.nextSibling);
+                    }
+                }
 
-				sourceIndex = end;
+                sourceIndex = end;
 
-				if (sourceIndex >= spanEnd) {
-					spanIndex += 2;
-				}
-				if (sourceIndex >= decEnd) {
-					decorationIndex += 2;
-				}
-			}
-		}
+                if (sourceIndex >= spanEnd) {
+                    spanIndex += 2;
+                }
+                if (sourceIndex >= decEnd) {
+                    decorationIndex += 2;
+                }
+            }
+        }
 
-		// Keyword lists for various languages.
-		// We use things that coerce to strings to make them compact when minified
-		// and to defeat aggressive optimizers that fold large string constants.
-		var FLOW_CONTROL_KEYWORDS = "break continue do else for if return while";
-		var C_KEYWORDS = FLOW_CONTROL_KEYWORDS + " auto case char const default double enum extern float goto int long register short signed sizeof " + "static struct switch typedef union unsigned void volatile";
-		var COMMON_KEYWORDS = [C_KEYWORDS, "catch class delete false import new operator private protected public this throw true try typeof"];
-		var CPP_KEYWORDS = [COMMON_KEYWORDS, "alignof align_union asm axiom bool concept concept_map const_cast constexpr decltype dynamic_cast explicit export friend inline late_check mutable namespace nullptr reinterpret_cast static_assert static_cast template typeid typename using virtual where"];
-		var JAVA_KEYWORDS = [COMMON_KEYWORDS, "abstract boolean byte extends final finally implements import instanceof null native package strictfp super synchronized throws transient"];
-		var CSHARP_KEYWORDS = [JAVA_KEYWORDS, "as base by checked decimal delegate descending dynamic event fixed foreach from group implicit in interface internal into is lock object out override orderby params partial readonly ref sbyte sealed stackalloc string select uint ulong unchecked unsafe ushort var"];
-		var JSCRIPT_KEYWORDS = [COMMON_KEYWORDS, "debugger eval export function get null set undefined var with Infinity NaN"];
-		var PERL_KEYWORDS = "caller delete die do dump elsif eval exit foreach for goto if import last local my next no our print package redo require sub undef unless until use wantarray while BEGIN END";
-		var PYTHON_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "and as assert class def del elif except exec finally from global import in is lambda nonlocal not or pass print raise try with yield False True None"];
-		var RUBY_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "alias and begin case class def defined elsif end ensure false in module next nil not or redo rescue retry self super then true undef unless until when yield BEGIN END"];
-		var SH_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "case done elif esac eval fi function in local set then until"];
-		var ALL_KEYWORDS = [CPP_KEYWORDS, CSHARP_KEYWORDS, JSCRIPT_KEYWORDS, PERL_KEYWORDS + PYTHON_KEYWORDS, RUBY_KEYWORDS, SH_KEYWORDS];
-		var C_TYPES = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/;
+        // Keyword lists for various languages.
+        // We use things that coerce to strings to make them compact when minified
+        // and to defeat aggressive optimizers that fold large string constants.
+        var FLOW_CONTROL_KEYWORDS = "break continue do else for if return while";
+        var C_KEYWORDS = FLOW_CONTROL_KEYWORDS + " auto case char const default double enum extern float goto int long register short signed sizeof " + "static struct switch typedef union unsigned void volatile";
+        var COMMON_KEYWORDS = [C_KEYWORDS, "catch class delete false import new operator private protected public this throw true try typeof"];
+        var CPP_KEYWORDS = [COMMON_KEYWORDS, "alignof align_union asm axiom bool concept concept_map const_cast constexpr decltype dynamic_cast explicit export friend inline late_check mutable namespace nullptr reinterpret_cast static_assert static_cast template typeid typename using virtual where"];
+        var JAVA_KEYWORDS = [COMMON_KEYWORDS, "abstract boolean byte extends final finally implements import instanceof null native package strictfp super synchronized throws transient"];
+        var CSHARP_KEYWORDS = [JAVA_KEYWORDS, "as base by checked decimal delegate descending dynamic event fixed foreach from group implicit in interface internal into is lock object out override orderby params partial readonly ref sbyte sealed stackalloc string select uint ulong unchecked unsafe ushort var"];
+        var JSCRIPT_KEYWORDS = [COMMON_KEYWORDS, "debugger eval export function get null set undefined var with Infinity NaN"];
+        var PERL_KEYWORDS = "caller delete die do dump elsif eval exit foreach for goto if import last local my next no our print package redo require sub undef unless until use wantarray while BEGIN END";
+        var PYTHON_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "and as assert class def del elif except exec finally from global import in is lambda nonlocal not or pass print raise try with yield False True None"];
+        var RUBY_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "alias and begin case class def defined elsif end ensure false in module next nil not or redo rescue retry self super then true undef unless until when yield BEGIN END"];
+        var SH_KEYWORDS = [FLOW_CONTROL_KEYWORDS, "case done elif esac eval fi function in local set then until"];
+        var ALL_KEYWORDS = [CPP_KEYWORDS, CSHARP_KEYWORDS, JSCRIPT_KEYWORDS, PERL_KEYWORDS + PYTHON_KEYWORDS, RUBY_KEYWORDS, SH_KEYWORDS];
+        var C_TYPES = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/;
 
-		/**
+        /**
 		 * A set of tokens that can precede a regular expression literal in
 		 * javascript
 		 * http://web.archive.org/web/20070717142515/http://www.mozilla.org/js/language/js20/rationale/syntax.html
@@ -1600,73 +1622,73 @@ if (typeof module !== 'object') {
 		 * @private
 		 * @const
 		 */
-		var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&&=|&=|\\(|\\*|\\*=|\\+=|\\,|\\-=|\\->|\\/|\\/=|:|::|\\;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\@|\\[|\\^|\\^=|\\^\\^|\\^\\^=|\\{|\\||\\|=|\\|\\||\\|\\|=|\\~|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*';
-		// token style names.  correspond to css classes
-		/**
+        var REGEXP_PRECEDER_PATTERN = '(?:^^\\.?|[+-]|\\!|\\!=|\\!==|\\#|\\%|\\%=|&|&&|&&=|&=|\\(|\\*|\\*=|\\+=|\\,|\\-=|\\->|\\/|\\/=|:|::|\\;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\@|\\[|\\^|\\^=|\\^\\^|\\^\\^=|\\{|\\||\\|=|\\|\\||\\|\\|=|\\~|break|case|continue|delete|do|else|finally|instanceof|return|throw|try|typeof)\\s*';
+        // token style names.  correspond to css classes
+        /**
 		 * token style for a string literal
 		 * @const
 		 */
-		var STRING = 'string';
-		/**
+        var STRING = 'string';
+        /**
 		 * token style for a keyword
 		 * @const
 		 */
-		var KEYWORD = 'keyword';
-		/**
+        var KEYWORD = 'keyword';
+        /**
 		 * token style for a comment
 		 * @const
 		 */
-		var COMMENT = 'comment';
-		/**
+        var COMMENT = 'comment';
+        /**
 		 * token style for a type
 		 * @const
 		 */
-		var TYPE = 'type';
-		/**
+        var TYPE = 'type';
+        /**
 		 * token style for a literal value.  e.g. 1, null, true.
 		 * @const
 		 */
-		var LITERAL = 'literal';
-		/**
+        var LITERAL = 'literal';
+        /**
 		 * token style for a punctuation string.
 		 * @const
 		 */
-		var PUNCTUATION = 'punctuation';
-		/**
+        var PUNCTUATION = 'punctuation';
+        /**
 		 * token style for a punctuation string.
 		 * @const
 		 */
-		var PLAIN = 'plain';
+        var PLAIN = 'plain';
 
-		/**
+        /**
 		 * token style for an sgml tag.
 		 * @const
 		 */
-		var TAG = 'tag';
-		/**
+        var TAG = 'tag';
+        /**
 		 * token style for a markup declaration such as a DOCTYPE.
 		 * @const
 		 */
-		var DECLARATION = 'declaration';
-		/**
+        var DECLARATION = 'declaration';
+        /**
 		 * token style for embedded source.
 		 * @const
 		 */
-		var SOURCE = 'source';
-		/**
+        var SOURCE = 'source';
+        /**
 		 * token style for an sgml attribute name.
 		 * @const
 		 */
-		var ATTRIB_NAME = 'attrname';
-		/**
+        var ATTRIB_NAME = 'attrname';
+        /**
 		 * token style for an sgml attribute value.
 		 * @const
 		 */
-		var ATTRIB_VALUE = 'attrvalue';
+        var ATTRIB_VALUE = 'attrvalue';
 
-		var register = SH.register;
+        var register = SH.register;
 
-		/** returns a function that produces a list of decorations from source text.
+        /** returns a function that produces a list of decorations from source text.
 		 *
 		 * This code treats ", ', and ` as string delimiters, and \ as a string
 		 * escape.  It does not recognize perl's qq() style strings.
@@ -1681,43 +1703,43 @@ if (typeof module !== 'object') {
 		 * @return {function (Object)} a function that examines the source code
 		 *     in the input job and builds the decoration list.
 		 */
-		var simpleLexer = SH.simpleLexer = function (options) {
+        var simpleLexer = SH.simpleLexer = function (options) {
 
-			var shortcutStylePatterns = [], fallthroughStylePatterns = [];
-			if (options.tripleQuotedStrings) {
-				// '''multi-line-string''', 'single-line-string', and double-quoted
-				shortcutStylePatterns.push(['string', /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, '\'"']);
-			} else if (options.multiLineStrings) {
-				// 'multi-line-string', "multi-line-string"
-				shortcutStylePatterns.push(['string', /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, '\'"`']);
-			} else {
-				// 'single-line-string', "single-line-string"
-				shortcutStylePatterns.push(['string', /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, '"\'']);
-			}
-			if (options.verbatimStrings) {
-				// verbatim-string-literal production from the C# grammar.  See issue 93.
-				fallthroughStylePatterns.push(['string', /^@\"(?:[^\"]|\"\")*(?:\"|$)/]);
-			}
-			var hc = options.hashComments;
-			if (hc) {
-				if (options.cStyleComments) {
-					if (hc > 1) {  // multiline hash comments
-						shortcutStylePatterns.push(['comment', /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, '#']);
-					} else {
-						// Stop C preprocessor declarations at an unclosed open comment
-						shortcutStylePatterns.push(['comment', /^#(?:(?:define|elif|else|endif|error|ifdef|include|ifndef|line|pragma|undef|warning)\b|[^\r\n]*)/, '#']);
-					}
-					fallthroughStylePatterns.push(['string', /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h|[a-z]\w*)>/]);
-				} else {
-					shortcutStylePatterns.push(['comment', /^#[^\r\n]*/, '#']);
-				}
-			}
-			if (options.cStyleComments) {
-				fallthroughStylePatterns.push(['comment', /^\/\/[^\r\n]*/]);
-				fallthroughStylePatterns.push(['comment', /^\/\*[\s\S]*?(?:\*\/|$)/]);
-			}
-			if (options.regexLiterals) {
-				fallthroughStylePatterns.push(['regex', new RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + // A regular expression literal starts with a slash that is
+            var shortcutStylePatterns = [], fallthroughStylePatterns = [];
+            if (options.tripleQuotedStrings) {
+                // '''multi-line-string''', 'single-line-string', and double-quoted
+                shortcutStylePatterns.push(['string', /^(?:\'\'\'(?:[^\'\\]|\\[\s\S]|\'{1,2}(?=[^\']))*(?:\'\'\'|$)|\"\"\"(?:[^\"\\]|\\[\s\S]|\"{1,2}(?=[^\"]))*(?:\"\"\"|$)|\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$))/, '\'"']);
+            } else if (options.multiLineStrings) {
+                // 'multi-line-string', "multi-line-string"
+                shortcutStylePatterns.push(['string', /^(?:\'(?:[^\\\']|\\[\s\S])*(?:\'|$)|\"(?:[^\\\"]|\\[\s\S])*(?:\"|$)|\`(?:[^\\\`]|\\[\s\S])*(?:\`|$))/, '\'"`']);
+            } else {
+                // 'single-line-string', "single-line-string"
+                shortcutStylePatterns.push(['string', /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/, '"\'']);
+            }
+            if (options.verbatimStrings) {
+                // verbatim-string-literal production from the C# grammar.  See issue 93.
+                fallthroughStylePatterns.push(['string', /^@\"(?:[^\"]|\"\")*(?:\"|$)/]);
+            }
+            var hc = options.hashComments;
+            if (hc) {
+                if (options.cStyleComments) {
+                    if (hc > 1) {  // multiline hash comments
+                        shortcutStylePatterns.push(['comment', /^#(?:##(?:[^#]|#(?!##))*(?:###|$)|.*)/, '#']);
+                    } else {
+                        // Stop C preprocessor declarations at an unclosed open comment
+                        shortcutStylePatterns.push(['comment', /^#(?:(?:define|elif|else|endif|error|ifdef|include|ifndef|line|pragma|undef|warning)\b|[^\r\n]*)/, '#']);
+                    }
+                    fallthroughStylePatterns.push(['string', /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h|[a-z]\w*)>/]);
+                } else {
+                    shortcutStylePatterns.push(['comment', /^#[^\r\n]*/, '#']);
+                }
+            }
+            if (options.cStyleComments) {
+                fallthroughStylePatterns.push(['comment', /^\/\/[^\r\n]*/]);
+                fallthroughStylePatterns.push(['comment', /^\/\*[\s\S]*?(?:\*\/|$)/]);
+            }
+            if (options.regexLiterals) {
+                fallthroughStylePatterns.push(['regex', new RegExp('^' + REGEXP_PRECEDER_PATTERN + '(' + // A regular expression literal starts with a slash that is
 				// not followed by * or / so that it is not confused with
 				// comments.
 				'/(?=[^/*])'
@@ -1733,20 +1755,20 @@ if (typeof module !== 'object') {
 				// finally closed by a /.
 				+
 				'/' + ')')]);
-			}
+            }
 
-			var types = options.types;
-			if (types) {
-				fallthroughStylePatterns.push(['type', types]);
-			}
+            var types = options.types;
+            if (types) {
+                fallthroughStylePatterns.push(['type', types]);
+            }
 
-			var keywords = ("" + options.keywords).replace(/^ | $/g, '');
-			if (keywords.length) {
-				fallthroughStylePatterns.push(['keyword', new RegExp('^(?:' + keywords.replace(/[\s,]+/g, '|') + ')\\b')]);
-			}
+            var keywords = ("" + options.keywords).replace(/^ | $/g, '');
+            if (keywords.length) {
+                fallthroughStylePatterns.push(['keyword', new RegExp('^(?:' + keywords.replace(/[\s,]+/g, '|') + ')\\b')]);
+            }
 
-			shortcutStylePatterns.push(['plain', /^\s+/, ' \r\n\t\xA0']);
-			fallthroughStylePatterns.push(
+            shortcutStylePatterns.push(['plain', /^\s+/, ' \r\n\t\xA0']);
+            fallthroughStylePatterns.push(
 			// TODO(mikesamuel): recognize non-latin letters and numerals in idents
 			['literal', /^@[a-z_$][a-z_$@0-9]*/i],
 			['type', /^(?:[@_]?[A-Z]+[a-z][A-Za-z_$@0-9]*|\w+_t\b)/],
@@ -1766,30 +1788,30 @@ if (typeof module !== 'object') {
 			['plain', /^\\[\s\S]?/],
 			['punctuation', /^.[^\s\w\.$@\'\"\`\/\#\\]*/]);
 
-			return shortcutStylePatterns.concat(fallthroughStylePatterns);
+            return shortcutStylePatterns.concat(fallthroughStylePatterns);
 
 
 
 
 
-		}
+        }
 
-		register('default', simpleLexer({
-			'keywords': ALL_KEYWORDS,
-			'hashComments': true,
-			'cStyleComments': true,
-			'multiLineStrings': true,
-			'regexLiterals': true
-		}));
-		register('regex', [
+        register('default', simpleLexer({
+            'keywords': ALL_KEYWORDS,
+            'hashComments': true,
+            'cStyleComments': true,
+            'multiLineStrings': true,
+            'regexLiterals': true
+        }));
+        register('regex', [
 			[STRING, /^[\s\S]+/]
-		]);
-		register('js', simpleLexer({
-			'keywords': JSCRIPT_KEYWORDS,
-			'cStyleComments': true,
-			'regexLiterals': true
-		}));
-		register('in.tag',
+        ]);
+        register('js', simpleLexer({
+            'keywords': JSCRIPT_KEYWORDS,
+            'cStyleComments': true,
+            'regexLiterals': true
+        }));
+        register('in.tag',
 		[
 			[PLAIN, /^[\s]+/, ' \t\r\n'],
 			[ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, '\"\''],
@@ -1805,7 +1827,7 @@ if (typeof module !== 'object') {
 			['css', /^style\s*=\s*([^\"\'>\s]+)/i]
 		]);
 
-		register('htm html mxml xhtml xml xsl', [
+        register('htm html mxml xhtml xml xsl', [
 			['plain', /^[^<?]+/],
 			['declaration', /^<!\w[^>]*(?:>|$)/],
 			['comment', /^<\!--[\s\S]*?(?:-\->|$)/],
@@ -1819,168 +1841,168 @@ if (typeof module !== 'object') {
 			// Contains unescaped stylesheet content
 			['css', /^<style\b[^>]*>([\s\S]*?)(<\/style\b[^>]*>)/i],
 			['in.tag', /^(<\/?[a-z][^<>]*>)/i]
-		]);
+        ]);
 
-		register('json', simpleLexer({
-			'keywords': 'null,true,false'
-		}));
+        register('json', simpleLexer({
+            'keywords': 'null,true,false'
+        }));
 
-		return SH;
-	})();
+        return SH;
+    })();
 
-	/**
+    /**
 	 * 演示模块。
 	 */
-	Demo.Example = {
+    Demo.Example = {
 
-		run: function (id) {
-			var example = this.data[id],
+        run: function (id) {
+            var example = this.data[id],
 				ret;
 
-			try {
+            try {
 
-				if (example[1]) {
-					ret = example[1].call(window);
-				} else {
-					ret = window.eval(example[0]);
-				}
+                if (example[1]) {
+                    ret = example[1].call(window);
+                } else {
+                    ret = window.eval(example[0]);
+                }
 
-			} catch (e) {
-				this.reportResult(id, '[执行出现错误: ' + e.message + ']');
-				console.error(example[0], ' => ', e);
-				return;
-			}
+            } catch (e) {
+                this.reportResult(id, '[执行出现错误: ' + e.message + ']');
+                console.error(example[0], ' => ', e);
+                return;
+            }
 
-			if (ret === undefined) {
-				console.log(example[0]);
-			} else {
-				console.log(example[0], " => ", ret);
-			}
+            if (ret === undefined) {
+                console.log(example[0]);
+            } else {
+                console.log(example[0], " => ", ret);
+            }
 
-		},
+        },
 
-		runAll: function () {
-			var me = this,
+        runAll: function () {
+            var me = this,
 				i = 0,
 				len = me.data.length,
 				needEnd;
 
-			// Support For Alert
-			var _alert = window.alert;
-			window.alert = function (value) { console.info("alert: ", value); };
+            // Support For Alert
+            var _alert = window.alert;
+            window.alert = function (value) { console.info("alert: ", value); };
 
-			function work() {
-				if (i < len) {
-					if (me.data[i][0] === null) {
-						needEnd = true;
-						if (i && console.groupEnd) {
-							console.groupEnd();
-						}
+            function work() {
+                if (i < len) {
+                    if (me.data[i][0] === null) {
+                        needEnd = true;
+                        if (i && console.groupEnd) {
+                            console.groupEnd();
+                        }
 
-						if (console.group) {
-							console.group(me.data[i][1]);
-						} else {
-							console.info(me.data[i][1]);
-						}
+                        if (console.group) {
+                            console.group(me.data[i][1]);
+                        } else {
+                            console.info(me.data[i][1]);
+                        }
 
-						i++;
-						work();
-					} else {
-						me.run(i++);
-						setTimeout(work, 1);
-					}
+                        i++;
+                        work();
+                    } else {
+                        me.run(i++);
+                        setTimeout(work, 1);
+                    }
 
-				} else {
-					needEnd && console.groupEnd && console.groupEnd();
-					window.alert = _alert;
-				}
-			}
+                } else {
+                    needEnd && console.groupEnd && console.groupEnd();
+                    window.alert = _alert;
+                }
+            }
 
-			work();
-		},
+            work();
+        },
 
-		speedTest: function (id) {
+        speedTest: function (id) {
 
-			// Support For Trace
-			trace.disable = true;
+            // Support For Trace
+            trace.disable = true;
 
-			// Support For Alert
-			var _alert = window.alert;
-			window.alert = function () { };
+            // Support For Alert
+            var _alert = window.alert;
+            window.alert = function () { };
 
-			var time,
+            var time,
 				currentTime,
 				start = +new Date(),
 				past,
 				func = this.data[id][1] || new Function(this.data[id][0]);
 
-			try {
+            try {
 
-				time = 0;
+                time = 0;
 
-				do {
+                do {
 
-					time += 10;
+                    time += 10;
 
-					currentTime = 10;
-					while (--currentTime > 0) {
-						func();
-					}
+                    currentTime = 10;
+                    while (--currentTime > 0) {
+                        func();
+                    }
 
-					past = +new Date() - start;
+                    past = +new Date() - start;
 
-				} while (past < 100);
+                } while (past < 100);
 
-				past = '  [' + Math.round(past / time * 1000) / 1000 + 'ms]';
+                past = '  [' + Math.round(past / time * 1000) / 1000 + 'ms]';
 
-			} catch (e) {
-				past = '[执行出现错误: ' + e.message + ']';
-			} finally {
-				window.alert = _alert;
+            } catch (e) {
+                past = '[执行出现错误: ' + e.message + ']';
+            } finally {
+                window.alert = _alert;
 
-				trace.disable = false;
+                trace.disable = false;
 
-			}
+            }
 
-			this.reportResult(id, past);
+            this.reportResult(id, past);
 
-		},
+        },
 
-		speedTestAll: function () {
-			var me = this, i = 0, len = me.data.length;
-			function work() {
-				if (i < len) {
-					if (me.data[i][0] === null) {
-						i++;
-						work();
-					} else {
-						me.speedTest(i++);
-						setTimeout(work, 1);
-					}
-				}
-			}
+        speedTestAll: function () {
+            var me = this, i = 0, len = me.data.length;
+            function work() {
+                if (i < len) {
+                    if (me.data[i][0] === null) {
+                        i++;
+                        work();
+                    } else {
+                        me.speedTest(i++);
+                        setTimeout(work, 1);
+                    }
+                }
+            }
 
-			work();
-		},
+            work();
+        },
 
-		reportResult: function (id, value) {
-			id = document.getElementById('demo-example-' + id);
+        reportResult: function (id, value) {
+            id = document.getElementById('demo-example-' + id);
 
-			if (id.lastChild.tagName !== 'SMALL') {
-				id.appendChild(document.createElement('SMALL'));
-			}
+            if (id.lastChild.tagName !== 'SMALL') {
+                id.appendChild(document.createElement('SMALL'));
+            }
 
-			id.lastChild.innerHTML = value;
-		}
+            id.lastChild.innerHTML = value;
+        }
 
-	};
+    };
 
-	/**
+    /**
 	* 输出示例代码。
 	*/
-	Demo.writeExamples = function (examples, options) {
+    Demo.writeExamples = function (examples, options) {
 
-		var globalExamples = Demo.Example.data,
+        var globalExamples = Demo.Example.data,
 			html = '',
 			key,
 			id,
@@ -1988,58 +2010,47 @@ if (typeof module !== 'object') {
 			text,
 			func;
 
-		// 如果第一次使用测试。则写入全部测试和效率。
-		if (!globalExamples) {
-			Demo.Example.data = globalExamples = [];
-			html = '<nav class="demo demo-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Demo.Page.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Demo.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Demo.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
-		}
+        // 如果第一次使用测试。则写入全部测试和效率。
+        if (!globalExamples) {
+            Demo.Example.data = globalExamples = [];
+            html = '<nav class="demo demo-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Demo.Page.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Demo.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Demo.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
+        }
 
-		for (key in examples) {
-			id = globalExamples.length;
-			example = examples[key];
+        for (key in examples) {
+            id = globalExamples.length;
+            example = examples[key];
 
-			if (example === '-') {
-				text = null;
-				func = key;
-				html += '<h3 class="demo">' + Demo.Utils.encodeHTML(key) + '</h3>';
-			} else {
+            if (example === '-') {
+                text = null;
+                func = key;
+                html += '<h3 class="demo">' + Demo.Utils.encodeHTML(key) + '</h3>';
+            } else {
 
-				if (typeof example === 'function') {
-					func = example;
-					text = Demo.Utils.getFunctionSource(example);
-				} else{
-					if(Demo.Beautify) {
-						text = Demo.Beautify.js(example);
-					} else {
-						text = Demo.Utils.getFunctionSource(new Function(example));
-					}
-					func = null;
-				}
+                if (typeof example === 'function') {
+                    func = example;
+                    text = Demo.Utils.getFunctionSource(example);
+                } else {
+                    if (Demo.Beautify) {
+                        text = Demo.Beautify.js(example);
+                    } else {
+                        text = Demo.Utils.getFunctionSource(new Function(example));
+                    }
+                    func = null;
+                }
 
-				html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="demo demo-toolbar" style="display: none"><a onclick="Demo.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Demo.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><span class="demo" id="demo-example-' + id + '">' + Demo.Utils.encodeHTML(key) + '</span><pre class="demo demo-sourcecode demo-sh-js demo-sh">' + Demo.Utils.encodeHTML(text) + '</pre></section>';
+                html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="demo demo-toolbar" style="display: none"><a onclick="Demo.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Demo.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><span class="demo" id="demo-example-' + id + '">' + Demo.Utils.encodeHTML(key) + '</span><pre class="demo demo-sourcecode demo-sh-js demo-sh">' + Demo.Utils.encodeHTML(text) + '</pre></section>';
 
-			}
+            }
 
-			globalExamples[id] = [text, func];
-		}
+            globalExamples[id] = [text, func];
+        }
 
-		document.write(html);
-	};
+        document.write(html);
+    };
 
-	Demo.Page.init();
+    Demo.Page.init();
 
     // #endregion
-
-} else {
-
-    //#region 后台部分
-
-    Demo.basePath = require('path').resolve(__dirname, '../../') + require('path').sep;
-
-	// 导出 Demo 模块。
-    module.exports = Demo;
-
-    //#endregion
 
 }
 

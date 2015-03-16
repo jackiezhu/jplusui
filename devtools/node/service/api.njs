@@ -1,45 +1,45 @@
 ﻿// 如果本源码被直接显示，说明使用了其它服务器。
 // 本源码需要使用 devtools 自带服务器执行。
-// 请执行 devtools 目录下的 boot.cmd 文件，并不要关闭本窗口。
+// 请执行 devtools/node/bootserver.cmd 文件，并不要关闭本窗口。
 
 var ModuleManager = require('./modulemanager');
 
-switch(request.queryString['action']){
-	case 'create':
-		var html = ModuleManager.createModule(request.queryString.path, request.queryString.tpl, request.queryString.title);
-		redirect(context, context.request.queryString.postback || html);
+switch(request.queryString['cmd']){
+	case 'updatemodulelist':
+		ModuleManager.updateModuleList();
+		//redirect(context);
 		break;
-	case 'delete':
+	case 'createmodule':
+		var html = ModuleManager.createModule(request.queryString.path, request.queryString.title);
+		//redirect(context, context.request.queryString.postback || html);
+		break;
+	case 'deletemodule':
 		ModuleManager.deleteModule(request.queryString.path);
-		redirect(context);
+		//redirect(context);
 		break;
-	case 'update':
-		var dplInfo = {
+	case 'updatemodule':
+		var moduleInfo = {
 			status: request.queryString.status
 		};
 
 		if(request.queryString.support) {
 			if(request.queryString.support.length !== require('../../demo/demo.js').Configs.support.length){
-				dplInfo.support = request.queryString.support.join("|");
+				moduleInfo.support = request.queryString.support.join("|");
 			} else {
-				dplInfo.support = '';
+				moduleInfo.support = '';
 			}
 		}
 
-		if(request.queryString.hide) {
-			dplInfo.hide = request.queryString.hide == "on";
+		if(request.queryString.ignore) {
+			moduleInfo.ignore = request.queryString.hide == "on";
 		}
 
-		ModuleManager.updateModuleInfo(request.queryString.path, request.queryString.title, dplInfo);
-		redirect(context);
+		ModuleManager.updateModuleInfo(request.queryString.path, request.queryString.title, moduleInfo);
+		//redirect(context);
 		break;
 	case 'getlist':
 		var list = ModuleManager.getModuleList(request.queryString.type || require('../../demo/demo.js').Configs.src);
 		writeJsonp(context, list);
-		break;
-	case 'updatelist':
-		ModuleManager.updateModuleList();
-		redirect(context);
 		break;
 	default:
 		redirect(context);
