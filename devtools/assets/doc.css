@@ -2,11 +2,32 @@
  * 文档专用样式表
  */
 
+/*
+    色系：Indigo
+    500 #3F51B5
+    50  #E8EAF6
+    100 #C5CAE9
+    200 #9FA8DA
+    300 #7986CB
+    400 #5C6BC0
+    500 #3F51B5
+    600 #3949AB
+    700 #303F9F
+    800 #283593
+    900 #1A237E
+
+    灰色：
+    分割：#DADADA
+    提示：#B8B8B8
+    图标：#727272
+    文本：#212121
+*/
+
 /**********************************************
  * 全局统一样式
  **********************************************/
 
-.doc-font, .doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > pre, .doc > div {
+.doc-font, .doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > pre {
     font-size: 14px;
     line-height: 175%;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
@@ -119,31 +140,16 @@ article.doc {
     }
 
 .doc > hr {
-    -moz-border-bottom-colors: none;
-    -moz-border-image: none;
-    -o-border-image: none;
-    -webkit-border-image: none;
-    border-image: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    border-color: #E5E5E5;
-    border-color: #e5e5e5 -moz-use-text-color -moz-use-text-color;
-    border-right: 0 none;
-    border-style: solid none none;
-    border-width: 1px 0 0;
-    clear: both;
-    display: block;
-    float: none;
-    font-size: 0;
+    border-color: #DADADA;
+    border-width: 1px 0 0 0;
+    border-style: solid;
     height: 0;
-    line-height: 0;
 }
 
 .doc > blockquote {
     background-color: #F8F8F8;
-    border: 1px solid #E8E8E8;
-    border-left: 3px solid #4B8B20;
+    border: 1px solid #DADADA;
+    border-left: 3px solid #3F51B5;
     padding: 10px;
 }
 
@@ -155,7 +161,7 @@ article.doc {
     }
 
 .doc > pre {
-    border: 1px solid #e1e1e8;
+    border: 1px solid #DADADA;
     white-space: pre-wrap;
     -ms-word-break: break-all;
     word-break: break-all;
@@ -173,7 +179,7 @@ article.doc {
         padding: 0;
     }
 
-.doc > a, .doc > p a, .doc > ul a, .doc > ol a, .doc > dl a, .doc > table a, .doc > blockquote a {
+.doc > a, .doc > h1 a, .doc > h2 a, .doc > h3 a, .doc > h4 a, .doc > h5 a, .doc > h6 a, .doc > p a, .doc > ul a, .doc > ol a, .doc > dl a, .doc > table a, .doc > blockquote a {
     color: #337ab7;
     text-decoration: none;
 }
@@ -183,8 +189,9 @@ article.doc {
         text-decoration: underline;
     }
 
-.doc > small, .doc > p small, .doc > ul small, .doc > ol small, .doc > dl small, .doc > table small, .doc > blockquote small {
-    color: #999999;
+.doc > small, .doc > h1 small, .doc > h2 small, .doc > h3 small, .doc > h4 small, .doc > h5 small, .doc > h6 small, .doc > p small, .doc > ul small, .doc > ol small, .doc > dl small, .doc > table small, .doc > blockquote small {
+    color: #B8B8B8;
+    font-size: .6em;
     font-weight: normal;
 }
 
@@ -196,7 +203,7 @@ article.doc {
 
 .doc-demo {
     padding: 10px;
-    border: 1px solid #E5E5E5;
+    border: 1px solid #DADADA;
     position: relative;
     margin-bottom: 14px;
 }
@@ -223,7 +230,8 @@ article.doc {
     }
 
     .doc-demo + .doc-code-toolbar, .doc-demo + .doc-sh, .doc-demo + .doc-code-toolbar + .doc-sh {
-        margin-top: -15px;
+        margin-top: -14px;
+        border-top: 0;
     }
 
 /* 复制按钮 */
@@ -232,16 +240,16 @@ article.doc {
     float: right;
     padding: 0 6px;
     display: inline-block;
-    color: #bcbcbc;
-    border: 1px solid #e1e1e8;
+    color: #999;
+    border: 1px solid #DADADA;
     border-width: 0 0 1px 1px;
     text-decoration: none;
     font-size: 12px;
-    line-height: 175%;
+    line-height: 180%;
 }
 
     .doc-code-toolbar a:hover {
-        background-color: #0e90d2;
+        background-color: #3F51B5;
         color: #fff;
         text-decoration: none;
     }
@@ -260,15 +268,15 @@ article.doc {
 }
 
 .doc-sh-function {
-    color: #dc322f;
+    color: #e44d54;
 }
 
 .doc-sh-string, .doc-sh-attrvalue {
-    color: #D14;
+    color: #d44950;
 }
 
 .doc-sh-keyword, .doc-sh-tag {
-    color: #1e347b;
+    color: #2f6f9f;
 }
 
 .doc-sh-type, .doc-sh-attrname, .doc-sh-declaration, .doc-sh-var {
@@ -276,7 +284,7 @@ article.doc {
 }
 
 .doc-sh-plain {
-    color: #48484c;
+    color: #333;
 }
 
 /* 工具条 */
@@ -284,11 +292,11 @@ article.doc {
     font-size: 12px;
     line-height: 22px;
     float: right;
-    color: #999999;
+    color: #B8B8B8;
 }
 
     .doc-toolbar a {
-        color: #333333;
+        color: #727272;
         text-decoration: none;
     }
 
@@ -299,15 +307,15 @@ article.doc {
 /* 示例专用 */
 
 .doc-warning {
-    color: #b94a48;
-    background-color: #F8E6E6;
-    border: 1px solid #e3b7b7;
+    color: #b94a48!important;
+    background-color: #F8E6E6!important;
+    border: 1px solid #e3b7b7!important;
 }
 
 .doc-info {
-    color: #468847;
-    background-color: #dff0d8;
-    border: 1px solid #9bcc9c;
+    color: #468847!important;
+    background-color: #dff0d8!important;
+    border: 1px solid #9bcc9c!important;
 }
 
 .doc-box, .doc-box-small, .doc-box-large {
@@ -353,7 +361,7 @@ article.doc {
 
 .doc-blue {
     background-color: #90D9E8;
-    color: #000;
+    color: #212121;
 }
 
 /* 工具样式 */
@@ -405,7 +413,7 @@ article.doc {
 #doc_header {
     background-color: #3f51b5;
     color: #fff;
-    padding: 0 0 2em;
+    padding: 0 0 2.5em;
 }
 
 #doc_topbar {
@@ -525,12 +533,12 @@ a#doc_logo:hover {
     }
 
 #doc_footer {
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid #dadada;
     font-size: small;
     margin-top: 2em;
     padding: 1em 0 4em;
 }
 
     #doc_footer, #doc_footer a {
-        color: #908c8c;
+        color: #b8b8b8;
     }
