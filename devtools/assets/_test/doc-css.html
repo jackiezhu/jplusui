@@ -44,13 +44,8 @@
                     <li><a href="###">组件列表</a></li>
                     <li><a href="###">下载和定制</a></li>
                     <li><a href="###">关于和支持</a></li>
+                    <li class="doc-right"><a href="###">2.0 版本</a></li>
                 </ul>
-                <aside class="doc-right">
-                    <form id="doc_searchform" class="doc-left">
-                        <input type="text" placeholder="搜索组件..." class="doc-left">
-                        <input type="submit" title="搜索" value="搜索" class="doc-icon-search doc-left">
-                    </form>
-                </aside>
             </div>
         </nav>
 
@@ -68,37 +63,38 @@
 
         <div class="doc-left doc-font" id="doc_sidebar">
 
-            <div class="x-searchtextbox">
-                <input type="text" value="" class="x-textbox" placeholder="搜索组件..." style="width:90px;" />
-                <input type="button" value="搜索" class="x-button" />
+            <input type="search" id="doc_modulelist_filter" class="doc-font" placeholder="搜索组件..." />
+
+            <div id="doc_modulelist" style="height: 400px;">
+
+                <h2>CSS 组件</h2>
+
+                <dl>
+                    <dt>核心 <small>core</small></dt>
+                    <dd><a href="###">基础样式 <small>base</small></a></dd>
+                    <dd><a href="###">打印样式 <small>print</small></a></dd>
+                    <dd><a href="###">辅助类 <small>ulitity</small></a></dd>
+                    <dt>布局 <small>layout</small></dt>
+                    <dd><a href="###">栅格布局 <small>grid</small></a></dd>
+                    <dd><a href="###">等分布局 <small>flex</small></a></dd>
+                    <dt>排版 <small>typography</small></dt>
+                    <dd><a href="###">块级引用 <small>blockquote</small></a></dd>
+                </dl>
+
+                <h2>JS 组件</h2>
+
+                <dl>
+                    <dt>标题</dt>
+                    <dd><a href="###">组件1</a></dd>
+                    <dd><a href="###">组件2</a></dd>
+                    <dd><a href="###">组件3</a></dd>
+                    <dt>标题</dt>
+                    <dd><a href="###">组件1</a></dd>
+                    <dd><a href="###">组件2</a></dd>
+                    <dd><a href="###">组件3</a></dd>
+                </dl>
+
             </div>
-
-            <h2>CSS 组件</h2>
-
-            <dl>
-                <dt>核心 <small>core</small></dt>
-                <dd><a href="###">基础样式 <small>base</small></a></dd>
-                <dd><a href="###">打印样式 <small>print</small></a></dd>
-                <dd><a href="###">辅助类 <small>ulitity</small></a></dd>
-                <dt>布局 <small>layout</small></dt>
-                <dd><a href="###">栅格布局 <small>grid</small></a></dd>
-                <dd><a href="###">等分布局 <small>flex</small></a></dd>
-                <dt>排版 <small>typography</small></dt>
-                <dd><a href="###">块级引用 <small>blockquote</small></a></dd>
-            </dl>
-
-            <h2>JS 组件</h2>
-
-            <dl>
-                <dt>标题</dt>
-                <dd><a href="###">组件1</a></dd>
-                <dd><a href="###">组件2</a></dd>
-                <dd><a href="###">组件3</a></dd>
-                <dt>标题</dt>
-                <dd><a href="###">组件1</a></dd>
-                <dd><a href="###">组件2</a></dd>
-                <dd><a href="###">组件3</a></dd>
-            </dl>
 
         </div>
 
@@ -227,9 +223,11 @@ aaaa</code></pre>
         </div>
 
     </div>
+
     <footer id="doc_footer" class="doc-font doc-container">
         <span class="doc doc-right"><a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="community.html">加入我们</a></span>
-        &copy; 2011-2015 jPlusUI Team. All Rights Reserved.
+        &copy; 2011-2015 JPlusUI Team. All Rights Reserved.
     </footer>
+
 </body>
 </html>
