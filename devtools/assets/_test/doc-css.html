@@ -1,0 +1,233 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>DEMO 示例页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="../doc.css">
+
+    <script>
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('menu');
+        document.createElement('article');
+        document.createElement('section');
+        document.createElement('footer');
+        document.createElement('aside');
+    </script>
+    <style>
+        #demo-toolbar-tool {
+            top: 90px !important;
+        }
+
+        #demo-toolbar-doc {
+            top: 140px !important;
+        }
+
+        #demo-toolbar-controlstate {
+            top: 170px !important;
+        }
+
+        #demo-toolbar-goto {
+            top: 500px !important;
+        }
+    </style>
+</head>
+<body class="doc" id="doc_page">
+
+    <header id="doc_header" class="doc-font">
+        <nav id="doc_topbar">
+            <div class="doc-container doc-clear">
+                <a href="###" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>
+                <ul id="navbar" class="doc-horizonal">
+                    <li class="actived"><a href="###">开始使用</a></li>
+                    <li><a href="###">组件列表</a></li>
+                    <li><a href="###">下载和定制</a></li>
+                    <li><a href="###">关于和支持</a></li>
+                </ul>
+                <aside class="doc-right">
+                    <form id="doc_searchform" class="doc-left">
+                        <input type="text" placeholder="搜索组件..." class="doc-left">
+                        <input type="submit" title="搜索" value="搜索" class="doc-icon-search doc-left">
+                    </form>
+                </aside>
+            </div>
+        </nav>
+
+        <div class="doc-container">
+
+            <h1>基础样式</h1>
+
+            <p>提供常用 CSS 下载</p>
+
+        </div>
+
+    </header>
+
+    <div class="doc-container doc-clear">
+
+        <div class="doc-left" id="doc_sidebar">
+
+            <div class="x-searchtextbox">
+                <input type="text" value="" class="x-textbox" placeholder="搜索组件..." style="width:90px;" />
+                <input type="button" value="搜索" class="x-button" />
+            </div>
+
+            <h2>CSS 组件</h2>
+
+            <dl>
+                <dt>核心 <small>core</small></dt>
+                <dd><a href="###">基础样式 <small>base</small></a></dd>
+                <dd><a href="###">打印样式 <small>print</small></a></dd>
+                <dd><a href="###">辅助类 <small>ulitity</small></a></dd>
+                <dt>布局 <small>layout</small></dt>
+                <dd><a href="###">栅格布局 <small>grid</small></a></dd>
+                <dd><a href="###">等分布局 <small>flex</small></a></dd>
+                <dt>排版 <small>typography</small></dt>
+                <dd><a href="###">块级引用 <small>blockquote</small></a></dd>
+            </dl>
+
+            <h2>JS 组件</h2>
+
+            <dl>
+                <dt>标题</dt>
+                <dd><a href="###">组件1</a></dd>
+                <dd><a href="###">组件2</a></dd>
+                <dd><a href="###">组件3</a></dd>
+                <dt>标题</dt>
+                <dd><a href="###">组件1</a></dd>
+                <dd><a href="###">组件2</a></dd>
+                <dd><a href="###">组件3</a></dd>
+            </dl>
+
+        </div>
+
+        <div class="doc-left doc" id="doc_main">
+
+            <h1>按钮组 <small>ui/container/dialog</small></h1>
+
+            <blockquote>按钮组可以将多个 <a href="###">按钮</a> 合并为一个工具条。</blockquote>
+
+            <h2>基本示例</h2>
+
+            <p>直接将按钮放入 <code>.x-button-group</code> 的容器即可。</p>
+
+            <h2>扩展示例</h2>
+
+            <h3>示例1</h3>
+
+            <p>我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。</p>
+
+            <h4>最基本的示例</h4>
+
+            <h5>最基本的示例</h5>
+
+            <h6>最基本的示例</h6>
+
+            <ul>
+                <li>第</li>
+                <li>第</li>
+                <li>第</li>
+            </ul>
+
+            <ol>
+                <li>第</li>
+                <li>第</li>
+                <li>第</li>
+            </ol>
+
+            <dl>
+                <dt>标题</dt>
+                <dd>说明</dd>
+                <dd>说明</dd>
+                <dt>标题2</dt>
+                <dd>说明2</dd>
+                <dd>说明2</dd>
+            </dl>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>名称</th>
+                        <th>说明</th>
+                        <th>继承</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td>啊啊啊 </td>
+                        <td>
+                            <p>System 安装的根目录, 可以为相对目录。</p>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <blockquote class="doc-warning">
+                注意：本组件不支持 IE6/7。
+            </blockquote>
+
+            <blockquote class="doc-info">
+                注意：本组件不支持 IE6/7。
+            </blockquote>
+
+            <aside class="doc-demo">
+                <textarea class="x-textbox"></textarea>
+            </aside>
+
+            <div class="doc-code-toolbar">
+                <a href="javascript:alert('copy')">折叠</a>
+                <a href="javascript:alert('copy')">编辑</a>
+                <a href="javascript:alert('copy')">执行</a>
+                <a href="javascript:alert('copy')">复制</a>
+            </div>
+
+            <pre class="doc-sh doc-sh-htm"><code><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-header"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+		</span><span class="doc-sh-tag">&lt;h2&gt;</span><span class="doc-sh-plain">
+			header
+		</span><span class="doc-sh-tag">&lt;/h2&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-body"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+		</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-content"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+			body
+		</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+</span><span class="doc-sh-tag">&lt;/div&gt;</span></code></pre>
+
+            <div class="doc-code-toolbar">
+                <a href="javascript:alert('copy')">复制</a>
+                <a href="javascript:alert('copy')">执行</a>
+            </div>
+
+            <pre class="doc-sh"><code>var a = <code>1</code>;
+aaaa</code></pre>
+
+            <dl>
+                <dt>颜色</dt>
+                <dd><code>doc-red</code>: <span class="doc-red">红色</span></dd>
+                <dd><code>doc-yellow</code>: <span class="doc-yellow">黄色</span></dd>
+                <dd><code>doc-green</code>: <span class="doc-green">绿色</span></dd>
+                <dd><code>doc-blue</code>: <span class="doc-blue">蓝色</span></dd>
+                <dt>方块</dt>
+                <dd>
+                    <aside class="doc-demo">
+                        <div title="doc-box-small" class="doc-box-small">小盒子</div>
+                        <div title="doc-box" class="doc-box">盒子</div>
+                        <div title="doc-box-large" class="doc-box-large">大盒子</div>
+                    </aside>
+                </dd>
+            </dl>
+
+        </div>
+
+    </div>
+    <footer id="doc_footer" class="doc-font doc-container">
+        <span class="doc doc-right"><a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="community.html">加入我们</a></span>
+        Copyright &copy; 2011-2012 jPlusUI Team. All Rights Reserved.
+    </footer>
+</body>
+</html>

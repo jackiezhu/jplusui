@@ -178,7 +178,7 @@ if (typeof module === 'object') {
         /**
 		 * 指示当前是否为 IE6-8 浏览器。
 		 */
-        isIE: !+"\v1",
+        isOldIE: !+"\v1",
 
         /**
 		 * 遍历指定的标签名并执行指定函数。仅对 class=demo 的元素有效。
@@ -200,13 +200,12 @@ if (typeof module === 'object') {
 		 * 设置 DOM ready 后的回调。
 		 */
         ready: function (callback) {
-
             function check() {
                 /in/.test(document.readyState) ? setTimeout(check, 1) : callback();
             }
-
             check();
         }
+
     };
 
     /**
@@ -214,6 +213,9 @@ if (typeof module === 'object') {
 	 */
     Demo.Utils = {
 
+        /**
+         * 提供数组 indexOf 方法。
+         */
         indexOf: function (arr, value) {
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] === value) {
@@ -224,6 +226,9 @@ if (typeof module === 'object') {
             return -1;
         },
 
+        /**
+         * 删除公共的缩进部分。
+         */
         removeIndents: function (value) {
             value = value.replace(/^[\r\n]+/, "").replace(/\s+$/, "");
             var space = /^\s+/.exec(value);
@@ -284,7 +289,7 @@ if (typeof module === 'object') {
         init: function () {
 
             // 令 IE6-8 支持显示 HTML5 新元素。
-            if (Demo.Dom.isIE) {
+            if (Demo.Dom.isOldIE) {
                 'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
                     document.createElement(tagName);
                 });
