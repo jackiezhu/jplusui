@@ -1,0 +1,10 @@
+﻿
+#doc_header .doc-container{
+    text-align: center;
+}
+
+#doc_header h1 {
+    font-size: 60px;
+    font-weight: 700;
+    margin-top: 1em;
+}
