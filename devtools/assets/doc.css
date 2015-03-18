@@ -284,11 +284,11 @@ section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blo
     font-size: 12px;
     line-height: 150%;
     float: right;
-    color: #B8B8B8;
+    color: #727272;
 }
 
     .doc-toolbar a {
-        color: #727272;
+        color: #333;
         text-decoration: none;
     }
 
