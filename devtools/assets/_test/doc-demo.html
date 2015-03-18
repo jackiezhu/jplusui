@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DEMO 示例页</title>
+    <link rel="stylesheet" type="text/css" href="../doc.css">
+
+    <script>
+        document.createElement('header');
+        document.createElement('nav');
+        document.createElement('menu');
+        document.createElement('article');
+        document.createElement('section');
+        document.createElement('footer');
+        document.createElement('aside');
+    </script>
+    <style>
+        #doc-toolbar-tool {
+            top: 90px!important;
+        }
+
+        #doc-toolbar-doc {
+            top: 140px!important;
+        }
+
+        #doc-toolbar-controlstate {
+            top: 170px!important;
+        }
+
+        #doc-toolbar-goto {
+            top: 500px!important;
+        }
+    </style>
+</head>
+<body class="doc">
+
+    <!-- 自动生成的头部 -->
+    <header class="doc">
+
+        <div class="doc-clear" style="font-size: 12px; position: relative;">
+
+            <nav class="doc-toolbar">
+                <a href="#">已完成</a> | <a href="#">工具▾</a> | <a href="#">转到组件▾</a> | <a href="#">返回组件列表</a>
+            </nav>
+
+            <style>
+
+                .doc-toolbar-dropdown {
+                    background-color: #ffffff;
+                    border: 1px solid #9b9b9b;
+                    box-shadow: 1px 1px 2px #cccccc;
+                    position: absolute;
+                    right: 0;
+                    top: 26px;
+                    z-index: 99999;
+                }
+
+                .doc-toolbar-dropdown a {
+                    color: #333;
+                    cursor: pointer;
+                    line-height: 200%;
+                }
+
+                .doc-toolbar-dropdown-menu a {
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    display: block;
+                    overflow: hidden;
+                    padding-left: 6px;
+                    padding-right: 6px;
+                    text-decoration: none;
+                }
+
+                .doc-toolbar-dropdown-menu a:hover {
+                    text-decoration: none;
+                }
+
+                .doc-toolbar-dropdown-menu-usehover a:hover, a.demo-toolbar-dropdown-menu-actived {
+                    background-color: #ebebeb;
+                }
+
+                #doc-toolbar-controlstate input {
+                    vertical-align: -2px;
+                }
+            </style>
+
+<div id="doc_toolbar_tool" class="doc-toolbar-dropdown doc-toolbar-dropdown-menu doc-toolbar-dropdown-menu-usehover" style="right: 126px;">
+                <a href="###">工具</a>
+                <a href="###" style="border-top: 1px solid #DADADA;">显示/隐藏源码</a>
+                <a href="###">切换源码折叠</a>
+                <a href="###">切换全屏模式</a>
+            </div>
+
+            <div id="doc-toolbar-controlstate" class="doc-toolbar-dropdown" style="padding: 5px;">
+                <form style="*margin-bottom: 0">
+
+                    <fieldset>
+                        <legend>进度</legend>
+
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />已完成
+                        </label>
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />完美版
+                        </label>
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />凑合版
+                        </label><br />
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />计划中
+                        </label>
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />开发中
+                        </label>
+                        <label>
+                            <input type="radio" name="doc-controlstate-status" />已放弃
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>兼容</legend>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />IE6
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />IE7
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />IE8
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />IE9
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />IE10
+                        </label><br />
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />FireFox
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />Chrome
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />Safari
+                        </label>
+                        <label>
+                            <input type="checkbox" name="doc-controlstate-compact" />Opera
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>属性</legend>
+                        名字：
+                        <input type="text" class="doc-toolbar-dropdown-input" />
+
+                        <br />
+                        <label>
+                            <input type="checkbox" />
+                            不在列表显示
+                        </label>
+                        <label>
+                            <input type="checkbox" />
+                            仅用于演示
+                        </label>
+                    </fieldset>
+
+                    <input type="submit" value="保存修改" class="doc-right" />
+                    <a href="#">删除组件</a>
+
+                </form>
+            </div>
+
+            <div id="doc-toolbar-goto" class="doc-toolbar-dropdown" style="width: 300px;">
+                <input type="text" class="doc-font" placeholder="输入组件名..." onfocus="this.select()" style="width: 290px; padding: 2px 5px; border: 0; border-bottom: 1px solid #9B9B9B;">
+                <div style="_height: 300px; _width: 300px; word-break: break-all; max-height: 300px; overflow: auto;" class="doc-toolbar-dropdown-menu">
+                    <a href="#" onmouseover="Demo.System.gotoSetListHover(this)" class="">DOM底层 <small style="color: #B8B8B8">ui/dom/base</small></a>
+                </div>
+            </div>
+
+        </div>
+
+        <h1 style="margin-top: 0; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">组件名 <small>ui/container/dialog</small></h1>
+
+    </header>
+
+    <blockquote>按钮组可以将多个 <a href="###">按钮</a> 合并为一个工具条。</blockquote>
+
+    <h2>基本示例</h2>
+
+    <p>直接将按钮放入 <code>.x-button-group</code> 的容器即可。</p>
+
+    <h2>扩展示例</h2>
+
+    <h3>示例1</h3>
+
+    <p>我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。我是相关的文字教程。</p>
+
+    <h4>最基本的示例</h4>
+
+    <h5>最基本的示例</h5>
+
+    <h6>最基本的示例</h6>
+
+    <hr />
+
+    <ul>
+        <li>第</li>
+        <li>第</li>
+        <li>第</li>
+    </ul>
+
+    <ol>
+        <li>第</li>
+        <li>第</li>
+        <li>第</li>
+    </ol>
+
+    <dl>
+        <dt>标题</dt>
+        <dd>说明</dd>
+        <dd>说明</dd>
+        <dt>标题2</dt>
+        <dd>说明2</dd>
+        <dd>说明2</dd>
+    </dl>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>名称</th>
+                <th>说明</th>
+                <th>继承</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+                <td>啊啊啊 </td>
+                <td>
+                    <p>System 安装的根目录, 可以为相对目录。</p>
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <blockquote class="doc-warning">
+        注意：本组件不支持 IE6/7。
+    </blockquote>
+
+    <blockquote class="doc-info">
+        注意：本组件不支持 IE6/7。
+    </blockquote>
+
+    <aside class="doc-demo">
+        <textarea class="x-textbox"></textarea>
+    </aside>
+
+    <div class="doc-font doc-code-toolbar">
+        <a href="javascript:alert('copy')">折叠</a>
+        <a href="javascript:alert('copy')">编辑</a>
+        <a href="javascript:alert('copy')">执行</a>
+        <a href="javascript:alert('copy')">复制</a>
+    </div>
+
+    <pre class="doc-sh doc-sh-htm"><code><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-header"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+		</span><span class="doc-sh-tag">&lt;h2&gt;</span><span class="doc-sh-plain">
+			header
+		</span><span class="doc-sh-tag">&lt;/h2&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-body"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+		</span><span class="doc-sh-tag">&lt;div</span><span class="doc-sh-plain"> </span><span class="doc-sh-attrname">class</span><span class="doc-sh-punctuation">=</span><span class="doc-sh-attrvalue">"x-control-content"</span><span class="doc-sh-tag">&gt;</span><span class="doc-sh-plain">
+			body
+		</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+	</span><span class="doc-sh-tag">&lt;/div&gt;</span><span class="doc-sh-plain">
+</span><span class="doc-sh-tag">&lt;/div&gt;</span></code></pre>
+
+    <div class="doc-font doc-code-toolbar">
+        <a href="javascript:alert('copy')">复制</a>
+        <a href="javascript:alert('copy')">执行</a>
+    </div>
+
+    <pre class="doc-sh"><code>var a = <code>1</code>;
+aaaa</code></pre>
+
+    <dl>
+        <dt>颜色</dt>
+        <dd><code>doc-red</code>: <span class="doc-red">红色</span></dd>
+        <dd><code>doc-yellow</code>: <span class="doc-yellow">黄色</span></dd>
+        <dd><code>doc-green</code>: <span class="doc-green">绿色</span></dd>
+        <dd><code>doc-blue</code>: <span class="doc-blue">蓝色</span></dd>
+        <dt>方块</dt>
+        <dd>
+            <aside class="doc-demo">
+                <div title="doc-box-small" class="doc-box-small">小</div>
+                <div title="doc-box" class="doc-box">中</div>
+                <div title="doc-box-large" class="doc-box-large">大</div>
+            </aside>
+        </dd>
+    </dl>
+    
+    <div class="doc-grid doc-grid-3">
+
+        <div class="doc-col">
+            左
+        </div>
+
+        <div class="doc-col">
+            中
+        </div>
+
+        <div class="doc-col">
+            右
+        </div>
+
+    </div>
+
+    <h2 class="doc">常用 API</h2>
+
+    <nav class="doc doc-toolbar">
+        <a onclick="Demo.speedTestAll();" href="javascript:;">折叠代码</a> |
+        <a onclick="Demo.speedTestAll();" href="javascript:;">全部效率</a> |
+        <a onclick="Demo.runTestAll();" href="javascript://按顺序执行全部函数;">全部执行</a>
+    </nav>
+
+    <h3 class="doc">分类</h3>
+
+    <section>
+        <nav class="doc doc-toolbar" style="display: none"><a onclick="Demo.speedTest(1); return false;" href="javascript://测试函数执行的速度">编辑</a> | <a onclick="Demo.speedTest(1); return false;" href="javascript://测试函数执行的速度">效率</a> | <a onclick="Demo.runTest(1); return false;" href="javascript://执行函数">执行</a></nav>
+        <h4 class="doc">创建模式对话框（对话框后有阴影）</h4>
+        <pre class="doc sh-js sh"><code class="sh-code"><span class="sh-plain">dialog</span><span class="sh-punctuation">.</span><span class="sh-plain">showDialog</span><span class="sh-punctuation">();</span><span class="sh-plain"> </span><span class="sh-comment">// 使用此函数显示对话框即可。</span></code></pre>
+    </section>
+
+    <!-- 自动生成的底部 -->
+    <footer class="doc">
+        <hr class="doc">
+        <nav class="doc-toolbar"><a href="http://www.jplusui.com/">jPlusUI.com</a> | <a href="https://www.github.com/jplusui/jplusui">Github</a> | <a href="#">返回顶部</a>        </nav>
+        <span>Copyright &copy; 2011-2012 J+ Team</span>
+    </footer>
+
+</body>
+</html>

@@ -22,25 +22,18 @@
     文本：#212121
 */
 
-/**********************************************
- * 全局统一样式
- **********************************************/
+/* #region 全局统一样式 */
 
-.doc-font, .doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > pre {
+.doc-font, .doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > pre, .doc > header, .doc > footer, .doc > div {
     font-size: 14px;
     line-height: 175%;
     font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
     color: #212121;
 }
 
-.doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > img, .doc > pre, .doc > hr {
-    margin: 0 0 1em;
-}
-
 body.doc {
-    margin: 0;
+    margin: 0 14px;
     overflow-y: scroll;
-    padding: 0 20px;
 }
 
 article.doc {
@@ -48,9 +41,13 @@ article.doc {
     margin-bottom: 2em;
 }
 
+section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blockquote, .doc > img, .doc > pre, .doc > hr {
+    margin: 0 0 1em;
+}
+
 .doc > h1, .doc > h2, .doc > h3, .doc > h4, .doc > h5, .doc > h6 {
     font-weight: 500;
-    margin-bottom: .5em;
+    margin: 0 0 .5em;
 }
 
     .doc > h2:before, .doc > h3:before, .doc > h4:before {
@@ -116,10 +113,9 @@ article.doc {
 }
 
     .doc > table th, .doc > table td {
-        line-height: 20px;
-        text-align: left;
+        line-height: 150%;
         vertical-align: top;
-        border: 1px solid #ddd;
+        border: 1px solid #DADADA;
         padding: 5px;
     }
 
@@ -146,7 +142,7 @@ article.doc {
 }
 
 .doc > blockquote {
-    background-color: #F8F8F8;
+    background-color: #f7f7f7;
     border: 1px solid #DADADA;
     border-left: 3px solid #673AB7;
     padding: 10px;
@@ -155,7 +151,7 @@ article.doc {
     .doc > pre, .doc > p code, .doc > ul code, .doc > ol code, .doc > dl code, .doc > table code, .doc > blockquote code {
         font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
         color: #990000;
-        background-color: #f8f8f8;
+        background-color: #f7f7f7;
         padding: 2px 4px;
     }
 
@@ -194,66 +190,11 @@ article.doc {
     font-weight: normal;
 }
 
-/**********************************************
- * 文档专用组件
- **********************************************/
+/* #endregion */
 
-/* 示例框 */
+/* #region 文档专用组件 */
 
-.doc-demo {
-    padding: 10px;
-    border: 1px solid #DADADA;
-    position: relative;
-    margin-bottom: 14px;
-}
-
-    .doc-demo:before {
-        content: "示例";
-        font-family: "Microsoft YaHei", FreeSans, Arimo, "Droid Sans", "Hiragino Sans GB", "Hiragino Sans GB W3", sans-serif;
-        padding: 0 6px;
-        font-size: 10px;
-        line-height: 20px;
-        color: #bcbcbc;
-        position: absolute;
-        top: 0;
-        right: 0;
-        cursor: default;
-    }
-
-    .doc-demo:after {
-        clear: both;
-        content: " ";
-        display: block;
-        height: 0;
-        visibility: hidden;
-    }
-
-    .doc-demo + .doc-code-toolbar, .doc-demo + .doc-sh, .doc-demo + .doc-code-toolbar + .doc-sh {
-        margin-top: -14px;
-        border-top: 0;
-    }
-
-/* 复制按钮 */
-
-.doc-code-toolbar a {
-    float: right;
-    padding: 0 6px;
-    display: inline-block;
-    color: #999;
-    border: 1px solid #DADADA;
-    border-width: 0 0 1px 1px;
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 180%;
-}
-
-    .doc-code-toolbar a:hover {
-        background-color: #673AB7;
-        color: #FFF;
-        text-decoration: none;
-    }
-
-/* 语法 */
+/* 语法高亮 */
 .doc-sh-comment {
     color: #93a1a1;
 }
@@ -286,10 +227,62 @@ article.doc {
     color: #333;
 }
 
+/* 代码区域按钮 */
+.doc-code-toolbar a {
+    float: right;
+    padding: 0 6px;
+    display: inline-block;
+    color: #999;
+    border: 1px solid #DADADA;
+    border-width: 0 0 1px 1px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 180%;
+}
+
+    .doc-code-toolbar a:hover {
+        background-color: #673AB7;
+        color: #FFF;
+        text-decoration: none;
+    }
+
+/* 示例框 */
+.doc-demo {
+    padding: 10px;
+    border: 1px solid #DADADA;
+    position: relative;
+    margin-bottom: 14px;
+    *zoom: 1;
+}
+
+    .doc-demo:before {
+        content: "示例";
+        font-family: "Segoe UI", "Lucida Grande", Helvetica, Arial, "Microsoft YaHei", FreeSans, Arimo, sans-serif;
+        padding: 0 6px;
+        font-size: 10px;
+        line-height: 20px;
+        color: #bcbcbc;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: default;
+    }
+
+    .doc-demo:after {
+        content: " ";
+        display: table;
+        clear: both;
+    }
+
+    .doc-demo + .doc-code-toolbar, .doc-demo + .doc-sh, .doc-demo + .doc-code-toolbar + .doc-sh {
+        margin-top: -14px;
+        border-top: 0;
+    }
+
 /* 工具条 */
 .doc-toolbar {
     font-size: 12px;
-    line-height: 100%;
+    line-height: 150%;
     float: right;
     color: #B8B8B8;
 }
@@ -304,7 +297,6 @@ article.doc {
         }
 
 /* 示例专用 */
-
 .doc-warning {
     color: #b94a48 !important;
     background-color: #F8E6E6 !important;
@@ -319,28 +311,29 @@ article.doc {
 
 .doc-box, .doc-box-small, .doc-box-large {
     position: relative;
-    width: 80px;
-    height: 80px;
-    margin-right: 10px;
+    width: 70px;
+    height: 70px;
+    margin: 10px;
     padding: 10px;
     text-align: center;
-    line-height: 80px;
+    line-height: 70px;
     display: inline-block;
-    background-color: #E95C41;
+    background-color: #9C27B0;
     color: #FFFFFF;
     vertical-align: top;
+    overflow: hidden;
 }
 
 .doc-box-small {
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
 }
 
 .doc-box-large {
-    height: 200px;
-    width: 200px;
-    line-height: 200px;
+    height: 150px;
+    width: 150px;
+    line-height: 150px;
 }
 
 .doc-red {
@@ -394,20 +387,50 @@ article.doc {
         list-style: none;
     }
 
-/**********************************************
- * 页面样式
- **********************************************/
-
 /* 布局 */
-#doc_page {
-    padding: 0;
-}
-
 .doc-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 24px;
     position: relative;
+}
+
+.doc-grid {
+    margin: 0 -10px;
+}
+
+.doc-col {
+    float: left;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+@media only screen and (min-width: 641px) {
+
+    .doc-grid-4 > .doc-col {
+        width: 25%;
+    }
+
+    .doc-grid-3 > .doc-col {
+        width: 33.3333333%;
+    }
+
+    .doc-grid-2 > .doc-col {
+        width: 50%;
+    }
+}
+
+/* #endregion */
+
+/* #region 页面样式 */
+
+/* 布局 */
+#doc_page {
+    margin: 0;
 }
 
 #doc_sidebar {
@@ -558,3 +581,6 @@ a#doc_logo:hover {
     #doc_footer, #doc_footer a {
         color: #b8b8b8;
     }
+
+
+/* #endregion */
