@@ -3,18 +3,17 @@
  */
 
 /*
-    色系：Indigo
-    500 #3F51B5
-    50  #E8EAF6
-    100 #C5CAE9
-    200 #9FA8DA
-    300 #7986CB
-    400 #5C6BC0
-    500 #3F51B5
-    600 #3949AB
-    700 #303F9F
-    800 #283593
-    900 #1A237E
+    色系：Deep Purple
+    50#EDE7F6
+    100#D1C4E9
+    200#B39DDB
+    300#9575CD
+    400#7E57C2
+    500#673AB7
+    600#5E35B1
+    700#512DA8
+    800#4527A0
+    900#311B92
 
     灰色：
     分割：#DADADA
@@ -149,7 +148,7 @@ article.doc {
 .doc > blockquote {
     background-color: #F8F8F8;
     border: 1px solid #DADADA;
-    border-left: 3px solid #3F51B5;
+    border-left: 3px solid #673AB7;
     padding: 10px;
 }
 
@@ -249,8 +248,8 @@ article.doc {
 }
 
     .doc-code-toolbar a:hover {
-        background-color: #3F51B5;
-        color: #fff;
+        background-color: #673AB7;
+        color: #FFF;
         text-decoration: none;
     }
 
@@ -290,7 +289,7 @@ article.doc {
 /* 工具条 */
 .doc-toolbar {
     font-size: 12px;
-    line-height: 22px;
+    line-height: 100%;
     float: right;
     color: #B8B8B8;
 }
@@ -328,7 +327,7 @@ article.doc {
     line-height: 80px;
     display: inline-block;
     background-color: #E95C41;
-    color: #ffffff;
+    color: #FFFFFF;
     vertical-align: top;
 }
 
@@ -346,17 +345,17 @@ article.doc {
 
 .doc-red {
     background-color: #9d261d;
-    color: #fff;
+    color: #FFF;
 }
 
 .doc-yellow {
     background-color: #f89406;
-    color: #fff;
+    color: #FFF;
 }
 
 .doc-green {
     background-color: #B4B900;
-    color: #fff;
+    color: #FFF;
 }
 
 .doc-blue {
@@ -430,14 +429,14 @@ article.doc {
 
 /* 顶部 */
 #doc_header {
-    background-color: #3f51b5;
-    color: #fff;
+    background-color: #673AB7;
+    color: #FFF;
     padding: 0 0 2.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 1em;
 }
 
 #doc_topbar {
-    background-color: #303f9f;
+    background-color: #512DA8;
 }
 
     #doc_topbar a {
@@ -448,15 +447,15 @@ article.doc {
     }
 
         #doc_topbar a:hover, #doc_topbar .actived a {
-            background-color: #1a237e;
-            color: #fff;
+            background-color: #311B92;
+            color: #FFF;
         }
 
 a#doc_logo {
     font-weight: 600;
     margin-right: .5em;
     padding-left: 0;
-    color: #fff;
+    color: #FFF;
 }
 
 #doc_logo img {
@@ -474,7 +473,7 @@ a#doc_logo:hover {
 }
 
 #doc_header h1 {
-    color: #fff;
+    color: #FFF;
     font-size: 40px;
     font-weight: 500;
     line-height: 150%;
@@ -498,12 +497,12 @@ a#doc_logo:hover {
     box-sizing: border-box;
     border: 0;
     border-bottom: 1px solid #DADADA;
-    background-color: #fff;
+    background-color: #FFF;
 }
 
     #doc_modulelist_filter:hover, #doc_modulelist_filter:focus {
         outline: 0;
-        border-bottom-color: #23527c;
+        border-bottom-color: #673AB7;
     }
 
 #doc_modulelist {
@@ -520,7 +519,7 @@ a#doc_logo:hover {
     }
 
     #doc_modulelist dt {
-        border-left: 2px solid #3f51b5;
+        border-left: 2px solid #673AB7;
         line-height: 120%;
         margin: 0.4em 0;
         padding: 0 1em;
