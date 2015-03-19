@@ -281,10 +281,10 @@ section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blo
 
 /* 工具条 */
 .doc-toolbar {
-    font-size: 12px;
-    line-height: 150%;
+    font-size: 12px!important;
+    line-height: 150%!important;
+    color: #727272!important;
     float: right;
-    color: #727272;
 }
 
     .doc-toolbar a {
@@ -318,7 +318,7 @@ section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blo
     text-align: center;
     line-height: 70px;
     display: inline-block;
-    background-color: #9C27B0;
+    background-color: #FF9800;
     color: #FFFFFF;
     vertical-align: top;
     overflow: hidden;
@@ -337,23 +337,23 @@ section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blo
 }
 
 .doc-red {
-    background-color: #9d261d;
+    background-color: #F44336;
     color: #FFF;
 }
 
 .doc-yellow {
-    background-color: #f89406;
+    background-color: #FFEB3B;
     color: #FFF;
 }
 
 .doc-green {
-    background-color: #B4B900;
+    background-color: #4CAF50;
     color: #FFF;
 }
 
 .doc-blue {
-    background-color: #90D9E8;
-    color: #212121;
+    background-color: #00BCD4;
+    color: #FFF;
 }
 
 /* 工具样式 */
