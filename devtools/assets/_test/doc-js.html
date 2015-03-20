@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DEMO 示例页</title>
+    
+</head>
+<body class="doc">
+    
+    Hello World
+    
+    <script src="../doc.js"></script>
+
+    <script>
+
+        Doc.writeExamples({
+            '分类1': '-',
+            '测试代码1': 'console.log(0);\r\nconsole.log(5)',
+            '分类2': '-',
+            '测试代码2': function () {
+                console.log(4);
+            },
+            '测试代码3': function () {
+                console.log(234234);
+            }
+        });
+    </script>
+
+</body>
+</html>
