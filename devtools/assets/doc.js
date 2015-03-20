@@ -1323,8 +1323,9 @@ if (typeof module === 'object') {
             <a href="###">提取源码</a>\
         </div>\
 \
-        <h1 style="margin-top: 0; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">{title} <small>ui/container/dialog</small></h1>'.replace('{title}', Doc.moduleInfo.title)
+        <h1 style="margin-top: 0; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">{title} <small>{path}</small></h1>'.replace('{title}', Doc.moduleInfo.title)
                 .replace('{title}', Doc.moduleInfo.title)
+                .replace('{path}', Doc.moduleInfo.title)
 
             }
 
