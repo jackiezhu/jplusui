@@ -109,7 +109,7 @@ Doc.Configs = {
 	 */
     attributes: {
         'mobile': '移动端',
-        'pc': 'PC端', 
+        'pc': 'PC端',
         'ie8': '兼容IE8+',
         'ie6': '兼容IE6+',
         'webkit': '仅 Webkit'
@@ -1256,8 +1256,8 @@ if (typeof module === 'object') {
             // 判断当前开发系统是否在本地运行。
             Doc.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
 
-            var moduleInfo = Doc.moduleInfo = document.querySelector('meta[name="' + Doc.Configs.moduleInfo + '"]');
-            moduleInfo = moduleInfo ? Doc.Module.parseModuleInfo(moduleInfo.content) : {};
+            var moduleInfo = document.querySelector('meta[name="' + Doc.Configs.moduleInfo + '"]');
+            Doc.moduleInfo = moduleInfo = moduleInfo ? Doc.Module.parseModuleInfo(moduleInfo.content) : {};
             moduleInfo.title = moduleInfo.title = document.title;
 
             var frame = (/[?&]frame=(\w+)/.exec(location.search) || [0, moduleInfo.frame])[1] || 'header';
@@ -1266,12 +1266,17 @@ if (typeof module === 'object') {
                 // 载入 CSS 样式。
                 document.write('<link type="text/css" rel="stylesheet" href="' + docJsSrc.replace(/\.js/, '.css') + '" />');
 
-                var header = document.createElement('header');
-                header.className = 'doc';
-                header.innerHTML = '<div class="doc-clear" style="font-size: 12px; position: relative;">\
+                Doc.Dom.ready(function () {
+
+                    var header = document.createElement('header');
+                    header.className = 'doc';
+                    header.innerHTML = '<div id="doc-toolbar" class="doc-clear" style="font-size: 12px; position: relative;">\
 \
             <nav class="doc-toolbar">\
-                <a href="#">已完成</a> | <a href="#">工具▾</a> | <a href="#">转到组件▾</a> | <a href="#">返回组件列表</a>\
+                <a href="#">{status}</a> | \
+                <a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-tool\')" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具▾</a> | \
+                <a href="javascript://快速打开其他组件" onclick="Doc.Page.showDropDown(\'doc-toolbar-goto\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-goto\')" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件▾</a> | \
+                <a href="{modueList}" title="返回组件列表" accesskey="H">返回组件列表</a>\
             </nav>\
 \
             <style>\
@@ -1324,10 +1329,17 @@ if (typeof module === 'object') {
         </div>\
 \
         <h1 style="margin-top: 0; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">{title} <small>{path}</small></h1>'.replace('{title}', Doc.moduleInfo.title)
-                .replace('{title}', Doc.moduleInfo.title)
-                .replace('{path}', Doc.moduleInfo.title)
+                        .replace('{title}', Doc.moduleInfo.title)
+                        .replace('{path}', Doc.moduleInfo.title)
+                        .replace('{status}', Doc.Configs.status[Doc.moduleInfo.status] || Doc.Configs.status.done)
+                        .replace(/▾/g, navigator.userAgent.indexOf('Firefox') >= 0 ? '▾' : " ▾")
+                        .replace('{modueList}', Doc.Configs.basePath + Doc.Configs.demos + '/index.html');
 
+                    document.body.insertBefore(header, document.body.firstChild);
+                });
             }
+
+
 
             /**
              * 生成页眉。
@@ -1344,53 +1356,6 @@ if (typeof module === 'object') {
                     document.write('<div id="demo-ie6-html5hack">&nbsp;</div>');
                     document.body.removeChild(document.getElementById("demo-ie6-html5hack"));
                 }
-
-                // 输出 header
-                html += '<header class="demo">\
-	        <style>\
-                \
-                html .demo-toolbar-dropdown {\
-                    font-size: 12px;\
-                    line-height: 26px;\
-                    position: absolute;\
-                    right: 0;\
-                    top: 26px;\
-                    border: 1px solid #9B9B9B;\
-                    -webkit-box-shadow: 1px 1px 2px #cccccc;\
-                    -moz-box-shadow: 1px 1px 2px #cccccc;\
-                    box-shadow: 1px 1px 2px #cccccc;\
-                    z-index: 99999;\
-                    background-color: #FFFFFF;\
-                }\
-\
-                    html .demo-toolbar-dropdown a {\
-                        cursor: pointer;\
-                        color: #333;\
-                    }\
-\
-                html .demo-toolbar-dropdown-menu a {\
-                    -moz-user-select: none;\
-                    display: block;\
-                    overflow: hidden;\
-                    padding-left: 6px;\
-                    padding-right: 6px;\
-                    text-decoration: none;\
-                }\
-\
-                    html .demo-toolbar-dropdown-menu a:hover {\
-                        text-decoration: none;\
-                    }\
-\
-                html .demo-toolbar-dropdown-menu-usehover a:hover,\
-                html a.demo-toolbar-dropdown-menu-hover {\
-                    background-color: #EBEBEB;\
-                }\
-                 #demo-toolbar-controlstate input {\
-                        vertical-align: -2px;\
-                    }\
-            </style>\
-	        <div id="demo-toolbar" style="height: 10px; position: relative;">\
-	            <nav class="demo-toolbar">';
 
                 // 如果当前的页面是 docs 下的一个页面。
                 // 则添加模块状态和历史记录。
@@ -1411,7 +1376,7 @@ if (typeof module === 'object') {
                     html += '<a href="javascript://查看组件属性" onclick="Doc.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
                 }
 
-                html += '<a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Doc.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a></nav></div>';
+                html += '<a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Doc.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a>';
 
                 // 生成标题。
                 if (moduleInfo.name) {
@@ -1563,12 +1528,12 @@ if (typeof module === 'object') {
         initDropDown: function (id) {
             var dropDown = document.createElement('div');
             dropDown.id = id;
-            document.getElementById('demo-toolbar').appendChild(dropDown);
+            document.getElementById('doc-toolbar').appendChild(dropDown);
             switch (id) {
-                case "demo-toolbar-tool":
+                case "doc-toolbar-tool":
                     simpleDropDown('tool', '100px');
                     break;
-                case "demo-toolbar-goto":
+                case "doc-toolbar-goto":
                     dropDown.className = 'demo-toolbar-dropdown';
                     dropDown.style.width = '300px';
                     dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
@@ -1606,7 +1571,7 @@ if (typeof module === 'object') {
                     Doc.Page.loadModuleList(Doc.Page.gotoUpdateList);
 
                     break;
-                case "demo-toolbar-controlstate":
+                case "doc-toolbar-controlstate":
                     var moduleInfo = Doc.moduleInfo;
                     dropDown.className = 'demo-toolbar-dropdown';
                     dropDown.style.cssText = 'padding:5px;*width:260px;';
@@ -1657,8 +1622,8 @@ if (typeof module === 'object') {
 
             function simpleDropDown(id, right) {
                 dropDown.style.right = right;
-                dropDown.className = 'demo-toolbar-dropdown demo-toolbar-dropdown-menu demo-toolbar-dropdown-menu-usehover';
-                dropDown.innerHTML = Doc.Configs[id].replace(/~\//g, Doc.baseUrl);
+                dropDown.className = 'doc-toolbar-dropdown doc-toolbar-dropdown-menu doc-toolbar-dropdown-menu-usehover';
+                dropDown.innerHTML = Doc.Configs.tools.replace(/~\//g, Doc.Configs.baseUrl);
                 dropDown.onclick = function () {
                     dropDown.style.display = 'none';
                 };
