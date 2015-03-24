@@ -63,27 +63,6 @@ Doc.Configs = {
     maxHistory: 10,
 
     /**
-	 * 工具的下拉菜单 HTML 模板。
-	 */
-    tools: '<a href="{devTools}/codehelper/index.html" target="_blank">代码格式化工具</a>\
-            <a href="{devTools}/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
-            <a href="{devTools}/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
-            <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠页内代码</a>\
-            <a href="javascript://浏览当前组件的源文件" onclick="Doc.Page.exploreSource();">查看源文件</a>',
-
-    /**
-	 * 底部 HTML 模板。
-	 */
-    footer: '<footer class="doc" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
-        <hr class="doc">\
-        <nav class="doc-toolbar">\
-            <a href="https://www.github.com/jplusui/jplusui">GitHub</a>  |  \
-            <a href="#">返回顶部</a>\
-        </nav>\
-        <span>&copy; 2011-2015 JPlusUI Team</span>\
-    </footer>',
-    
-    /**
 	 * 合法的状态值。
 	 */
     status: {
@@ -105,6 +84,28 @@ Doc.Configs = {
         'ie6': '兼容IE6+',
         'webkit': '仅 Webkit'
     },
+
+    /**
+	 * 工具的下拉菜单 HTML 模板。
+	 */
+    tools: '<a href="{devTools}/codehelper/index.html" target="_blank">代码格式化工具</a>\
+            <a href="{devTools}/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
+            <a href="{devTools}/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
+            <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠页内代码</a>\
+            <a href="javascript://浏览当前组件的源文件" onclick="Doc.Page.exploreSource();">查看源文件</a>',
+
+    ///**
+	// * 底部 HTML 模板。
+	// */
+    //footer: '<footer class="doc" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
+    //    <hr class="doc">\
+    //    <nav class="doc-toolbar">\
+    //        <a href="https://www.github.com/jplusui/jplusui">GitHub</a>  |  \
+    //        <a href="#">返回顶部</a>\
+    //    </nav>\
+    //    <span>&copy; 2011-2015 JPlusUI Team</span>\
+    //</footer>',
+    
 
 };
 
