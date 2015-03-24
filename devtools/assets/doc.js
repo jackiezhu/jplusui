@@ -35,17 +35,17 @@ Doc.Configs = {
     /**
 	 * 存放文档文件的文件夹。
 	 */
-    demos: "demo",
+    demos: "doc",
 
     /**
 	 * 存放模块列表路径的地址。
 	 */
-    moduleListPath: 'assets/data/modulelist.js',
+    moduleListPath: '{devTools}/assets/data/modulelist.js',
 
     /**
 	 * 存放模板列表路径的地址。
 	 */
-    templatesPath: 'assets/templates',
+    templatesPath: '{devTools}/assets/templates',
 
     /**
 	 * 存放数据字段的 meta 节点。
@@ -65,33 +65,24 @@ Doc.Configs = {
     /**
 	 * 工具的下拉菜单 HTML 模板。
 	 */
-    tools: '<a href="~/devtools/node/modulebuilder/index.html" target="_blank">模块打包工具</a>\
-                <a href="~/devtools/tools/codehelper/index.html" target="_blank">代码工具</a>\
-                <a href="~/devtools/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
-                <a href="~/devtools/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
-                <!--<a href="~/resources/index.html#tool" target="_blank">更多工具</a>-->\
-                <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠代码</a>\
-                <a href="javascript://浏览当前页面的源文件" onclick="Doc.Page.exploreSource();">浏览源文件</a>\
-	            <!--<a href="~/resources/cookbooks/jplusui-full-api/index.html" target="_blank">jPlusUI API 文档</a>\
-                <a href="~/resources/cookbooks/jplusui-core-api/index.html" target="_blank">jPlusUI Core 文档</a>\
-                <a href="~/resources/cookbooks/jquery2jplus.html" target="_blank">jQuery 转 jPlusUI</a>-->\
-                <!--<a href="~/resources/cookbooks/dplsystem.html" target="_blank" style="border-top: 1px solid #EBEBEB;">模块开发教程</a>-->\
-				<a href="~/dev/cookbooks/apps.html" target="_blank">开发系统文档</a>\
-                <!--<a href="~/resources/cookbooks/classdiagram" target="_blank">类图</a>-->\
-                <a href="~/dev/index.html" target="_blank" style="border-top: 1px solid #EBEBEB;">更多文档</a>',
+    tools: '<a href="{devTools}/codehelper/index.html" target="_blank">代码格式化工具</a>\
+            <a href="{devTools}/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
+            <a href="{devTools}/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
+            <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠页内代码</a>\
+            <a href="javascript://浏览当前组件的源文件" onclick="Doc.Page.exploreSource();">查看源文件</a>',
 
     /**
 	 * 底部 HTML 模板。
 	 */
-    footer: '<footer class="demo" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
-        <hr class="demo">\
-        <nav class="demo-toolbar">\
+    footer: '<footer class="doc" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
+        <hr class="doc">\
+        <nav class="doc-toolbar">\
             <a href="https://www.github.com/jplusui/jplusui">GitHub</a>  |  \
             <a href="#">返回顶部</a>\
         </nav>\
         <span>&copy; 2011-2015 JPlusUI Team</span>\
     </footer>',
-
+    
     /**
 	 * 合法的状态值。
 	 */
@@ -182,12 +173,12 @@ if (typeof module === 'object') {
         isOldIE: !+"\v1",
 
         /**
-		 * 遍历指定的标签名并执行指定函数。仅对 class=demo 的元素有效。
+		 * 遍历指定的标签名并执行指定函数。仅对 class=doc 的元素有效。
 		 */
         iterate: function (tagName, fn) {
             var domlist = document.getElementsByTagName(tagName), r = [], i, t;
             for (i = 0; t = domlist[i]; i++) {
-                if (t.className.indexOf('demo') >= 0) {
+                if (t.className.indexOf('doc') >= 0) {
                     r.push(t);
                 }
             }
@@ -225,6 +216,40 @@ if (typeof module === 'object') {
             }
 
             return -1;
+        },
+
+        /**
+         * 格式化指定的字符串。
+         * @param {String} formatString 要格式化的字符串。格式化的方式见备注。
+         * @param {Object} ... 格式化参数。
+         * @return {String} 格式化后的字符串。
+         * @remark 
+         * 
+         * 格式化字符串中，使用 {0} {1} ... 等元字符来表示传递给 String.format 用于格式化的参数。
+         * 如 String.format("{0} 年 {1} 月 {2} 日", 2012, 12, 32) 中， {0} 被替换成 2012，
+         * {1} 被替换成 12 ，依次类推。
+         * 
+         * String.format 也支持使用一个 JSON来作为格式化参数。
+         * 如 String.format("{year} 年 {month} 月 ", { year: 2012, month:12});
+         * 若要使用这个功能，请确保 String.format 函数有且仅有 2个参数，且第二个参数是一个 Object。
+         *
+         * 格式化的字符串{}不允许包含空格。
+         * 
+         * 如果需要在格式化字符串中出现 { 和 }，请分别使用 {{ 和 }} 替代。
+         * 不要出现{{{ 和 }}} 这样将获得不可预知的结果。
+         * @memberOf String
+         * @example <pre>
+         * String.format("{0}转换", 1); //  "1转换"
+         * String.format("{1}翻译",0,1); // "1翻译"
+         * String.format("{a}翻译",{a:"也可以"}); // 也可以翻译
+         * String.format("{{0}}不转换, {0}转换", 1); //  "{0}不转换1转换"
+         * </pre>
+         */
+        formatString: function (formatString) {
+            var args = arguments;
+            return formatString ? formatString.replace(/\{\{|\{(\w+)\}|\}\}/g, function (matched, argName) {
+                return argName ? (matched = +argName + 1) ? args[matched] : args[1][argName] : matched[0];
+            }) : "";
         },
 
         /**
@@ -1229,7 +1254,9 @@ if (typeof module === 'object') {
         return SH;
     })();
 
-    /**系统模块*/
+    /**
+     * 文档页面模块。
+     */
     Doc.Page = {
 
         /**
@@ -1313,7 +1340,7 @@ if (typeof module === 'object') {
                     text-decoration: none;\
                 }\
 \
-                .doc-toolbar-dropdown-menu-usehover a:hover, a.demo-toolbar-dropdown-menu-actived {\
+                .doc-toolbar-dropdown-menu-usehover a:hover, a.doc-toolbar-dropdown-menu-hover {\
                     background-color: #ebebeb;\
                 }\
 \
@@ -1348,13 +1375,13 @@ if (typeof module === 'object') {
 
                 // 非本地运行时，自动载入统计代码。
                 if (!Doc.local) {
-                    document.write('<script type="text/javascript" src="' + Doc.demoJsUrl.replace(/\demo.js$/, "social.js") + '"></script>');
+                    document.write('<script type="text/javascript" src="' + Doc.demoJsUrl.replace(/\doc.js$/, "social.js") + '"></script>');
                 }
 
                 // IE6 需要强制中止 <head>
                 if (Doc.Dom.isIE) {
-                    document.write('<div id="demo-ie6-html5hack">&nbsp;</div>');
-                    document.body.removeChild(document.getElementById("demo-ie6-html5hack"));
+                    document.write('<div id="doc-ie6-html5hack">&nbsp;</div>');
+                    document.body.removeChild(document.getElementById("doc-ie6-html5hack"));
                 }
 
                 // 如果当前的页面是 docs 下的一个页面。
@@ -1373,17 +1400,17 @@ if (typeof module === 'object') {
                     Doc.Page.addModuleHistory(Doc.urlPostfix);
 
                     // 只有本地的时候，才支持修改模块状态。
-                    html += '<a href="javascript://查看组件属性" onclick="Doc.Page.showDropDown(\'demo-toolbar-controlstate\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
+                    html += '<a href="javascript://查看组件属性" onclick="Doc.Page.showDropDown(\'doc-toolbar-controlstate\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
                 }
 
-                html += '<a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-tool\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-tool\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Doc.Page.showDropDown(\'demo-toolbar-goto\')" onclick="Doc.Page.showDropDown(\'demo-toolbar-goto\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Doc.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a>';
+                html += '<a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-tool\')" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-goto\')" onclick="Doc.Page.showDropDown(\'doc-toolbar-goto\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Doc.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a>';
 
                 // 生成标题。
                 if (moduleInfo.name) {
-                    html += '<h1 class="demo">' + moduleInfo.name;
+                    html += '<h1 class="doc">' + moduleInfo.name;
 
                     if (moduleInfo.subtitle) {
-                        html += '<small class="demo">' + moduleInfo.subtitle + '</small>';
+                        html += '<small class="doc">' + moduleInfo.subtitle + '</small>';
                     }
 
                     html += '</h1>';
@@ -1411,11 +1438,11 @@ if (typeof module === 'object') {
 
             //Doc.Dom.ready(function () {
 
-            //    // 处理 script.demo 。
-            //    // script.demo[type=text/html] => aside.demo
-            //    // script.demo[type=text/javascript] => 插入 pre.demo
-            //    // script.demo[type=code/html] => pre.demo
-            //    // script.demo[type=code/javascript] => pre.demo
+            //    // 处理 script.doc 。
+            //    // script.doc[type=text/html] => aside.doc
+            //    // script.doc[type=text/javascript] => 插入 pre.doc
+            //    // script.doc[type=code/html] => pre.doc
+            //    // script.doc[type=code/javascript] => pre.doc
             //    Doc.Dom.iterate('SCRIPT', function (node) {
             //        var value = node.innerHTML.replace(/< (\/?)script/g, "<$1script");
             //        switch (node.type) {
@@ -1453,7 +1480,7 @@ if (typeof module === 'object') {
             //                    div.innerHTML = value;
             //                    var nodes = div.getElementsByTagName('*');
             //                    for (var i = 0; nodes[i]; i++) {
-            //                        nodes[i].className = 'demo';
+            //                        nodes[i].className = 'doc';
             //                    }
             //                    node.parentNode.replaceChild(div, node);
             //                } else {
@@ -1474,9 +1501,9 @@ if (typeof module === 'object') {
             //        }
             //    });
 
-            //    // 处理 aside.demo 。
+            //    // 处理 aside.doc 。
             //    Doc.Dom.iterate('ASIDE', function (node) {
-            //        if (node.className.indexOf('demo-nosrc') <= 0) {
+            //        if (node.className.indexOf('doc-nosrc') <= 0) {
             //            insertCode(node, node.$code || node.innerHTML, 'html', true);
             //        }
             //    });
@@ -1491,10 +1518,10 @@ if (typeof module === 'object') {
             //    function insertCode(node, value, language, canHide) {
 
             //        var pre = document.createElement('pre');
-            //        pre.className = 'demo demo-code-pin demo-sh doc-sh-' + language + (canHide ? ' demo-sourcecode' : '');
+            //        pre.className = 'doc doc-code-pin doc-sh doc-sh-' + language + (canHide ? ' doc-sourcecode' : '');
 
             //        // 如果存在格式代码插件，判断当前是否需要格式化代码。
-            //        if (Doc.Beautify && (language in Doc.Beautify) && node.className.indexOf('demo-noformat') < 0) {
+            //        if (Doc.Beautify && (language in Doc.Beautify) && node.className.indexOf('doc-noformat') < 0) {
             //            value = Doc.Beautify[language](value);
             //        } else {
             //            value = Doc.Utils.removeIndents(value);
@@ -1518,7 +1545,7 @@ if (typeof module === 'object') {
             Doc.Page.sourceDisplay = Doc.Page.sourceDisplay === 'none' ? '' : 'none';
 
             Doc.Dom.iterate('PRE', function (node) {
-                if (node.className.indexOf('demo-sourcecode') >= 0) {
+                if (node.className.indexOf('doc-sourcecode') >= 0) {
                     node.style.display = Doc.Page.sourceDisplay;
                 }
             });
@@ -1531,12 +1558,12 @@ if (typeof module === 'object') {
             document.getElementById('doc-toolbar').appendChild(dropDown);
             switch (id) {
                 case "doc-toolbar-tool":
-                    simpleDropDown('tool', '100px');
+                    simpleDropDown('tool', '121px');
                     break;
                 case "doc-toolbar-goto":
-                    dropDown.className = 'demo-toolbar-dropdown';
+                    dropDown.className = 'doc-toolbar-dropdown';
                     dropDown.style.width = '300px';
-                    dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="demo-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
+                    dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="doc-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
                     dropDown.defaultButton = dropDown.firstChild;
                     dropDown.defaultButton.onkeydown = function (e) {
                         e = e || window.event;
@@ -1573,15 +1600,15 @@ if (typeof module === 'object') {
                     break;
                 case "doc-toolbar-controlstate":
                     var moduleInfo = Doc.moduleInfo;
-                    dropDown.className = 'demo-toolbar-dropdown';
+                    dropDown.className = 'doc-toolbar-dropdown';
                     dropDown.style.cssText = 'padding:5px;*width:260px;';
-                    var html = '<style>#demo-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs" method="get">\
+                    var html = '<style>#doc-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs" method="get">\
                     <fieldset>\
                         <legend>状态</legend>';
 
                     var i = 1, key;
                     for (key in Doc.Configs.status) {
-                        html += '<input name="status" type="radio"' + (moduleInfo.status === key ? ' checked="checked"' : '') + ' id="demo-controlstate-status-' + key + '" value="' + key + '"><label for="demo-controlstate-status-' + key + '">' + Doc.Configs.status[key] + '</label>';
+                        html += '<input name="status" type="radio"' + (moduleInfo.status === key ? ' checked="checked"' : '') + ' id="doc-controlstate-status-' + key + '" value="' + key + '"><label for="doc-controlstate-status-' + key + '">' + Doc.Configs.status[key] + '</label>';
 
                         if (i++ === 3) {
                             html += '<br>';
@@ -1597,7 +1624,7 @@ if (typeof module === 'object') {
 
                     for (i = 0; i < Doc.Configs.support.length; i++) {
                         key = Doc.Configs.support[i];
-                        html += '<input name="support" type="checkbox"' + (Doc.Utils.indexOf(support, key) >= 0 ? ' checked="checked"' : '') + ' id="demo-controlstate-support-' + key + '" value="' + key + '"><label for="demo-controlstate-support-' + key + '">' + Doc.Configs.support[i] + '</label>';
+                        html += '<input name="support" type="checkbox"' + (Doc.Utils.indexOf(support, key) >= 0 ? ' checked="checked"' : '') + ' id="doc-controlstate-support-' + key + '" value="' + key + '"><label for="doc-controlstate-support-' + key + '">' + Doc.Configs.support[i] + '</label>';
 
                         if (i === 5) {
                             html += '<br>';
@@ -1610,7 +1637,7 @@ if (typeof module === 'object') {
                     <input style="width:224px" type="text" name="title" value="' + moduleInfo.name + '">\
                 </fieldset>\
 \
-                <input value="保存修改" class="demo-right" type="submit">\
+                <input value="保存修改" class="doc-right" type="submit">\
                 <a href="javascript://彻底删除当前模块及相关源码" onclick="if(prompt(\'确定删除当前模块吗?  如果确认请输入 yes\') === \'yes\')location.href=\'' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs?action=delete&path=' + encodeURIComponent(Doc.moduleInfo.path) + '&postback=' + encodeURIComponent(Doc.Configs.serverBaseUrl + Doc.Configs.examples) + '\'">删除模块</a>\
 <input type="hidden" name="path" value="' + Doc.Utils.encodeHTML(location.pathname) + '">\
 <input type="hidden" name="action" value="update">\
@@ -1749,7 +1776,7 @@ if (typeof module === 'object') {
             };
 
             script.type = 'text/javascript';
-            script.src = Doc.baseUrl + Doc.Configs.apps + "/data/modulelist.js";
+            script.src = Doc.Configs.basePath + Doc.Configs.devTools + '/' + Doc.Configs.moduleListPath;
 
             var head = document.getElementsByTagName('HEAD')[0];
             head.insertBefore(script, head.firstChild);
@@ -1761,7 +1788,7 @@ if (typeof module === 'object') {
                 return;
             }
 
-            var dropDown = document.getElementById('demo-toolbar-goto'),
+            var dropDown = document.getElementById('doc-toolbar-goto'),
 				filter = dropDown.defaultButton.value.toLowerCase(),
 				pathLower,
 				html = '',
@@ -1771,10 +1798,10 @@ if (typeof module === 'object') {
 
             if (filter) {
                 filter = filter.replace(/^\s+|\s+$/g, "").toLowerCase();
-                for (var path in ModuleList.examples) {
+                for (var path in ModuleList.demos) {
                     if (path.indexOf('/' + filter) >= 0) {
                         html += getTpl(path);
-                    } else if (path.indexOf(filter) >= 0 || (ModuleList.examples[path].name || '').toLowerCase().indexOf(filter) >= 0) {
+                    } else if (path.indexOf(filter) >= 0 || (ModuleList.demos[path].title || '').toLowerCase().indexOf(filter) >= 0) {
                         html2 += getTpl(path);
                     }
                 }
@@ -1783,7 +1810,7 @@ if (typeof module === 'object') {
                 if (histories = window.localStorage && localStorage.demoModuleHistory) {
                     histories = histories.split(';');
                     for (var i = histories.length - 1; i >= 0; i--) {
-                        if (histories[i] in ModuleList.examples) {
+                        if (histories[i] in ModuleList.demos) {
                             html += getTpl(histories[i]);
                         }
                     }
@@ -1791,7 +1818,7 @@ if (typeof module === 'object') {
                     sep = !!html;
                 }
 
-                for (var path in ModuleList.examples) {
+                for (var path in ModuleList.demos) {
                     html2 += getTpl(path);
                 }
             }
@@ -1802,13 +1829,13 @@ if (typeof module === 'object') {
                     tpl = ' style="border-top: 1px solid #EBEBEB"';
                     sep = false;
                 }
-                return '<a' + tpl + ' onmouseover="Doc.Page.gotoSetListHover(this)" href="' + Doc.baseUrl + Doc.Configs.examples + "/" + path + '">' + path.replace(/\.\w+$/, "") + '<small style="color: #999"> - ' + ModuleList.examples[path].name + '</small></a>';
+                return '<a' + tpl + ' onmouseover="Doc.Page.gotoSetListHover(this)" href="' + Doc.Configs.basePath + Doc.Configs.demos + "/" + path + '">' + ModuleList.demos[path].title + ' <small style="color: #999">' + path.replace(/\.\w+$/, "") + '</small></a>';
             }
 
             dropDown.lastChild.innerHTML = html + html2;
 
             if (dropDown.lastChild.firstChild) {
-                dropDown.lastChild.firstChild.className = 'demo-toolbar-dropdown-menu-hover';
+                dropDown.lastChild.firstChild.className = 'doc-toolbar-dropdown-menu-hover';
             }
 
         },
@@ -1821,13 +1848,14 @@ if (typeof module === 'object') {
             }
 
             if (!currentNode || !currentNode[goDown ? 'nextSibling' : 'previousSibling']) {
-                currentNode = document.getElementById('demo-toolbar-goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
+                currentNode = document.getElementById('doc-toolbar-goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
             } else {
                 currentNode = currentNode[goDown ? 'nextSibling' : 'previousSibling'];
             }
 
-            if (currentNode)
-                currentNode.className = 'demo-toolbar-dropdown-menu-hover';
+            if (currentNode) {
+                currentNode.className = 'doc-toolbar-dropdown-menu-hover';
+            }
         },
 
         gotoSetListHover: function (newHover) {
@@ -1835,13 +1863,13 @@ if (typeof module === 'object') {
             if (current) {
                 current.className = '';
             }
-            newHover.className = 'demo-toolbar-dropdown-menu-hover';
+            newHover.className = 'doc-toolbar-dropdown-menu-hover';
         },
 
         gotoGetCurrent: function () {
-            var node = document.getElementById('demo-toolbar-goto').lastChild;
+            var node = document.getElementById('doc-toolbar-goto').lastChild;
             for (node = node.firstChild; node; node = node.nextSibling) {
-                if (node.className === 'demo-toolbar-dropdown-menu-hover') {
+                if (node.className === 'doc-toolbar-dropdown-menu-hover') {
                     return node;
                 }
             }
@@ -1985,7 +2013,7 @@ if (typeof module === 'object') {
         },
 
         reportResult: function (id, value) {
-            id = document.getElementById('demo-example-' + id);
+            id = document.getElementById('doc-example-' + id);
 
             if (id.lastChild.tagName !== 'SMALL') {
                 id.appendChild(document.createElement('SMALL'));
@@ -2012,7 +2040,7 @@ if (typeof module === 'object') {
         // 如果第一次使用测试。则写入全部测试和效率。
         if (!globalExamples) {
             Doc.Example.data = globalExamples = [];
-            html = '<nav class="demo demo-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Doc.Page.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Doc.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Doc.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
+            html = '<nav class="doc doc-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Doc.Page.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Doc.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Doc.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
         }
 
         for (key in examples) {
@@ -2022,7 +2050,7 @@ if (typeof module === 'object') {
             if (example === '-') {
                 text = null;
                 func = key;
-                html += '<h3 class="demo">' + Doc.Utils.encodeHTML(key) + '</h3>';
+                html += '<h3 class="doc">' + Doc.Utils.encodeHTML(key) + '</h3>';
             } else {
 
                 if (typeof example === 'function') {
@@ -2037,7 +2065,7 @@ if (typeof module === 'object') {
                     func = null;
                 }
 
-                html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="demo demo-toolbar" style="display: none"><a onclick="Doc.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Doc.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><span class="demo" id="demo-example-' + id + '">' + Doc.Utils.encodeHTML(key) + '</span><pre class="demo demo-sourcecode doc-sh-js demo-sh">' + Doc.Utils.encodeHTML(text) + '</pre></section>';
+                html += '<section onmouseover="this.firstChild.style.display=\'block\'" onmouseout="this.firstChild.style.display=\'none\'"><nav class="doc doc-toolbar" style="display: none"><a onclick="Doc.Example.speedTest(' + id + '); return false;" href="javascript://测试代码执行的效率">效率</a> | <a onclick="Doc.Example.run(' + id + '); return false;" href="javascript://执行函数">执行</a></nav><span class="doc" id="doc-example-' + id + '">' + Doc.Utils.encodeHTML(key) + '</span><pre class="doc doc-sourcecode doc-sh-js doc-sh">' + Doc.Utils.encodeHTML(text) + '</pre></section>';
 
             }
 
