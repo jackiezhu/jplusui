@@ -89,7 +89,6 @@
             }
 
             function addModule(moduleInfo, level) {
-                
                 if (moduleInfo.children) {
                     html += '<dt>' + moduleInfo.title + ' <small>' + moduleInfo.name + '</small></dt>';
                     for (var i = 0; i < moduleInfo.children.length; i++) {
@@ -98,7 +97,6 @@
                 } else {
                     html += '<dd><a target="main" href="' + moduleInfo.path + '">' + moduleInfo.title + ' <small>' + moduleInfo.name.replace(/\.\w+$/, '') + '</small></a></dd>';
                 }
-
             }
 
             document.getElementById('doc_modulelist').innerHTML = html;
