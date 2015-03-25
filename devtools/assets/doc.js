@@ -60,7 +60,7 @@ Doc.Configs = {
     /**
 	 * 组件访问历史最大值。
 	 */
-    maxHistory: 10,
+    maxModuleHistory: 10,
 
     /**
 	 * 合法的状态值。
@@ -79,24 +79,14 @@ Doc.Configs = {
 	 */
     attributes: {
         'mobile': '移动端',
-        'pc': 'PC端',
+        'pc': 'PC 端',
         'ie8': '兼容IE8+',
-        'ie6': '兼容IE6+',
-        'webkit': '仅 Webkit'
-    },
-
-    /**
-	 * 工具的下拉菜单 HTML 模板。
-	 */
-    tools: '<a href="{devTools}/codehelper/index.html" target="_blank">代码格式化工具</a>\
-            <a href="{devTools}/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
-            <a href="{devTools}/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
-            <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.Page.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠页内代码</a>\
-            <a href="javascript://浏览当前组件的源文件" onclick="Doc.Page.exploreSource();">查看源文件</a>',
+        'ie6': '兼容IE6+'
+    }
 
     ///**
-	// * 底部 HTML 模板。
-	// */
+    // * 底部 HTML 模板。
+    // */
     //footer: '<footer class="doc" style="margin-bottom: 36px; font-size: 12px; line-height: 18px;">\
     //    <hr class="doc">\
     //    <nav class="doc-toolbar">\
@@ -105,16 +95,16 @@ Doc.Configs = {
     //    </nav>\
     //    <span>&copy; 2011-2015 JPlusUI Team</span>\
     //</footer>',
-    
+
 
 };
 
-Doc.Module = {
+Doc.ModuleInfo = {
 
     /**
      * 获取当前页面指定的控件的信息。
      */
-    parseModuleInfo: function (value) {
+    parse: function (value) {
         var r = {};
         value = value.split(/,\s*/);
         for (var i = 0; i < value.length; i++) {
@@ -128,24 +118,17 @@ Doc.Module = {
     /**
      * 获取当前页面指定的控件的信息。
      */
-    stringifyModuleInfo: function (value) {
+    stringify: function (value) {
         var r = [];
         for (var key in value) {
             r.push(key + '=' + value[key]);
         }
         return r.join(', ');
-    },
-
-    /**
-     * 将 URL 转换为模块名。
-     */
-    toModulePath: function (path) {
-        return path ? path.replace(/[?#].*$/, "").replace(/\.[a-zA-Z]+$/, "").replace(/^[\/\\]+/, "").replace(/[\/\\]+$/, "") : "";
     }
 
 };
 
-//#endregion
+// #endregion
 
 // 指示当前系统是否在后台运行。
 if (typeof module === 'object') {
@@ -161,7 +144,7 @@ if (typeof module === 'object') {
 
 } else {
 
-    //#region 前台部分
+    // #region 前台部分
 
     /**
 	* DOM辅助处理模块。
@@ -174,19 +157,64 @@ if (typeof module === 'object') {
         isOldIE: !+"\v1",
 
         /**
-		 * 遍历指定的标签名并执行指定函数。仅对 class=doc 的元素有效。
-		 */
-        iterate: function (tagName, fn) {
-            var domlist = document.getElementsByTagName(tagName), r = [], i, t;
-            for (i = 0; t = domlist[i]; i++) {
-                if (t.className.indexOf('doc') >= 0) {
-                    r.push(t);
-                }
+         * 为 IE 浏览器提供特殊处理。
+         */
+        fixBrowser: function () {
+
+            // 令 IE6-8 支持显示 HTML5 新元素。
+            if (Doc.Dom.isOldIE) {
+                'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
+                    document.createElement(tagName);
+                });
             }
 
-            for (i = 0; i < r.length; i++) {
-                fn(r[i]);
-            }
+            // IE6-8 缺少 indexOf 函数。
+            Array.prototype.indexOf = Array.prototype.indexOf || function (value, startIndex) {
+                for (var i = startIndex || 0; i < this.length; i++) {
+                    if (this[i] === value) {
+                        return i;
+                    }
+                }
+                return -1;
+            };
+
+            String.prototype.trim = String.prototype.trim || function() {
+                return this.replace(/^\s+|\s+$/g, "");
+            };
+
+            // IE6-7 缺少 document.querySelector 函数。
+            document.querySelectorAll = document.querySelectorAll || function (selector) {
+
+                // selector 可能为 tagName, .className, tagName[attrName=attrValue]
+
+                var match = /^(\w*)(\.(\w+)|\[(\w+)=(['"]?)([^'"]*)\5\])?$/.exec(selector);
+                var list = this.getElementsByTagName(match[1] || '*');
+                // 没有其它过滤器，直接返回。
+                if (!match[2]) {
+                    return list;
+                }
+
+                var result = [];
+
+                for (var i = 0, node; node = list[i]; i++) {
+                    // 区分是否是属性选择器。
+                    if (match[4]) {
+                        if (node.getAttribute(match[4]) === match[6]) {
+                            result.push(node);
+                        }
+                    } else {
+                        if ((' ' + node.className + ' ').indexOf(' ' + match[3] + ' ') >= 0) {
+                            result.push(node);
+                        }
+                    }
+                }
+
+                return result;
+            };
+            document.querySelector = document.querySelector || function (selector) {
+                return document.querySelectorAll(selector)[0] || null;
+            };
+
         },
 
         /**
@@ -197,6 +225,23 @@ if (typeof module === 'object') {
                 /in/.test(document.readyState) ? setTimeout(check, 1) : callback();
             }
             check();
+        },
+
+        /**
+         * 异步载入一个脚本。
+         */
+        loadScript: function (src, callback) {
+            var script = document.createElement('SCRIPT');
+            script.type = 'text/javascript';
+            script.src = src;
+            script.onload = script.onreadystatechange = function () {
+                if (!script.readyState || !/in/.test(script.readyState)) {
+                    script.onload = script.onreadystatechange = null;
+                    callback();
+                }
+            };
+            var head = document.getElementsByTagName('HEAD')[0];
+            head.insertBefore(script, head.firstChild);
         }
 
     };
@@ -205,19 +250,6 @@ if (typeof module === 'object') {
 	 * 代码处理模块。
 	 */
     Doc.Utils = {
-
-        /**
-         * 提供数组 indexOf 方法。
-         */
-        indexOf: function (arr, value) {
-            for (var i = 0; i < arr.length; i++) {
-                if (arr[i] === value) {
-                    return i;
-                }
-            }
-
-            return -1;
-        },
 
         /**
          * 格式化指定的字符串。
@@ -1256,56 +1288,47 @@ if (typeof module === 'object') {
     })();
 
     /**
+     * 调用远程 node 服务器完成操作。
+     */
+    Doc.callService = function (cmdName, params, success, error) {
+        var url = Doc.Configs.servicePath + '?cmd=' + cmdName + params;
+        if (location.protocol === 'file:') {
+            error(Doc.Utils.formatString('通过 file:/// 直接打开文件时，无法 AJAX 调用远程服务，请先执行 [项目跟目录]/{devTools}/node/bootserver.cmd 启动服务器', Doc.Configs.devTools));
+            return;
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304 || xhr.status == 1223) {
+                    if (xhr.getResponseHeader("content-type") === "text/html") {
+                        success(xhr.responseText);
+                    } else {
+                        error(Doc.Utils.formatString('无效的远程服务器，请先执行 [项目跟目录]/{devTools}/node/bootserver.cmd 启动服务器', Doc.Configs.devTools));
+                    }
+                } else {
+                    error('调用时出错：' + url);
+                }
+            }
+        };
+        xhr.send(null);
+    };
+
+    /**
      * 文档页面模块。
      */
-    Doc.Page = {
+    Doc.DemoPage = {
 
-        /**
-		 * 预处理页面。
-		 */
-        init: function () {
+        // #region 模板字符串
 
-            // 令 IE6-8 支持显示 HTML5 新元素。
-            if (Doc.Dom.isOldIE) {
-                'article section header footer nav aside details summary menu'.replace(/\w+/g, function (tagName) {
-                    document.createElement(tagName);
-                });
-            }
-
-            // 决定基础路径。
-            var docJsSrc = document.getElementsByTagName("script");
-            docJsSrc = docJsSrc[docJsSrc.length - 1];
-            docJsSrc = docJsSrc.src;
-
-            var a = document.createElement('a');
-            a.href = docJsSrc.replace(/\/[^\/]*$/, "/") + Doc.Configs.basePath;
-            Doc.Configs.basePath = (!Doc.Dom.isOldIE || typeof document.constructor === 'object') ? a.href : a.getAttribute('href', 5);
-
-            // 判断当前开发系统是否在本地运行。
-            Doc.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
-
-            var moduleInfo = document.querySelector('meta[name="' + Doc.Configs.moduleInfo + '"]');
-            Doc.moduleInfo = moduleInfo = moduleInfo ? Doc.Module.parseModuleInfo(moduleInfo.content) : {};
-            moduleInfo.title = moduleInfo.title = document.title;
-
-            var frame = (/[?&]frame=(\w+)/.exec(location.search) || [0, moduleInfo.frame])[1] || 'header';
-            if (frame !== 'none') {
-
-                // 载入 CSS 样式。
-                document.write('<link type="text/css" rel="stylesheet" href="' + docJsSrc.replace(/\.js/, '.css') + '" />');
-
-                Doc.Dom.ready(function () {
-
-                    var header = document.createElement('header');
-                    header.className = 'doc';
-                    header.innerHTML = '<div id="doc-toolbar" class="doc-clear" style="font-size: 12px; position: relative;">\
+        header: '<div id="doc_toolbar" class="doc-clear" style="font-size: 12px; position: relative;">\
 \
-            <nav class="doc-toolbar">\
-                <a href="#">{status}</a> | \
-                <a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-tool\')" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具▾</a> | \
-                <a href="javascript://快速打开其他组件" onclick="Doc.Page.showDropDown(\'doc-toolbar-goto\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-goto\')" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件▾</a> | \
+            <div class="doc-toolbar">\
+                <a href="javascript://查看和修改组件状态" onclick="Doc.DemoPage.toggleDropDown(\'doc_toolbar_moduleinfo\', true, 1);return false;">{status}</a> | \
+                <a href="javascript://常用工具" onclick="Doc.DemoPage.toggleDropDown(\'doc_toolbar_tool\', true, 1);return false;" onmouseover="Doc.DemoPage.toggleDropDown(\'doc_toolbar_tool\', true)" onmouseout="Doc.DemoPage.toggleDropDown(\'doc_toolbar_tool\', false)" accesskey="T">工具{arrow}</a> | \
+                <a href="javascript://搜索并转到其他组件" onclick="Doc.DemoPage.toggleDropDown(\'doc_toolbar_goto\', true, 1);return false;" onmouseover="Doc.DemoPage.toggleDropDown(\'doc_toolbar_goto\', true)" onmouseout="Doc.DemoPage.toggleDropDown(\'doc_toolbar_goto\', false)" accesskey="F">搜索组件{arrow}</a> | \
                 <a href="{modueList}" title="返回组件列表" accesskey="H">返回组件列表</a>\
-            </nav>\
+            </div>\
 \
             <style>\
 \
@@ -1317,6 +1340,7 @@ if (typeof module === 'object') {
                     right: 0;\
                     top: 26px;\
                     z-index: 99999;\
+                    display: none;\
                 }\
 \
                 .doc-toolbar-dropdown a {\
@@ -1345,406 +1369,301 @@ if (typeof module === 'object') {
                     background-color: #ebebeb;\
                 }\
 \
-                #doc-toolbar-controlstate input {\
+                #doc-toolbar-moduleinfo input {\
                     vertical-align: -2px;\
                 }\
             </style>\
 \
         </div>\
         \
-        <div class="doc-toolbar" style="margin-top: 20px;">\
+        <div class="doc-toolbar" style="margin-top: 9px;">\
             <a href="###">提取源码</a>\
         </div>\
 \
-        <h1 style="margin-top: 0; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">{title} <small>{path}</small></h1>'.replace('{title}', Doc.moduleInfo.title)
-                        .replace('{title}', Doc.moduleInfo.title)
-                        .replace('{path}', Doc.moduleInfo.title)
-                        .replace('{status}', Doc.Configs.status[Doc.moduleInfo.status] || Doc.Configs.status.done)
-                        .replace(/▾/g, navigator.userAgent.indexOf('Firefox') >= 0 ? '▾' : " ▾")
-                        .replace('{modueList}', Doc.Configs.basePath + Doc.Configs.demos + '/index.html');
-
-                    document.body.insertBefore(header, document.body.firstChild);
-                });
-            }
-
-
-
-            /**
-             * 生成页眉。
-             */
-            Doc.generateHeader = function () {
-
-                // 非本地运行时，自动载入统计代码。
-                if (!Doc.local) {
-                    document.write('<script type="text/javascript" src="' + Doc.demoJsUrl.replace(/\doc.js$/, "social.js") + '"></script>');
-                }
-
-                // IE6 需要强制中止 <head>
-                if (Doc.Dom.isIE) {
-                    document.write('<div id="doc-ie6-html5hack">&nbsp;</div>');
-                    document.body.removeChild(document.getElementById("doc-ie6-html5hack"));
-                }
-
-                // 如果当前的页面是 docs 下的一个页面。
-                // 则添加模块状态和历史记录。
-                if (isInDocs && !isHomePage) {
-
-                    if (!('path' in moduleInfo)) {
-                        moduleInfo.path = Doc.Module.toModulePath(Doc.urlPostfix);
-                    }
-
-                    // 模块默认使用路径作为副标题。
-                    if (!moduleInfo.subtitle) {
-                        moduleInfo.subtitle = moduleInfo.path;
-                    }
-
-                    Doc.Page.addModuleHistory(Doc.urlPostfix);
-
-                    // 只有本地的时候，才支持修改模块状态。
-                    html += '<a href="javascript://查看组件属性" onclick="Doc.Page.showDropDown(\'doc-toolbar-controlstate\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" title="查看组件属性" accesskey="S">' + configs.status[moduleInfo.status] + '</a> | ';
-                }
-
-                html += '<a href="javascript://常用工具" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-tool\')" onclick="Doc.Page.showDropDown(\'doc-toolbar-tool\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="T">工具' + space + '▾</a> | <a href="javascript://快速打开其他组件" onmouseover="Doc.Page.showDropDown(\'doc-toolbar-goto\')" onclick="Doc.Page.showDropDown(\'doc-toolbar-goto\', 1);return false;" onmouseout="Doc.Page.hideDropDown()" accesskey="F">搜索组件' + space + '▾</a> | <a href="' + Doc.baseUrl + configs.examples + '/index.html" title="返回组件列表" accesskey="H">返回组件列表</a>';
-
-                // 生成标题。
-                if (moduleInfo.name) {
-                    html += '<h1 class="doc">' + moduleInfo.name;
-
-                    if (moduleInfo.subtitle) {
-                        html += '<small class="doc">' + moduleInfo.subtitle + '</small>';
-                    }
-
-                    html += '</h1>';
-                }
-
-                html += '</header>';
-
-                document.write(html);
-
-            };
-
-            /**
-            * 向页面写入自动生成的底部信息。
-            */
-            Doc.writeFooter = function () {
-                document.write(Doc.Configs.footer.replace(/~\//g, Doc.baseUrl));
-            };
-
-            //// 判断当前开发系统的打开模式。
-            //// 如果是在一个网页上使用，则不生成其它额外的内容。
-            //// 如果是在 docs 里使用，则自动生成标题部分。
-            //if (Doc.urlPrefix) {
-            //    Doc.writeHeader();
-            //}
-
-            //Doc.Dom.ready(function () {
-
-            //    // 处理 script.doc 。
-            //    // script.doc[type=text/html] => aside.doc
-            //    // script.doc[type=text/javascript] => 插入 pre.doc
-            //    // script.doc[type=code/html] => pre.doc
-            //    // script.doc[type=code/javascript] => pre.doc
-            //    Doc.Dom.iterate('SCRIPT', function (node) {
-            //        var value = node.innerHTML.replace(/< (\/?)script/g, "<$1script");
-            //        switch (node.type) {
-            //            case '':
-            //            case 'text/javascript':
-            //                insertCode(node, node.innerHTML, 'js', true);
-            //                break;
-            //            case 'text/html':
-            //                var code = document.createElement('ASIDE');
-            //                code.className = node.className;
-            //                node.parentNode.replaceChild(code, node);
-            //                code.$code = value;
-
-            //                if (Doc.Dom.isIE) {
-            //                    code.innerHTML = '$' + value;
-            //                    code.removeChild(code.firstChild);
-            //                } else {
-            //                    code.innerHTML = value;
-            //                }
-
-            //                // 模拟执行全部脚本。
-            //                var scripts = code.getElementsByTagName('SCRIPT');
-            //                for (var i = 0; scripts[i]; i++) {
-            //                    if (window.execScript) {
-            //                        window.execScript(scripts[i].innerHTML);
-            //                    } else {
-            //                        window.eval(scripts[i].innerHTML);
-            //                    }
-            //                }
-            //                break;
-            //            case 'text/markdown':
-            //                if (Doc.Markdown) {
-            //                    value = Doc.Markdown.toHTML(Doc.Utils.removeIndents(value));
-            //                    var div = document.createElement('SECTION');
-            //                    div.innerHTML = value;
-            //                    var nodes = div.getElementsByTagName('*');
-            //                    for (var i = 0; nodes[i]; i++) {
-            //                        nodes[i].className = 'doc';
-            //                    }
-            //                    node.parentNode.replaceChild(div, node);
-            //                } else {
-            //                    insertCode(node, value, 'text');
-            //                }
-            //                break;
-            //            case 'code/javascript':
-            //                insertCode(node, value, 'js');
-            //                break;
-            //            default:
-            //                if (/^code\//.test(node.type)) {
-            //                    insertCode(node, value, node.type.substr(5));
-            //                } else {
-            //                    insertCode(node, value, 'text');
-            //                }
-
-            //                break;
-            //        }
-            //    });
-
-            //    // 处理 aside.doc 。
-            //    Doc.Dom.iterate('ASIDE', function (node) {
-            //        if (node.className.indexOf('doc-nosrc') <= 0) {
-            //            insertCode(node, node.$code || node.innerHTML, 'html', true);
-            //        }
-            //    });
-
-            //    // 如果存在代码高亮的插件。
-            //    if (Doc.SyntaxHighligher) {
-            //        setTimeout(function () {
-            //            Doc.Dom.iterate('PRE', Doc.SyntaxHighligher.one);
-            //        }, 0);
-            //    }
-
-            //    function insertCode(node, value, language, canHide) {
-
-            //        var pre = document.createElement('pre');
-            //        pre.className = 'doc doc-code-pin doc-sh doc-sh-' + language + (canHide ? ' doc-sourcecode' : '');
-
-            //        // 如果存在格式代码插件，判断当前是否需要格式化代码。
-            //        if (Doc.Beautify && (language in Doc.Beautify) && node.className.indexOf('doc-noformat') < 0) {
-            //            value = Doc.Beautify[language](value);
-            //        } else {
-            //            value = Doc.Utils.removeIndents(value);
-            //        }
-
-            //        pre.textContent = pre.innerText = value;
-
-            //        pre.innerHTML = pre.innerHTML.replace(/\[bold\]([\s\S]*?)\[\/bold\]/g, "<strong>$1</strong>").replace(/\[u\]([\s\S]*?)\[\/u\]/g, "<u>$1</u>");
-
-            //        node.parentNode.insertBefore(pre, node.nextSibling);
-            //    }
-
-            //});
-        },
+        <h1 style="margin-top: -9px; color: #673AB7; font-weight: 600; height: 40px;line-height: 40px;">{title} <small>{path}</small></h1>',
 
         /**
-		 * 切换折叠或展开全部源码。
-		 */
-        toggleSources: function (value) {
+         * 工具栏模板。
+         */
+        toolDropDown: '<a href="{devTools}/codehelper/index.html" target="_blank">代码格式化工具</a>\
+                    <a href="{devTools}/tools/codesegments/specialcharacters.html" target="_blank">特殊字符</a>\
+                    <a href="{devTools}/tools/codesegments/regexp.html" target="_blank">常用正则</a>\
+                    <a href="javascript://显示或隐藏页面中自动显示的源码片段" onclick="Doc.DemoPage.toggleSources()" style="border-top: 1px solid #EBEBEB;">折叠页内代码</a>\
+                    <a href="javascript://浏览当前组件的源文件" onclick="Doc.DemoPage.exploreSource();">查看源文件</a>',
 
-            Doc.Page.sourceDisplay = Doc.Page.sourceDisplay === 'none' ? '' : 'none';
+        gotoDropDown: '<input type="search" class="doc-font" placeholder="搜索组件名或路径..." onfocus="this.select()" style="width: 290px; padding: 2px 5px; border: 0; border-bottom: 1px solid #9B9B9B;">\
+                <div style="_height: 300px; _width: 300px; word-break: break-all; max-height: 300px; overflow: auto;" class="doc-toolbar-dropdown-menu"></div>',
 
-            Doc.Dom.iterate('PRE', function (node) {
-                if (node.className.indexOf('doc-sourcecode') >= 0) {
-                    node.style.display = Doc.Page.sourceDisplay;
-                }
-            });
+        gotoDropDownItem: '<a onmouseover="Doc.DemoPage.gotoSetCurrent(this)" href="{href}">{title} <small style="color: #999">{path}</small></a>',
 
-        },
+        // #endregion
 
-        initDropDown: function (id) {
-            var dropDown = document.createElement('div');
-            dropDown.id = id;
-            document.getElementById('doc-toolbar').appendChild(dropDown);
-            switch (id) {
-                case "doc-toolbar-tool":
-                    simpleDropDown('tool', '121px');
-                    break;
-                case "doc-toolbar-goto":
-                    dropDown.className = 'doc-toolbar-dropdown';
-                    dropDown.style.width = '300px';
-                    dropDown.innerHTML = '<input style="width:290px;padding:5px;border:0;border-bottom:1px solid #9B9B9B;" type="text" onfocus="this.select()" placeholder="输入组件路径/名称以快速打开"><div class="doc-toolbar-dropdown-menu" style="_height: 300px;_width:300px;word-break:break-all;max-height:300px;overflow:auto;"></div>';
-                    dropDown.defaultButton = dropDown.firstChild;
-                    dropDown.defaultButton.onkeydown = function (e) {
-                        e = e || window.event;
-                        var keyCode = e.keyCode;
-                        if (keyCode == 40 || keyCode == 38) {
-                            Doc.Page.gotoMoveListHover(keyCode == 40);
+        /**
+         * 切换显示或隐藏弹窗。
+         */
+        toggleDropDown: function (id, show, delay) {
 
-                        }
-                    };
-
-                    dropDown.defaultButton.onkeypress = function (e) {
-                        e = e || window.event;
-                        var keyCode = e.keyCode;
-                        if (keyCode == 13 || keyCode == 10) {
-                            var link = Doc.Page.gotoGetCurrent();
-
-                            if (link) {
-                                location.href = link.href;
-                            }
-
-                        }
-                    };
-
-                    dropDown.defaultButton.onkeyup = function (e) {
-                        e = e || window.event;
-                        var keyCode = e.keyCode;
-                        if (keyCode !== 40 && keyCode !== 38 && keyCode != 13 && keyCode != 10) {
-                            Doc.Page.gotoUpdateList();
-                        }
-                    };
-
-                    Doc.Page.loadModuleList(Doc.Page.gotoUpdateList);
-
-                    break;
-                case "doc-toolbar-controlstate":
-                    var moduleInfo = Doc.moduleInfo;
-                    dropDown.className = 'doc-toolbar-dropdown';
-                    dropDown.style.cssText = 'padding:5px;*width:260px;';
-                    var html = '<style>#doc-toolbar-controlstate input{vertical-align: -2px;}</style><form style="*margin-bottom:0" action="' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs" method="get">\
-                    <fieldset>\
-                        <legend>状态</legend>';
-
-                    var i = 1, key;
-                    for (key in Doc.Configs.status) {
-                        html += '<input name="status" type="radio"' + (moduleInfo.status === key ? ' checked="checked"' : '') + ' id="doc-controlstate-status-' + key + '" value="' + key + '"><label for="doc-controlstate-status-' + key + '">' + Doc.Configs.status[key] + '</label>';
-
-                        if (i++ === 3) {
-                            html += '<br>';
-                        }
-                    }
-
-                    html += '</fieldset>\
-                    <fieldset>\
-                        <legend>兼容</legend>';
-
-                    i = 1;
-                    var support = moduleInfo.support ? moduleInfo.support.split('|') : Doc.Configs.support;
-
-                    for (i = 0; i < Doc.Configs.support.length; i++) {
-                        key = Doc.Configs.support[i];
-                        html += '<input name="support" type="checkbox"' + (Doc.Utils.indexOf(support, key) >= 0 ? ' checked="checked"' : '') + ' id="doc-controlstate-support-' + key + '" value="' + key + '"><label for="doc-controlstate-support-' + key + '">' + Doc.Configs.support[i] + '</label>';
-
-                        if (i === 5) {
-                            html += '<br>';
-                        }
-                    }
-
-                    html += '</fieldset>\
-                    <fieldset>\
-                        <legend>描述</legend>\
-                    <input style="width:224px" type="text" name="title" value="' + moduleInfo.name + '">\
-                </fieldset>\
-\
-                <input value="保存修改" class="doc-right" type="submit">\
-                <a href="javascript://彻底删除当前模块及相关源码" onclick="if(prompt(\'确定删除当前模块吗?  如果确认请输入 yes\') === \'yes\')location.href=\'' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs?action=delete&path=' + encodeURIComponent(Doc.moduleInfo.path) + '&postback=' + encodeURIComponent(Doc.Configs.serverBaseUrl + Doc.Configs.examples) + '\'">删除模块</a>\
-<input type="hidden" name="path" value="' + Doc.Utils.encodeHTML(location.pathname) + '">\
-<input type="hidden" name="action" value="update">\
-<input type="hidden" name="postback" value="' + Doc.Utils.encodeHTML(location.href) + '">\
-            </form>';
-                    dropDown.innerHTML = html;
-                    break;
+            // 所有操作均延时 200 秒操作。后续操作覆盖之前操作。
+            if (Doc.DemoPage.dropDownTimer) {
+                clearTimeout(Doc.DemoPage.dropDownTimer);
             }
 
-            function simpleDropDown(id, right) {
-                dropDown.style.right = right;
-                dropDown.className = 'doc-toolbar-dropdown doc-toolbar-dropdown-menu doc-toolbar-dropdown-menu-usehover';
-                dropDown.innerHTML = Doc.Configs.tools.replace(/~\//g, Doc.Configs.baseUrl);
-                dropDown.onclick = function () {
-                    dropDown.style.display = 'none';
-                };
-            }
+            Doc.DemoPage.dropDownTimer = setTimeout(function () {
 
-            return dropDown;
-        },
-
-        showDropDown: function (id, delay) {
-
-            Doc.Page.cleanDropDownTimer();
-
-            Doc.Page.dropDownTimerShow = setTimeout(function () {
-
-                // 删除延时状态。
-                Doc.Page.dropDownTimerShow = 0;
-
-                // 如果已经显示了一个菜单，则关闭之。
-                if (Doc.Page.dropDownShown) {
-                    Doc.Page.dropDownShown.style.display = 'none';
+                // 隐藏之前的弹窗。
+                if (Doc.DemoPage.dropDownShown) {
+                    Doc.DemoPage.dropDownShown.style.display = 'none';
+                    Doc.DemoPage.dropDownShown = null;
                 }
 
+                if (!show) {
+                    return;
+                }
+
+                // 创建弹窗。
                 var dropDown = document.getElementById(id);
 
                 if (!dropDown) {
-                    dropDown = Doc.Page.initDropDown(id);
+                    dropDown = document.createElement('div');
+                    dropDown.id = id;
+                    dropDown.className = 'doc-toolbar-dropdown';
+                    document.getElementById('doc_toolbar').appendChild(dropDown);
+
+                    switch (id) {
+                        case "doc_toolbar_tool":
+                            dropDown.className += ' doc-toolbar-dropdown-menu doc-toolbar-dropdown-menu-usehover';
+                            dropDown.style.right = '126px';
+                            dropDown.onclick = function (e) {
+                                this.onmouseout(e);
+                            };
+                            dropDown.innerHTML = Doc.Utils.formatString(Doc.DemoPage.toolDropDown, {
+                                devTools: Doc.Configs.basePath + Doc.Configs.devTools
+                            });
+                            break;
+                        case "doc_toolbar_goto":
+                            dropDown.style.width = '300px';
+                            dropDown.innerHTML = Doc.DemoPage.gotoDropDown;
+                            dropDown.defaultButton = dropDown.firstChild;
+                            dropDown.defaultButton.onkeydown = function (e) {
+                                e = e || window.event;
+                                var keyCode = e.keyCode;
+                                if (keyCode == 40 || keyCode == 38) {
+                                    Doc.DemoPage.gotoMoveList(keyCode == 40);
+                                }
+                            };
+                            dropDown.defaultButton.onkeypress = function (e) {
+                                e = e || window.event;
+                                var keyCode = e.keyCode;
+                                if (keyCode == 13 || keyCode == 10) {
+                                    var link = Doc.DemoPage.gotoGetCurrent();
+                                    if (link) {
+                                        location.href = link.href;
+                                    }
+                                }
+                            };
+                            dropDown.defaultButton.onkeyup = function (e) {
+                                e = e || window.event;
+                                var keyCode = e.keyCode;
+                                if (keyCode !== 40 && keyCode !== 38 && keyCode != 13 && keyCode != 10) {
+                                    Doc.DemoPage.gotoUpdateList();
+                                }
+                            };
+                            Doc.DemoPage.loadModuleList(Doc.DemoPage.gotoUpdateList);
+                            break;
+                        case "doc_toolbar_moduleinfo":
+                            var moduleInfo = Doc.moduleInfo;
+                            dropDown.style.cssText = 'padding:5px;*width:260px;';
+
+                            var args = {
+                                status: '',
+                                attributes: '',
+                                deleteHref: 'if(prompt(\'确定删除当前组件吗?  如果确认请输入 yes\') === \'yes\'){Doc.callService(\'deleteModule\', \'&path=' + Doc.moduleInfo.path + '\')}'
+                            };
+
+                            i = 1;
+                            for (var key in Doc.Configs.status) {
+                                args.status += Doc.Utils.formatString('<label for="doc-moduleinfo-status-{key}"><input name="status" type="radio"{checked} id="doc-moduleinfo-status-{key}" value="{key}">{name}</label>', {
+                                    key: key,
+                                    checked: Doc.moduleInfo.status === key ? ' checked="checked"' : '',
+                                    name: Doc.Configs.status[key]
+                                });
+
+                                if (i++ % 3 === 0) {
+                                    args.status += '<br>';
+                                }
+                            }
+
+                            i = 1;
+                            for (var key in Doc.Configs.attributes) {
+                                args.attributes += Doc.Utils.formatString('<label for="doc-moduleinfo-attributes-{key}"><input name="attributes" type="checkbox"{checked} id="doc-moduleinfo-attributes-{key}" value="{key}">{name}</label>', {
+                                    key: key,
+                                    checked: !Doc.moduleInfo.attributes || Doc.moduleInfo.attributes.split('+').indexOf(key) >= 0 ? ' checked="checked"' : '',
+                                    name: Doc.Configs.attributes[key]
+                                });
+
+                                if (i++ % 2 === 0) {
+                                    args.attributes += '<br>';
+                                }
+                            }
+
+                            dropDown.innerHTML = Doc.Utils.formatString('<fieldset>\
+                        <legend>状态</legend>\
+                        {status}\
+                    </fieldset>\
+                    <fieldset>\
+                        <legend>属性</legend>\
+                        {attributes}\
+                    </fieldset>\
+\
+                <a href="javascript://彻底删除当前模块及相关源码" onclick="if(prompt(\'确定删除当前模块吗?  如果确认请输入 yes\') === \'yes\')location.href=\'' + Doc.Configs.serverBaseUrl + Doc.Configs.apps + '/modulemanager/server/api.njs?action=delete&path=' + encodeURIComponent(Doc.moduleInfo.path) + '&postback=' + encodeURIComponent(Doc.Configs.serverBaseUrl + Doc.Configs.examples) + '\'">删除组件</a>', args);
+                            break;
+                    }
+
                 }
 
                 // 如果移到了菜单上，则停止关闭菜单的计时器。
                 dropDown.onmouseover = function () {
-                    if (Doc.Page.dropDownTimerHide) {
-                        clearTimeout(Doc.Page.dropDownTimerHide);
-                        Doc.Page.dropDownTimerHide = 0;
-                    }
+                    Doc.DemoPage.toggleDropDown(id, true, delay);
                 };
 
-                dropDown.onmouseout = Doc.Page.hideDropDown;
+                dropDown.onmouseout = function () {
+                    Doc.DemoPage.toggleDropDown(id, false, delay);
+                };
 
-                dropDown.style.display = '';
+                dropDown.style.display = 'block';
 
-                if (dropDown.defaultButton) {
-                    dropDown.defaultButton.focus();
-                }
-                Doc.Page.dropDownShown = dropDown;
-            }, delay || 200);
+                dropDown.defaultButton && dropDown.defaultButton.focus();
+
+                Doc.DemoPage.dropDownShown = dropDown;
+
+            }, delay || 300);
 
         },
 
-        cleanDropDownTimer: function () {
+        /**
+		 * 载入模块列表。
+		 */
+        loadModuleList: function (callback) {
 
-            // 如果正在隐藏，则忽略之。
-            if (Doc.Page.dropDownTimerHide) {
-                clearTimeout(Doc.Page.dropDownTimerHide);
-                Doc.Page.dropDownTimerHide = 0;
+            // 已载入，直接继续。
+            if (window.ModuleList) {
+                callback();
+                return;
             }
 
-            // 如果正在显示，则忽略之。
-            if (Doc.Page.dropDownTimerShow) {
-                clearTimeout(Doc.Page.dropDownTimerShow);
-                Doc.Page.dropDownTimerShow = 0;
-            }
+            Doc.Dom.loadScript(Doc.Utils.formatString(Doc.Configs.moduleListPath, {
+                devTools: Doc.Configs.basePath + Doc.Configs.devTools
+            }), callback);
+
         },
 
-        hideDropDown: function () {
+        /**
+         * 更新组件列表。
+         */
+        gotoUpdateList: function () {
 
-            Doc.Page.cleanDropDownTimer();
-
-            if (Doc.Page.dropDownShown) {
-                Doc.Page.dropDownTimerHide = setTimeout(function () {
-                    Doc.Page.dropDownShown.style.display = 'none';
-                    Doc.Page.dropDownShown = null;
-                }, 400);
+            // 未载入模块列表，退出。
+            if (!window.ModuleList) {
+                return;
             }
-        },
 
-        addModuleHistory: function (dpl) {
-            if (window.localStorage) {
-                var dplList = localStorage.demoModuleHistory;
-                dplList = dplList ? dplList.split(';') : [];
+            var dropDown = document.getElementById('doc_toolbar_goto'),
+				filter = dropDown.defaultButton.value.trim().toLowerCase(),
+				html = '';
 
-                for (var i = 0; i < dplList.length; i++) {
-                    if (dplList[i] === dpl) {
-                        dplList.splice(i, 1);
-                        break;
+            if (filter) {
+                for (var path in ModuleList.demos) {
+                    if (path.indexOf(filter) >= 0 || (ModuleList.demos[path].title || '').toLowerCase().indexOf(filter) >= 0) {
+                        html += getTpl(path);
                     }
                 }
+            } else {
+                for (var path in ModuleList.demos) {
+                    html += getTpl(path);
+                }
+                // 追加历史记录。
+                var docModuleHistory = window.localStorage && localStorage.docModuleHistory;
+                if (docModuleHistory) {
+                    docModuleHistory = docModuleHistory.split(';');
+                    for (var i = 0; i < docModuleHistory.length; i++) {
+                        // 追加分割线。
+                        if (i === 0) {
+                            html = html.replace('<a', '<a style="border-top: 1px solid #EBEBEB"');
+                        }
+                        if (docModuleHistory[i] in ModuleList.demos) {
+                            html = getTpl(docModuleHistory[i]) + html;
+                        }
+                    }
+                }
+            }
 
-                if (dplList.length > Doc.Configs.maxHistory) {
-                    dplList.shift();
+            function getTpl(path) {
+                return Doc.Utils.formatString(Doc.DemoPage.gotoDropDownItem, {
+                    href: Doc.Configs.basePath + Doc.Configs.demos + "/" + path,
+                    title: appendFilter(ModuleList.demos[path].title),
+                    path: appendFilter(path.replace(/\.\w+$/, ""))
+                });
+            }
+
+            function appendFilter(content) {
+                if (!filter) {
+                    return content;
                 }
 
-                dplList.push(dpl);
-                localStorage.demoModuleHistory = dplList.join(';');
+                return content.replace(filter, '<span class="doc-red">' + filter + '</span>');
+            }
+
+            dropDown.lastChild.innerHTML = html;
+        },
+
+        gotoMoveList: function (goDown) {
+            var currentNode = Doc.DemoPage.gotoGetCurrent();
+            if (currentNode) {
+                currentNode.className = '';
+            }
+            if (!currentNode || !currentNode[goDown ? 'nextSibling' : 'previousSibling']) {
+                currentNode = document.getElementById('doc_toolbar_goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
+            } else {
+                currentNode = currentNode[goDown ? 'nextSibling' : 'previousSibling'];
+            }
+            if (currentNode) {
+                currentNode.className = 'doc-toolbar-dropdown-menu-hover';
+            }
+        },
+
+        gotoSetCurrent: function (newHover) {
+            var current = Doc.DemoPage.gotoGetCurrent();
+            if (current) {
+                current.className = '';
+            }
+            newHover.className = 'doc-toolbar-dropdown-menu-hover';
+        },
+
+        gotoGetCurrent: function () {
+            return document.querySelector('#doc_toolbar_goto .doc-toolbar-dropdown-menu-hover');
+        },
+
+        moduleInfoUpdate: function (fieldName, fieldValue) {
+            //Doc.callService();
+        },
+
+        /**
+         * 添加模块访问历史记录。
+         */
+        addModuleHistory: function (modulePath) {
+            if (window.localStorage) {
+                var docModuleHistory = localStorage.docModuleHistory;
+                docModuleHistory = docModuleHistory ? docModuleHistory.split(';') : [];
+
+                var old = docModuleHistory.indexOf(modulePath);
+                old >= 0 && docModuleHistory.splice(old, 1);
+                docModuleHistory.push(modulePath);
+
+                if (docModuleHistory.length >= Doc.Configs.maxModuleHistory) {
+                    docModuleHistory.shift();
+                }
+
+                localStorage.docModuleHistory = docModuleHistory.join(';');
             }
         },
 
@@ -1758,123 +1677,43 @@ if (typeof module === 'object') {
         },
 
         /**
-		 * 载入 DPL 列表。
+		 * 切换折叠或展开全部源码。
 		 */
-        loadModuleList: function (callback) {
+        toggleSources: function (value) {
 
-            if (window.ModuleList) {
-                callback(window.ModuleList);
-                return;
-            }
+            Doc.DemoPage.sourceDisplay = Doc.DemoPage.sourceDisplay === 'none' ? '' : 'none';
 
-            var script = document.createElement('SCRIPT');
-            script.onload = script.onreadystatechange = function () {
-                if (!script.readyState || !/in/.test(script.readyState)) {
-                    script.onload = script.onreadystatechange = null;
-
-                    callback(window.ModuleList);
+            Doc.Dom.iterate('PRE', function (node) {
+                if (node.className.indexOf('doc-sourcecode') >= 0) {
+                    node.style.display = Doc.DemoPage.sourceDisplay;
                 }
-            };
-
-            script.type = 'text/javascript';
-            script.src = Doc.Configs.basePath + Doc.Configs.devTools + '/' + Doc.Configs.moduleListPath;
-
-            var head = document.getElementsByTagName('HEAD')[0];
-            head.insertBefore(script, head.firstChild);
-        },
-
-        gotoUpdateList: function () {
-
-            if (!window.ModuleList) {
-                return;
-            }
-
-            var dropDown = document.getElementById('doc-toolbar-goto'),
-				filter = dropDown.defaultButton.value.toLowerCase(),
-				pathLower,
-				html = '',
-				html2 = '',
-				histories,
-				sep = false;
-
-            if (filter) {
-                filter = filter.replace(/^\s+|\s+$/g, "").toLowerCase();
-                for (var path in ModuleList.demos) {
-                    if (path.indexOf('/' + filter) >= 0) {
-                        html += getTpl(path);
-                    } else if (path.indexOf(filter) >= 0 || (ModuleList.demos[path].title || '').toLowerCase().indexOf(filter) >= 0) {
-                        html2 += getTpl(path);
-                    }
-                }
-            } else {
-
-                if (histories = window.localStorage && localStorage.demoModuleHistory) {
-                    histories = histories.split(';');
-                    for (var i = histories.length - 1; i >= 0; i--) {
-                        if (histories[i] in ModuleList.demos) {
-                            html += getTpl(histories[i]);
-                        }
-                    }
-
-                    sep = !!html;
-                }
-
-                for (var path in ModuleList.demos) {
-                    html2 += getTpl(path);
-                }
-            }
-
-            function getTpl(path) {
-                var tpl = '';
-                if (sep) {
-                    tpl = ' style="border-top: 1px solid #EBEBEB"';
-                    sep = false;
-                }
-                return '<a' + tpl + ' onmouseover="Doc.Page.gotoSetListHover(this)" href="' + Doc.Configs.basePath + Doc.Configs.demos + "/" + path + '">' + ModuleList.demos[path].title + ' <small style="color: #999">' + path.replace(/\.\w+$/, "") + '</small></a>';
-            }
-
-            dropDown.lastChild.innerHTML = html + html2;
-
-            if (dropDown.lastChild.firstChild) {
-                dropDown.lastChild.firstChild.className = 'doc-toolbar-dropdown-menu-hover';
-            }
+            });
 
         },
 
-        gotoMoveListHover: function (goDown) {
-            var currentNode = Doc.Page.gotoGetCurrent();
+        init: function () {
 
-            if (currentNode) {
-                currentNode.className = '';
-            }
+            Doc.Dom.ready(function () {
+                var header = document.createElement('header');
+                header.className = 'doc';
+                header.innerHTML = Doc.Utils.formatString(Doc.DemoPage.header, {
+                    title: Doc.moduleInfo.title,
+                    path: Doc.moduleInfo.path ? Doc.moduleInfo.path.replace(/\.\w+$/, '') : '',
+                    status: Doc.Configs.status[Doc.moduleInfo.status] || Doc.Configs.status.done,
+                    arrow: navigator.userAgent.indexOf('Firefox') >= 0 ? '▾' : " ▾",
+                    modueList: Doc.Configs.basePath + Doc.Configs.demos + '/index.html'
+                });
+                document.body.insertBefore(header, document.body.firstChild);
+            });
 
-            if (!currentNode || !currentNode[goDown ? 'nextSibling' : 'previousSibling']) {
-                currentNode = document.getElementById('doc-toolbar-goto').lastChild[goDown ? 'firstChild' : 'lastChild'];
-            } else {
-                currentNode = currentNode[goDown ? 'nextSibling' : 'previousSibling'];
-            }
-
-            if (currentNode) {
-                currentNode.className = 'doc-toolbar-dropdown-menu-hover';
-            }
-        },
-
-        gotoSetListHover: function (newHover) {
-            var current = Doc.Page.gotoGetCurrent();
-            if (current) {
-                current.className = '';
-            }
-            newHover.className = 'doc-toolbar-dropdown-menu-hover';
-        },
-
-        gotoGetCurrent: function () {
-            var node = document.getElementById('doc-toolbar-goto').lastChild;
-            for (node = node.firstChild; node; node = node.nextSibling) {
-                if (node.className === 'doc-toolbar-dropdown-menu-hover') {
-                    return node;
-                }
-            }
         }
+
+    };
+
+    /**
+     * 文档页面。
+     */
+    Doc.WebPage = {
 
     };
 
@@ -2041,7 +1880,7 @@ if (typeof module === 'object') {
         // 如果第一次使用测试。则写入全部测试和效率。
         if (!globalExamples) {
             Doc.Example.data = globalExamples = [];
-            html = '<nav class="doc doc-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Doc.Page.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Doc.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Doc.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
+            html = '<nav class="doc doc-toolbar">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="Doc.DemoPage.toggleSources();" href="javascript://切换显示或隐藏全部源码">折叠代码</a> | <a onclick="Doc.Example.speedTestAll();" href="javascript://查看全部代码的执行效率">全部效率</a> | <a onclick="Doc.Example.runAll();" href="javascript://按顺序执行全部代码">全部执行</a></nav>';
         }
 
         for (key in examples) {
@@ -2076,7 +1915,152 @@ if (typeof module === 'object') {
         document.write(html);
     };
 
-    Doc.Page.init();
+    // 初始化。
+    (function() {
+
+        Doc.Dom.fixBrowser();
+
+        // 决定基础路径。
+        var docJsSrc = document.getElementsByTagName("script");
+        docJsSrc = docJsSrc[docJsSrc.length - 1];
+        docJsSrc = docJsSrc.src;
+
+        var a = document.createElement('a');
+        a.href = docJsSrc.replace(/\/[^\/]*$/, "/") + Doc.Configs.basePath;
+
+        // IE6-7：需要使用 a.getAttribute('href', 5) 获取绝对路径。
+        Doc.Configs.basePath = document.constructor ? a.href : a.getAttribute('href', 5);
+
+        // 判断当前开发系统是否在本地运行。
+        Doc.local = location.protocol === 'file' || location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '::1';
+
+        var moduleInfo = document.querySelector('meta[name="' + Doc.Configs.moduleInfo + '"]');
+        Doc.moduleInfo = moduleInfo = moduleInfo ? Doc.ModuleInfo.parse(moduleInfo.content) : {};
+        moduleInfo.title = moduleInfo.title || document.title;
+
+        var frame = (/[?&]frame=(\w+)/.exec(location.search) || [0, moduleInfo.frame])[1] || 'header';
+        if (frame !== 'none') {
+
+            var path = location.pathname;
+            if (path.toLowerCase().indexOf('/' + Doc.Configs.demos.toLowerCase() + '/') === 0) {
+                moduleInfo.path = path = path.substr(Doc.Configs.demos.length + 2);
+                Doc.DemoPage.addModuleHistory(path);
+            }
+
+            // 载入 CSS 样式。
+            document.write('<link type="text/css" rel="stylesheet" href="' + docJsSrc.replace(/\.js/, '.css') + '" />');
+
+            Doc.DemoPage.init();
+
+        }
+
+        //// 判断当前开发系统的打开模式。
+        //// 如果是在一个网页上使用，则不生成其它额外的内容。
+        //// 如果是在 docs 里使用，则自动生成标题部分。
+        //if (Doc.urlPrefix) {
+        //    Doc.writeHeader();
+        //}
+
+        //Doc.Dom.ready(function () {
+
+        //    // 处理 script.doc 。
+        //    // script.doc[type=text/html] => aside.doc
+        //    // script.doc[type=text/javascript] => 插入 pre.doc
+        //    // script.doc[type=code/html] => pre.doc
+        //    // script.doc[type=code/javascript] => pre.doc
+        //    Doc.Dom.iterate('SCRIPT', function (node) {
+        //        var value = node.innerHTML.replace(/< (\/?)script/g, "<$1script");
+        //        switch (node.type) {
+        //            case '':
+        //            case 'text/javascript':
+        //                insertCode(node, node.innerHTML, 'js', true);
+        //                break;
+        //            case 'text/html':
+        //                var code = document.createElement('ASIDE');
+        //                code.className = node.className;
+        //                node.parentNode.replaceChild(code, node);
+        //                code.$code = value;
+
+        //                if (Doc.Dom.isIE) {
+        //                    code.innerHTML = '$' + value;
+        //                    code.removeChild(code.firstChild);
+        //                } else {
+        //                    code.innerHTML = value;
+        //                }
+
+        //                // 模拟执行全部脚本。
+        //                var scripts = code.getElementsByTagName('SCRIPT');
+        //                for (var i = 0; scripts[i]; i++) {
+        //                    if (window.execScript) {
+        //                        window.execScript(scripts[i].innerHTML);
+        //                    } else {
+        //                        window.eval(scripts[i].innerHTML);
+        //                    }
+        //                }
+        //                break;
+        //            case 'text/markdown':
+        //                if (Doc.Markdown) {
+        //                    value = Doc.Markdown.toHTML(Doc.Utils.removeIndents(value));
+        //                    var div = document.createElement('SECTION');
+        //                    div.innerHTML = value;
+        //                    var nodes = div.getElementsByTagName('*');
+        //                    for (var i = 0; nodes[i]; i++) {
+        //                        nodes[i].className = 'doc';
+        //                    }
+        //                    node.parentNode.replaceChild(div, node);
+        //                } else {
+        //                    insertCode(node, value, 'text');
+        //                }
+        //                break;
+        //            case 'code/javascript':
+        //                insertCode(node, value, 'js');
+        //                break;
+        //            default:
+        //                if (/^code\//.test(node.type)) {
+        //                    insertCode(node, value, node.type.substr(5));
+        //                } else {
+        //                    insertCode(node, value, 'text');
+        //                }
+
+        //                break;
+        //        }
+        //    });
+
+        //    // 处理 aside.doc 。
+        //    Doc.Dom.iterate('ASIDE', function (node) {
+        //        if (node.className.indexOf('doc-nosrc') <= 0) {
+        //            insertCode(node, node.$code || node.innerHTML, 'html', true);
+        //        }
+        //    });
+
+        //    // 如果存在代码高亮的插件。
+        //    if (Doc.SyntaxHighligher) {
+        //        setTimeout(function () {
+        //            Doc.Dom.iterate('PRE', Doc.SyntaxHighligher.one);
+        //        }, 0);
+        //    }
+
+        //    function insertCode(node, value, language, canHide) {
+
+        //        var pre = document.createElement('pre');
+        //        pre.className = 'doc doc-code-pin doc-sh doc-sh-' + language + (canHide ? ' doc-sourcecode' : '');
+
+        //        // 如果存在格式代码插件，判断当前是否需要格式化代码。
+        //        if (Doc.Beautify && (language in Doc.Beautify) && node.className.indexOf('doc-noformat') < 0) {
+        //            value = Doc.Beautify[language](value);
+        //        } else {
+        //            value = Doc.Utils.removeIndents(value);
+        //        }
+
+        //        pre.textContent = pre.innerText = value;
+
+        //        pre.innerHTML = pre.innerHTML.replace(/\[bold\]([\s\S]*?)\[\/bold\]/g, "<strong>$1</strong>").replace(/\[u\]([\s\S]*?)\[\/u\]/g, "<u>$1</u>");
+
+        //        node.parentNode.insertBefore(pre, node.nextSibling);
+        //    }
+
+        //});
+    })();
 
     // #endregion
 

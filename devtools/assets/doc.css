@@ -567,6 +567,7 @@ a#doc_logo:hover {
 
     #doc_modulelist small {
         color: #B8B8B8;
+        font-weight: 100;
     }
 
 /* 底部 */

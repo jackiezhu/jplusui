@@ -4,6 +4,8 @@
 
 var ModuleManager = require('./modulemanager');
 
+response.contentType = 'text/html';
+
 switch(request.queryString['cmd']){
 	case 'updatemodulelist':
 		ModuleManager.updateModuleList();

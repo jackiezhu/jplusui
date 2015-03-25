@@ -2,22 +2,112 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="module-info" content="status=plan, ignore=true">
-    <title>组件列表</title>
-    <link rel="stylesheet" type="text/css" href="../devtools/demo/tools.css">
-    <link rel="stylesheet" type="text/css" href="../devtools/modulemanager/assets/ui.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>组件列表 - JPlusUI | 最懂你的前端 UI 组件库</title>
+    <link rel="stylesheet" type="text/css" href="../devtools/assets/doc.css">
 
-    <script type="text/javascript" src="../devtools/assets/demo.js"></script>
-    <script type="text/javascript" src="../devtools/demo/list.js"></script>
-    <script type="text/javascript" src="../devtools/demo/tools.js"></script>
-    <script type="text/javascript" src="../devtools/assets/data/modulelist.js"></script>
-    <script type="text/javascript" src="../devtools/modulemanager/assets/ui.js"></script>
+    <script src="../devtools/assets/data/modulelist.js"></script>
+    <script src="../docs/assets/demo.js"></script>
+    
+    <style>
+        #doc_main iframe {
+            border: 0;
+            width: 100%;
+        }
+    </style>
 
 </head>
-<body class="demo">
+<body class="doc" id="doc_page">
+
+    <header id="doc_header" class="doc-font">
+        <nav id="doc_topbar">
+            <div class="doc-container doc-clear">
+                <a href="../index.html" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>
+                <ul id="navbar" class="doc-horizonal">
+                    <li><a href="../docs/getting-started.html">开始使用</a></li>
+                    <li class="actived"><a href="index.html">组件列表</a></li>
+                    <li><a href="../docs/download.html">下载和定制</a></li>
+                    <li><a href="../docs/about.html">关于和支持</a></li>
+                    <li class="doc-right"><a href="###">2.0 版本</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="doc-container">
+
+            <h1>组件列表</h1>
+
+            <p>JPlusUI 提供了 300 多个常用组件，满足常用需求。每个组件依赖性小，多数可以独立使用。</p>
+
+        </div>
+
+    </header>
+
+    <div class="doc-container doc-clear">
+
+        <div class="doc-left doc-font" id="doc_sidebar">
+
+            <input type="search" id="doc_modulelist_filter" class="doc-font" placeholder="搜索组件..." onkeyup="generateModuleList(this.value)" />
+
+            <div id="doc_modulelist" style="height: 400px;"></div>
+
+        </div>
+
+        <div class="doc-left doc" id="doc_main">
+            
+            <iframe src="styles/core/base.html"></iframe>
+
+            <div class="doc-toolbar">
+                <a href="###" target="_blank">❒ 在新窗口打开</a>
+            </div>
+
+            <h1>按钮组 <small>ui/container/dialog</small></h1>
+
+            正文
+        </div>
+
+    </div>
+
+    <footer id="doc_footer" class="doc-font doc-container">
+        <span class="doc doc-right"><a href="../docs/about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="../LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">提交 BUG</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="../docs/community.html">加入我们</a></span>
+        &copy; 2011-2015 JPlusUI Team. All Rights Reserved.
+    </footer>
+
     <script>
-        UI.writeModuleList();
-        Demo.writeFooter();
+
+        // 生成组件列表。
+        function generateModuleList(filter) {
+            var html = '';
+
+            for (var i = 0; i < ModuleList.index.length; i++) {
+                html += '<h2>' + ModuleList.index[i].title + ' <small>' + ModuleList.index[i].name + '</small></h2>';
+                html += '<dl>';
+                for (var j = 0; j < ModuleList.index[i].children.length; j++) {
+                    addModule(ModuleList.index[i].children[j], 0);
+                }
+                html += '</dl>';
+            }
+
+            function addModule(moduleInfo, level) {
+                
+                if (moduleInfo.children) {
+                    html += '<dt>' + moduleInfo.title + ' <small>' + moduleInfo.name + '</small></dt>';
+                    for (var i = 0; i < moduleInfo.children.length; i++) {
+                        addModule(moduleInfo.children[i], level + 1);
+                    }
+                } else {
+                    html += '<dd><a target="main" href="' + moduleInfo.path + '">' + moduleInfo.title + ' <small>' + moduleInfo.name.replace(/\.\w+$/, '') + '</small></a></dd>';
+                }
+
+            }
+
+            document.getElementById('doc_modulelist').innerHTML = html;
+
+        }
+
+        generateModuleList('');
+
     </script>
+
 </body>
 </html>
