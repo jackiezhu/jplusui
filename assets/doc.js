@@ -1703,12 +1703,12 @@ if (typeof module === 'object') {
         body: '<header id="doc_header" class="doc-font">\
         <nav id="doc_topbar">\
             <div class="doc-container doc-clear">\
-                <a href="{basePath}/index.html" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>\
+                <a href="{basePath}index.html" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>\
                 <ul id="navbar" class="doc-horizonal">\
-                    <li><a href="{basePath}/docs/getting-started.html">开始使用</a></li>\
-                    <li class="actived"><a href="{basePath}/demo/index.html">组件列表</a></li>\
-                    <li><a href="{basePath}/docs/download.html">下载和定制</a></li>\
-                    <li><a href="{basePath}/docs/about.html">关于和支持</a></li>\
+                    <li><a href="{basePath}docs/getting-started.html">开始使用</a></li>\
+                    <li class="actived"><a href="{basePath}demo/index.html">组件列表</a></li>\
+                    <li><a href="{basePath}docs/download.html">下载和定制</a></li>\
+                    <li><a href="{basePath}docs/about.html">关于和支持</a></li>\
                     <li class="doc-right"><a href="###">2.0 版本</a></li>\
                 </ul>\
             </div>\
@@ -1793,7 +1793,7 @@ if (typeof module === 'object') {
                                 tags.pop();
                             }
 
-                            tags.push('<dt>' +  appendFilter(moduleInfo.title) + ' <small>' + moduleInfo.name + '</small></dt>');
+                            tags.push('<dt>' + appendFilter(moduleInfo.title) + ' <small>' + appendFilter(moduleInfo.name) + '</small></dt>');
                             addChildModules(moduleInfo, level + 1, applyFilter(moduleInfo));
                         } else if (ignoreFilter || applyFilter(moduleInfo)) {
                             tags.push('<dd><a href="' + moduleInfo.path + '?frame=web">' + appendFilter(moduleInfo.title) + ' <small>' + appendFilter(moduleInfo.name.replace(/\.\w+$/, '')) + '</small></a></dd>');
@@ -1808,13 +1808,6 @@ if (typeof module === 'object') {
                 function appendFilter(value) {
                     return filter ? value.replace(filter, '<span class="doc-red">' + filter + '</span>') : value;
                 }
-
-                //// 删除无 <dd> 的 <dt>
-                //for (var i = 0; i < tags.length; i++) {
-                //    if (/^<dt/.test(tags[i]) && /^<(dt|\/dl)/.test(tags[i + 1])) {
-                //        tags.splice(i--, 1);
-                //    }
-                //}
 
                 if (!tags.length) {
                     tags.push('<small>无搜索结果</small>');

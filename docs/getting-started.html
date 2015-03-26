@@ -4,136 +4,96 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>开始使用 - JPlusUI</title>
+    <link rel="stylesheet" type="text/css" href="../devtools/assets/doc.css">
 
-    <link rel="stylesheet" type="text/css" href="../src/styles/core/base.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/core/utility.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/layout/grid.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/partial/icon.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/button/button.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/form/textbox.css" />
-
-    <link rel="stylesheet" type="text/css" href="../src/styles/scaffolding/topbar.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/scaffolding/footer.css" />
-    <link rel="stylesheet" type="text/css" href="../src/styles/social/forkmeongithub.css" />
-
-
-    <link rel="stylesheet" type="text/css" href="static/common.css" />
-    <link rel="stylesheet" type="text/css" href="static/docs.css" />
 </head>
-<body>
-    <header id="header">
-        <nav id="topbar">
-            <div class="x-container x-clear">
-                <a href="###" id="logo" class="x-left">JPlusUI</a>
-                <ul id="navbar" class="x-horizonal">
-                    <li class="x-actived"><a href="###">开始使用</a></li>
+<body class="doc" id="doc_page">
+
+    <header id="doc_header" class="doc-font">
+        <nav id="doc_topbar">
+            <div class="doc-container doc-clear">
+                <a href="###" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>
+                <ul id="navbar" class="doc-horizonal">
+                    <li class="actived"><a href="###">开始使用</a></li>
                     <li><a href="###">组件列表</a></li>
                     <li><a href="###">下载和定制</a></li>
                     <li><a href="###">关于和支持</a></li>
+                    <li class="doc-right"><a href="###">2.0 版本</a></li>
                 </ul>
-                <aside class="x-right">
-                    <form id="searchform" class="x-left">
-                        <input placeholder="搜索组件..." class="x-left" type="text">
-                        <button type="submit" title="搜索" class="x-button x-left"><i class="x-icon"></i></button>
-                    </form>
-                </aside>
             </div>
         </nav>
 
-        <div class="x-container">
+        <div class="doc-container">
 
             <h1>开始使用</h1>
 
-            <p>从零开始快速上手 JPlusUI，搭建页面。</p>
+            <p>提供常用 CSS 下载</p>
 
         </div>
 
     </header>
-    <div class="x-grid x-container">
-        <div class="x-col x-col-0 x-col-medium-3" id="sidebar">
 
-            <div class="x-searchtextbox">
-                <input type="text" value="" class="x-textbox" placeholder="搜索组件..." style="width:90px;" />
-                <input type="button" value="搜索" class="x-button" />
+    <div class="doc-container doc-clear">
+
+        <div class="doc-left doc-font" id="doc_sidebar">
+
+            <input type="search" id="doc_modulelist_filter" class="doc-font" placeholder="搜索组件..." />
+
+            <div id="doc_modulelist" style="height: 400px;">
+
+                <h2>快速上手</h2>
+
+                <dl>
+                    <dt>开始使用 <small>core</small></dt>
+                    <dd><a href="###">基础样式 <small>base</small></a></dd>
+                    <dd><a href="###">打印样式 <small>print</small></a></dd>
+                    <dd><a href="###">辅助类 <small>ulitity</small></a></dd>
+                    <dt>布局 <small>layout</small></dt>
+                    <dd><a href="###">栅格布局 <small>grid</small></a></dd>
+                    <dd><a href="###">等分布局 <small>flex</small></a></dd>
+                    <dt>排版 <small>typography</small></dt>
+                    <dd><a href="###">块级引用 <small>blockquote</small></a></dd>
+                </dl>
+
+                <h2>JS 组件</h2>
+
+                <dl>
+                    <dt>标题</dt>
+                    <dd><a href="###">组件1</a></dd>
+                    <dd><a href="###">组件2</a></dd>
+                    <dd><a href="###">组件3</a></dd>
+                    <dt>标题</dt>
+                    <dd><a href="###">组件1</a></dd>
+                    <dd><a href="###">组件2</a></dd>
+                    <dd><a href="###">组件3</a></dd>
+                </dl>
+
             </div>
 
-            <h2>CSS 组件</h2>
-
-            <dl>
-                <dt>核心 <small>core</small></dt>
-                <dd><a href="###">基础样式 <small>base</small></a></dd>
-                <dd><a href="###">打印样式 <small>print</small></a></dd>
-                <dd><a href="###">辅助类 <small>ulitity</small></a></dd>
-                <dt>布局 <small>layout</small></dt>
-                <dd><a href="###">栅格布局 <small>grid</small></a></dd>
-                <dd><a href="###">等分布局 <small>flex</small></a></dd>
-                <dt>排版 <small>typography</small></dt>
-                <dd><a href="###">块级引用 <small>blockquote</small></a></dd>
-            </dl>
-
-            <h2>JS 组件</h2>
-
-            <dl>
-                <dt>标题</dt>
-                <dd><a href="###">组件1</a></dd>
-                <dd><a href="###">组件2</a></dd>
-                <dd><a href="###">组件3</a></dd>
-                <dt>标题</dt>
-                <dd><a href="###">组件1</a></dd>
-                <dd><a href="###">组件2</a></dd>
-                <dd><a href="###">组件3</a></dd>
-            </dl>
-
         </div>
-        <div class="x-col x-col-12 x-col-medium-9" id="main">
 
-            <h1 class="demo">下载</h1>
+        <div class="doc-left doc" id="doc_main">
 
-            <p class="demo">下载 <a href="https://github.com/downloads/jplusui/jplusui/jplusui-1.0b-release.zip">jplusui-latest-release.zip</a> , 或者下载 <a href="https://github.com/jplusui/jplus-milk/zipball/master">jPlusUI 源码</a> </p>
+            <div class="doc-toolbar">
+                <a href="###" target="_blank">❒ 在新窗口打开</a>
+            </div>
 
-            <p class="demo">解压zip文件，会得到如下文件结构: </p>
+            <h1>按钮组 <small>ui/container/dialog</small></h1>
 
-            <script class="demo" type="text/plain">
-                jPlusUI-latest/
-                └── dist/
-                ├── images/
-                ├── fonts/
-                ├── jplusui.js
-                └── jplus.min.js
-                │     ├── jplus.css
-                │     ├── jplus.min.css
-            </script>
-
-            <p>其中，<code>jplus.*</code> 是已经编译好的源文件，包含了 100 多个常用组件。<code>jplus.min.*</code> 是相应的压缩版。您也可以使用 <a href="/assets/dpl/dplfilelist.html" target="_blank">组件合成工具</a> 来自行编译需要用到的组件。</p>
-
-            <h3 class="demo">2. 引入文件</h3>
-
-            <p class="demo">新建一个 HTML 文件，内容如下:</p>
-
-            <script class="demo-noformat" type="text/html">
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>My First Page</title>
-                    ##
-                    <link href="__build/styles/jplus.css__" rel="stylesheet">##
-                    ##
-                    <script src="__build/scripts/jplus.js__" type="text/javascript">
-                        < /script>##
-                    </head>
-                    <body>
-                    <h1>Hello j+ UI!</h1>
-                </body>
-                </html>
-             </script>
-
-                    <p class="demo">以上文件已经引入了 jPlusUI 所需要的全部文件。jPlusUI 不支持怪癖(Quirks)模式，因此必须定义&lt;!DOCTYPE&gt;, 推荐使用 HTML 5版本的 &lt;!DOCTYPE&gt</p>
+            正文
+        </div>
 
     </div>
-</div>
-<footer id="footer" class="x-container">
-    <span class="x-right"><a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="community.html">加入我们</a></span>
-    Copyright &copy; 2011-2012 jPlusUI Team. All Rights Reserved.
-</footer>
+
+    <footer id="doc_footer" class="doc-font doc-container">
+        <span class="doc doc-right">
+            <a href="about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            <a target="_blank" href="LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            <a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">意见反馈</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            <a href="community.html">加入我们</a>
+        </span>
+        &copy; 2011-2015 JPlusUI Team. All Rights Reserved.
+    </footer>
+
 </body>
 </html>
