@@ -15,13 +15,25 @@
 
 #doc_header h2 {
     font-weight: 500;
+    font-size: 30px;
+    margin: 0.4em 0 1.4em;
 }
 
 #doc_header .btn {
     border: 1px solid #fff;
     border-radius: 4px;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     text-decoration: none;
-    padding: 4px 10px;
+    padding: 6px 14px;
+}
+
+#doc_header .btn:hover {
+    background-color: #fff;
+    color: #673AB7;
+}
+
+#doc_header p {
+    margin: 10px 0;
+    font-size: 12px;
 }
