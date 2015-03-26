@@ -3,8 +3,25 @@
     text-align: center;
 }
 
-#doc_header h1 {
-    font-size: 60px;
-    font-weight: 700;
-    margin-top: 1em;
+#doc_header  h1 {
+    margin: 1.5em 0 0;
+}
+
+#doc_header h1 img {
+    border: 1px solid #fff;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+#doc_header h2 {
+    font-weight: 500;
+}
+
+#doc_header .btn {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+    padding: 4px 10px;
 }
