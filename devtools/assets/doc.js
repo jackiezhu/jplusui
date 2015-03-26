@@ -35,7 +35,7 @@ Doc.Configs = {
     /**
 	 * 存放文档文件的文件夹。
 	 */
-    demos: "doc",
+    demos: "demo",
 
     /**
 	 * 存放模块列表路径的地址。
@@ -144,7 +144,7 @@ if (typeof module === 'object') {
 
 } else {
 
-    // #region 前台部分
+    // #region Utils
 
     /**
 	* DOM辅助处理模块。
@@ -178,7 +178,7 @@ if (typeof module === 'object') {
                 return -1;
             };
 
-            String.prototype.trim = String.prototype.trim || function() {
+            String.prototype.trim = String.prototype.trim || function () {
                 return this.replace(/^\s+|\s+$/g, "");
             };
 
@@ -214,6 +214,8 @@ if (typeof module === 'object') {
             document.querySelector = document.querySelector || function (selector) {
                 return document.querySelectorAll(selector)[0] || null;
             };
+
+            window.localStorage = window.localStorage || {};
 
         },
 
@@ -1314,6 +1316,10 @@ if (typeof module === 'object') {
         xhr.send(null);
     };
 
+    // #endregion
+
+    // #region Page
+
     /**
      * 文档页面模块。
      */
@@ -1468,7 +1474,7 @@ if (typeof module === 'object') {
                                     Doc.DemoPage.gotoUpdateList();
                                 }
                             };
-                            Doc.DemoPage.loadModuleList(Doc.DemoPage.gotoUpdateList);
+                            Doc.loadModuleList(Doc.DemoPage.gotoUpdateList);
                             break;
                         case "doc_toolbar_moduleinfo":
                             var moduleInfo = Doc.moduleInfo;
@@ -1541,23 +1547,6 @@ if (typeof module === 'object') {
         },
 
         /**
-		 * 载入模块列表。
-		 */
-        loadModuleList: function (callback) {
-
-            // 已载入，直接继续。
-            if (window.ModuleList) {
-                callback();
-                return;
-            }
-
-            Doc.Dom.loadScript(Doc.Utils.formatString(Doc.Configs.moduleListPath, {
-                devTools: Doc.Configs.basePath + Doc.Configs.devTools
-            }), callback);
-
-        },
-
-        /**
          * 更新组件列表。
          */
         gotoUpdateList: function () {
@@ -1582,7 +1571,7 @@ if (typeof module === 'object') {
                     html += getTpl(path);
                 }
                 // 追加历史记录。
-                var docModuleHistory = window.localStorage && localStorage.docModuleHistory;
+                var docModuleHistory = localStorage.docModuleHistory;
                 if (docModuleHistory) {
                     docModuleHistory = docModuleHistory.split(';');
                     for (var i = 0; i < docModuleHistory.length; i++) {
@@ -1651,20 +1640,18 @@ if (typeof module === 'object') {
          * 添加模块访问历史记录。
          */
         addModuleHistory: function (modulePath) {
-            if (window.localStorage) {
-                var docModuleHistory = localStorage.docModuleHistory;
-                docModuleHistory = docModuleHistory ? docModuleHistory.split(';') : [];
+            var docModuleHistory = localStorage.docModuleHistory;
+            docModuleHistory = docModuleHistory ? docModuleHistory.split(';') : [];
 
-                var old = docModuleHistory.indexOf(modulePath);
-                old >= 0 && docModuleHistory.splice(old, 1);
-                docModuleHistory.push(modulePath);
+            var old = docModuleHistory.indexOf(modulePath);
+            old >= 0 && docModuleHistory.splice(old, 1);
+            docModuleHistory.push(modulePath);
 
-                if (docModuleHistory.length >= Doc.Configs.maxModuleHistory) {
-                    docModuleHistory.shift();
-                }
-
-                localStorage.docModuleHistory = docModuleHistory.join(';');
+            if (docModuleHistory.length >= Doc.Configs.maxModuleHistory) {
+                docModuleHistory.shift();
             }
+
+            localStorage.docModuleHistory = docModuleHistory.join(';');
         },
 
         exploreSource: function () {
@@ -1692,20 +1679,16 @@ if (typeof module === 'object') {
         },
 
         init: function () {
-
-            Doc.Dom.ready(function () {
-                var header = document.createElement('header');
-                header.className = 'doc';
-                header.innerHTML = Doc.Utils.formatString(Doc.DemoPage.header, {
-                    title: Doc.moduleInfo.title,
-                    path: Doc.moduleInfo.path ? Doc.moduleInfo.path.replace(/\.\w+$/, '') : '',
-                    status: Doc.Configs.status[Doc.moduleInfo.status] || Doc.Configs.status.done,
-                    arrow: navigator.userAgent.indexOf('Firefox') >= 0 ? '▾' : " ▾",
-                    modueList: Doc.Configs.basePath + Doc.Configs.demos + '/index.html'
-                });
-                document.body.insertBefore(header, document.body.firstChild);
+            var header = document.createElement('header');
+            header.className = 'doc';
+            header.innerHTML = Doc.Utils.formatString(Doc.DemoPage.header, {
+                title: Doc.moduleInfo.title,
+                path: Doc.moduleInfo.path ? Doc.moduleInfo.path.replace(/\.\w+$/, '') : '',
+                status: Doc.Configs.status[Doc.moduleInfo.status] || Doc.Configs.status.done,
+                arrow: navigator.userAgent.indexOf('Firefox') >= 0 ? '▾' : " ▾",
+                modueList: Doc.Configs.basePath + Doc.Configs.demos + '/index.html'
             });
-
+            document.body.insertBefore(header, document.body.firstChild);
         }
 
     };
@@ -1714,6 +1697,179 @@ if (typeof module === 'object') {
      * 文档页面。
      */
     Doc.WebPage = {
+
+        title: ' - JPlusUI | 最懂你的前端 UI 组件库',
+
+        body: '<header id="doc_header" class="doc-font">\
+        <nav id="doc_topbar">\
+            <div class="doc-container doc-clear">\
+                <a href="{basePath}/index.html" id="doc_logo" class="doc-left">JPlusUI <sup>3.0</sup></a>\
+                <ul id="navbar" class="doc-horizonal">\
+                    <li><a href="{basePath}/docs/getting-started.html">开始使用</a></li>\
+                    <li class="actived"><a href="{basePath}/demo/index.html">组件列表</a></li>\
+                    <li><a href="{basePath}/docs/download.html">下载和定制</a></li>\
+                    <li><a href="{basePath}/docs/about.html">关于和支持</a></li>\
+                    <li class="doc-right"><a href="###">2.0 版本</a></li>\
+                </ul>\
+            </div>\
+        </nav>\
+\
+        <div class="doc-container">\
+\
+            <h1>组件列表</h1>\
+\
+            <p>JPlusUI 提供了 300 多个常用组件，满足常用需求。每个组件依赖性小，多数可以独立使用。</p>\
+\
+        </div>\
+\
+    </header>\
+\
+    <div class="doc-container doc-clear">\
+\
+        <div class="doc-left doc-font" id="doc_sidebar">\
+\
+            <input type="search" id="doc_modulelist_filter" class="doc-font" placeholder="搜索组件..." onkeyup="Doc.WebPage.updateModuleList(this.value)" value="{filter}" />\
+\
+            <div id="doc_modulelist"></div>\
+\
+        </div>\
+\
+        <div class="doc-left doc" id="doc_main">\
+            \
+            <div class="doc-toolbar">\
+                <a href="{newWindowUrl}" target="_blank">❒ 在新窗口打开</a>\
+            </div>\
+\
+            <h1>{title} <small>{path}</small></h1>\
+\
+        </div>\
+\
+    </div>\
+\
+    <footer id="doc_footer" class="doc-font doc-container">\
+        <span class="doc doc-right"><a href="{basePath}/docs/about.html">关于我们</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="{basePath}/LICENSE.txt">The BSD License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://github.com/jplusui/jplusui/issues/new">提交 BUG</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="{basePath}/docs/community.html">加入我们</a></span>\
+        &copy; 2011-2015 JPlusUI Team. All Rights Reserved.\
+    </footer>',
+
+        /**
+         * 生成组件列表。
+         */
+        updateModuleList: function () {
+
+            var filter = localStorage.doc_moduleListFilter = document.getElementById('doc_modulelist_filter').value.trim().toLowerCase();
+
+            Doc.loadModuleList(function () {
+
+                var tags = [];
+
+                for (var i = 0; i < ModuleList.index.length; i++) {
+                    tags.push('<h2>' + ModuleList.index[i].title + ' <small>' + ModuleList.index[i].name + '</small></h2>');
+                    tags.push('<dl>');
+                    addChildModules(ModuleList.index[i], 0);
+
+                    // 首先删除之前的无子元素的 <dt>
+                    if (/^<dt/.test(tags[tags.length - 1])) {
+                        tags.pop();
+                    }
+
+                    // 首先删除之前的无子元素的 <dl>
+                    if (/^<dl/.test(tags[tags.length - 1])) {
+                        tags.pop();
+                        tags.pop();
+                        continue;
+                    }
+
+                    tags.push('</dl>');
+                }
+
+                function addChildModules(parentModuleInfo, level, ignoreFilter) {
+                    for (var i = 0; i < parentModuleInfo.children.length; i++) {
+                        var moduleInfo = parentModuleInfo.children[i];
+
+                        if (moduleInfo.children) {
+
+                            // 首先删除之前的无子元素的 <dt>
+                            if (/^<dt/.test(tags[tags.length - 1])) {
+                                tags.pop();
+                            }
+
+                            tags.push('<dt>' +  appendFilter(moduleInfo.title) + ' <small>' + moduleInfo.name + '</small></dt>');
+                            addChildModules(moduleInfo, level + 1, applyFilter(moduleInfo));
+                        } else if (ignoreFilter || applyFilter(moduleInfo)) {
+                            tags.push('<dd><a href="' + moduleInfo.path + '?frame=web">' + appendFilter(moduleInfo.title) + ' <small>' + appendFilter(moduleInfo.name.replace(/\.\w+$/, '')) + '</small></a></dd>');
+                        }
+                    }
+                }
+
+                function applyFilter(moduleInfo) {
+                    return !filter || (moduleInfo.title.toLowerCase().indexOf(filter) >= 0 || moduleInfo.path.toLowerCase().indexOf(filter) >= 0);
+                }
+
+                function appendFilter(value) {
+                    return filter ? value.replace(filter, '<span class="doc-red">' + filter + '</span>') : value;
+                }
+
+                //// 删除无 <dd> 的 <dt>
+                //for (var i = 0; i < tags.length; i++) {
+                //    if (/^<dt/.test(tags[i]) && /^<(dt|\/dl)/.test(tags[i + 1])) {
+                //        tags.splice(i--, 1);
+                //    }
+                //}
+
+                if (!tags.length) {
+                    tags.push('<small>无搜索结果</small>');
+                }
+
+                var moduleList = document.getElementById('doc_modulelist');
+
+                moduleList.innerHTML = tags.join('');
+
+            });
+
+        },
+
+        /**
+         * 初始化页面为完整网页。
+         */
+        init: function () {
+            document.title += Doc.WebPage.title;
+            document.body.id = 'doc_page';
+
+            // 提取文档内容。
+            var fragment = document.createDocumentFragment();
+            while (document.body.firstChild) {
+                fragment.appendChild(document.body.firstChild);
+            }
+
+            // 插入页面框架。
+            document.body.innerHTML = Doc.Utils.formatString(Doc.WebPage.body, {
+                basePath: Doc.Configs.basePath,
+                title: Doc.moduleInfo.title,
+                path: Doc.moduleInfo.path,
+                newWindowUrl: location.href.replace('frame=web', 'frame=demo'),
+                filter: localStorage.doc_moduleListFilter || ''
+            });
+
+            // 重新拷贝回文档内容。
+            document.getElementById('doc_main').appendChild(fragment);
+
+            // 更新模块列表。
+            Doc.WebPage.updateModuleList();
+        }
+
+    };
+
+    /**
+     * 负责管理页内代码。
+     */
+    Doc.SourceCode = {
+
+        /**
+         * 初始化页内的代码区域。
+         */
+        init: function () {
+
+        }
 
     };
 
@@ -1915,8 +2071,25 @@ if (typeof module === 'object') {
         document.write(html);
     };
 
+    /**
+	 * 载入模块列表。
+	 */
+    Doc.loadModuleList = function (callback) {
+
+        // 已载入，直接继续。
+        if (window.ModuleList) {
+            callback();
+            return;
+        }
+
+        Doc.Dom.loadScript(Doc.Utils.formatString(Doc.Configs.moduleListPath, {
+            devTools: Doc.Configs.basePath + Doc.Configs.devTools
+        }), callback);
+
+    };
+
     // 初始化。
-    (function() {
+    (function () {
 
         Doc.Dom.fixBrowser();
 
@@ -1950,7 +2123,10 @@ if (typeof module === 'object') {
             // 载入 CSS 样式。
             document.write('<link type="text/css" rel="stylesheet" href="' + docJsSrc.replace(/\.js/, '.css') + '" />');
 
-            Doc.DemoPage.init();
+            Doc.Dom.ready(function () {
+                frame === 'web' ? Doc.WebPage.init() : Doc.DemoPage.init();
+                Doc.SourceCode.init();
+            });
 
         }
 

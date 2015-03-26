@@ -281,9 +281,9 @@ section.doc, .doc > p, .doc > ul, .doc > ol, .doc > dl, .doc > table, .doc > blo
 
 /* 工具条 */
 .doc-toolbar {
-    font-size: 12px!important;
-    line-height: 150%!important;
-    color: #727272!important;
+    font-size: 12px !important;
+    line-height: 150% !important;
+    color: #727272 !important;
     float: right;
 }
 
@@ -539,6 +539,18 @@ a#doc_logo:hover {
     #doc_modulelist h2 {
         margin: .6em 0;
         font-size: 20px;
+    }
+
+    #doc_modulelist dt, #doc_modulelist dd a {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     #doc_modulelist dt {
